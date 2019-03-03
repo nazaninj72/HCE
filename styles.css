@@ -1,0 +1,256 @@
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+.container {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    padding: 10px;
+}
+#warningbar{
+  background-color: white;
+  width:100%;
+}
+#viscontainer {
+  width: 85%;
+  height: 85%;
+  float: left;
+  margin: auto;
+  padding: 0px;
+  border-width:1px;  
+  border-style:solid;
+  border-color:#080808; 
+}
+#viscontainer1 {
+  width: 42%;
+  height: 85%;
+  float: left;
+  padding: 20px;
+  border-width:1px;  
+  border-style:solid;
+  border-color:#080808;
+   align-items: center;
+    justify-content: center;
+    margin-left: 50px;
+}
+#viscontainer2 {
+  width: 42%;
+  height: 85%;
+  float: left;
+  padding: 20px;
+  border-width:1px;  
+  border-style:solid;
+  border-color:#080808;
+   align-items: center;
+    justify-content: center;
+    margin-left: 50px;
+}
+#beforesidebyside{
+  width:50px;
+  height: 20px;
+    border-width:1px;  
+  border-style:solid;
+  border-color:#080808;
+  align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 50%;
+}
+#aftersidebyside{
+  width:50px;
+  height: 20px;
+    border-width:1px;  
+  border-style:solid;
+  border-color:#080808;
+  align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 50%;
+}
+
+#questionbar {
+  width: 10%;
+  float: left;
+  height: 85%;
+  margin: auto;
+  padding: 0px;
+  border-width:1px;  
+  border-style:solid;
+  border-color:#080808; 
+      display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+#questionparagraph{
+  width: 100%;
+  height: 50%;
+  margin-bottom: 200px;
+  padding: 0px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+
+}
+#buttonsbar{
+    width:95%;
+    height:15%;
+    float: left;
+    border-width:1px;  
+    border-style:solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-color:#080808; 
+}
+#animatebutton{
+    width:75%;
+    height:15%;
+    padding: 20px;
+}
+#viscontainerafter{
+  width: 55%;
+  height:85%;
+  float: right;
+  margin: 10px; 
+  padding: 10px;
+   border-width:1px;
+  border-color:#080808;
+  border-style:solid;
+  display: none;
+}
+#diffshow{
+  width: 35%;
+  height: 85%;
+  float: left;
+  margin: 10px;
+  padding: 10px;
+  border-width:1px;
+  border-color:#080808;
+  border-style:solid;
+  display: none;
+
+}
+#beforesmalldiff{
+  width:50px;
+  height: 20px;
+  border-width:1px;  
+  border-style:solid;
+  float: left;
+  border-color:#080808;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: 10%;
+
+}
+#aftersmalldiff{
+  width:50px;
+  height: 20px;
+  border-width:1px;  
+  border-style:solid;
+  float: right;
+  border-color:#080808;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  right: 70%;
+}
+#beforediff{
+  width: 50%;
+  height: 100%;
+  float: left;
+
+}
+#afterdiff{
+  width: 50%;
+  height: 100%;
+  float: right;
+
+}
+#questionparagraphDiffAfter{
+    width: 100%;
+    height: 50%;
+    margin-bottom: 200px;
+    padding: 0px;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    display: none;
+
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+    width: 270.8px;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover:not(.active) {
+    background-color: #111;
+}
+
+.node circle {
+  fill: #fff;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.node text { font: 12px sans-serif; }
+
+
+.link {
+  fill: none;
+  stroke: #006699;
+  stroke-width: 2px;
+}
+rect {
+  fill: white;
+  opacity: 0.3;
+  stroke: black;
+}
+text {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  fill: black;
+  font-size: 10px;
+}
+
+body {
+  font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.slice {
+    cursor: pointer;
+}
+
+.slice .main-arc {
+    stroke: #000000;
+    stroke-width: 1px;
+}
+
+.slice .hidden-arc {
+    fill: none;
+}
+
+.slice text {
+    pointer-events: none;
+    dominant-baseline: middle;
+    text-anchor: middle;
+}

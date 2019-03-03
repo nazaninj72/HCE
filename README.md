@@ -1,1 +1,2 @@
-# HCE
+# DataVisualizer
+Code for generating visualizations

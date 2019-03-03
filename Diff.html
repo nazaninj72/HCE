@@ -1,0 +1,73 @@
+<html>
+<head>
+	<title></title>
+	<script src="js/vendor/d3.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/vendor/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
+	<link rel="stylesheet" href="styles.css">
+	<script type="text/javascript" src='visDrawer.js'></script>
+<script type="text/javascript" src='showVis.js'></script>
+</head>
+<body>
+
+
+	<div class ="container">
+		<div id="viscontainer">
+			<!--visualizations go here-->
+			<script type="text/javascript">
+/*				 var queryString = decodeURIComponent(window.location.search);
+			   
+			   	var currentStringindex=queryString.split("=")
+			   	var currentindx=parseInt(currentStringindex[1])
+			   var personSarray=[];
+			   	var compState,visState,changeState,dataState;*/
+			 	window.onload = function() {
+/*			 		var myArray = sessionStorage.getItem('myArray');
+			 		personSarray=myArray.split("DOT")
+			 		var states=personSarray[currentindx].split(",");
+			 		compState=states[0];
+			 		visState=states[1];
+			 		changeState=states[2];
+			 		dataState=states[3];*/
+			 		updateVis("#viscontainer","#viscontainer","Diff","tree","remove","small")
+
+
+			 	}
+
+
+			</script>
+			<div id="viscontainerafter">
+				<div id ="aftersidebyside"> After</div>
+				
+			</div>
+			<div id="diffshow">
+				<div id="beforediff">
+					<div id ="beforesmalldiff"> Before</div>
+				</div>
+				<div id="afterdiff">
+					<div id ="aftersmalldiff"> After</div>
+				</div> 
+			</div>
+
+		</div>
+		<div id="questionbar"> 
+			<div id="questionparagraph"><p>
+				Please click on next button to see the changes
+			</p></div>
+				<div id="questionparagraphDiffAfter"><p>
+				Please write down the name of the node that you have detected to be moved, added, or removed:
+			</p>
+			<div id="diffsubmitbutton">
+				<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
+			</div>
+		</div>
+			
+
+
+		</div>
+		<div id="buttonsbar">
+			<input type="button" class ="Diffbutton" id="diffbefore" value="Next" onclick="showAfter();">
+		</div>
+	</div>
+</body>

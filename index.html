@@ -1,0 +1,455 @@
+<html>
+<head>
+	<title></title>
+	<script src="js/vendor/d3.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/vendor/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+<script type="text/javascript" src='stateCheck.js'></script>
+<script type="text/javascript" src='visDrawer.js'></script>
+<script type="text/javascript" src='showVis.js'></script>
+<script type="text/javascript">
+
+//var stream0 = "";
+//var stream1 = "";
+//var questionID = "";
+//var stream2 = "";
+//var stream3="";
+//var stream4="";
+//var checkpoint = 0;
+//var x;
+
+//dataProcessor.processFile("data/cars.csv");
+
+
+// init
+
+/*function init(){
+var mydb = new Firebase("https://intense-torch-1450.firebaseio.com/");
+var sets = {
+			'Anomalies' : {total:100, sessions: []},
+			'Cluster': {total:100, sessions: []},
+			'Correlation' : {total:100,  sessions: []},
+			'Derived' : {total:100, sessions: []},
+			'Distribution' : {total:100, sessions: []},
+			'Extremum' : {total:100, sessions: []},
+			'Filter' : {total:100, sessions: []},
+			'Order' : {total:100, sessions: []},
+			'Range' : {total:100, sessions: []},
+			'Retrieve' : {total:100, sessions: []}
+		};
+mydb.push(sets); //push sets into db
+}
+
+
+//var dataset={};
+
+var max_val, max_label;
+var set;
+
+
+var ref = new Firebase("https://intense-torch-1450.firebaseio.com/-KJw3KXSd7Nxnz3DfJdz");
+cleaner();
+continueExecution();
+
+// ref.once("value", function(snapshot) {
+// 	dataset = snapshot.val();
+// 	continueExecution();
+// });
+
+function cleaner(){
+	ref.transaction(function(sets) {
+		if(sets != null){
+
+			for(var x in sets )
+			{
+				var notExpired = [];
+				//console.log(sets[x]);
+				if(typeof sets[x].sessions != "undefined"){
+					sets[x].sessions.forEach(function(s,i){
+						var now = new Date().getTime();
+						//console.log(x, s, now-s);
+						if(now-s <= 40*60*1000){
+							notExpired.push(s);
+						} else {
+							sets[x].total++;
+						}
+					});
+					sets[x].sessions = notExpired;
+				}
+			}
+		}
+		return sets;
+
+	}, function(error, committed, snapshot) {
+  if (error) {
+    console.warn('Transaction failed abnormally!', error);
+  } else if (!committed) {
+    console.warn('Transaction aborted.');
+  } else {
+    console.log('All good!');
+  }
+  //console.log("data: ", snapshot.val());
+});
+
+}
+
+function continueExecution()
+{
+	ref.transaction(function(sets) {
+		if(sets != null){
+			max_val = -Infinity;
+			max_label="";
+
+			var x;
+			for(x in sets )
+			{
+			//	console.log(x);
+			    if(sets[x].total > max_val)
+			    {
+			        max_val = sets[x].total;
+			        max_label = x;
+			    }
+			}
+			if(max_val>1)
+			{
+			    set = max_label;
+			}
+
+			sets[max_label].total = sets[max_label].total - 1;
+			var timestamp = new Date().getTime();
+			if(typeof sets[max_label].sessions == "undefined"){
+				sets[max_label].sessions = [];
+			}
+			sets[max_label].sessions.push(timestamp);
+		}
+		return sets;
+
+	}, function(error, committed, snapshot) {
+  if (error) {
+    console.warn('Transaction failed abnormally!', error);
+  } else if (!committed) {
+    console.warn('Transaction aborted!');
+  } else {
+    console.log('All good!');
+  }
+  //console.log("data: ", snapshot.val());
+});
+
+}
+
+
+
+function getSurCode(){
+	$('#sur_btn').hide();
+	$('#sur_code').text(timestamp);
+	console.log('timestamp:', timestamp);
+}
+
+var timestamp="";
+//var set = "Range";
+function saveAnswers()
+{
+	//sets[max_label] = max_val-1;
+	//ref.update(sets);
+
+  timestamp = new Date().getTime();
+	var mydb = new Firebase("https://intense-torch-1450.firebaseio.com/");
+	// console.log(stream0, stream1);
+	var obj = {
+		userid: timestamp,
+		bio: stream0,
+		time: stream2.slice(0, -1),
+		accuracy: stream1.slice(0, -1),
+		ranking: stream3.slice(0, -1),
+		comments:stream4
+	}
+	mydb.push(obj);
+}
+
+function shuffle(a) {
+    var j, x, i;
+    for (i = a.length; i; i -= 1) {
+        j = Math.floor(Math.random() * i);
+        x = a[i - 1];
+        a[i - 1] = a[j];
+        a[j] = x;
+    }
+}
+
+
+
+var shortSet = new Array(35);
+for(var i=0; i<shortSet.length; i++){
+	shortSet[i] = i;
+}
+var shortSlice = shortSet.slice(8, 29);
+shuffle(shortSlice);
+Array.prototype.splice.apply(shortSet, [8, shortSlice.length].concat(shortSlice));
+console.log(shortSet);
+
+// Long set
+var longSet = new Array(48);
+for(var i=0; i<longSet.length; i++){
+	longSet[i] = i;
+}
+var longSlice = longSet.slice(8, 40);
+shuffle(longSlice);
+Array.prototype.splice.apply(longSet, [8, longSlice.length].concat(longSlice));
+console.log(longSet);
+
+function callQuestions(currentQ,set)
+{
+	var totalq;
+	var list;
+	if(set == "Correlation"){ // SHORT
+		totalq = 25;
+		list = shortSet;
+	} else { // LONG
+		totalq = 38;
+		list = longSet;
+	}
+	$("#CONTAINER").load("Questions/"+set+".html #" + list[currentQ], function() {
+		var span;
+		if(currentQ<=7 || $('#'+ list[currentQ]).hasClass('comment') || $('#'+ list[currentQ]).hasClass('end')){
+			span = '<span class="indexKeeper" id="'+ currentQ +'"></span>';
+		} else {
+			span = '<span class="indexKeeper" id="'+ currentQ +'">'+ '(' + parseInt(currentQ-7) + ' / ' + totalq + ') - ' +'</span>';
+		}
+		$('#'+ list[currentQ]).prepend(span);
+		console.log(currentQ);
+		updateChart(list[currentQ],set);
+		if(list[currentQ] <= 6)
+			bindEvent();
+	});
+}
+
+function bindEvent(){
+	$('input[type=radio][name=answer]').on('change', function() {
+
+		if (this.value == 'Correct') {
+			$("#Answer").text("Correct !!");
+			$("#Answer").css('color', 'green');
+			$('#Answer').css("font-weight","bold");
+		}
+		else if (this.value == 'Wrong') {
+			$("#Answer").text("Your answer is incorrect. Please try it again.");
+			$("#Answer").css('color', 'red');
+			$('#Answer').css("font-weight","bold");
+		}
+
+	});
+}
+
+
+$(function() {
+	$('input[type=checkbox][name=other]').change(function() {
+		if(this.checked) {
+			$('.others').empty();
+			text="Ohter"
+			$('.others').append('<input type="text" /> ' + '<br />');
+
+		}
+		else
+		{
+			$('.others').empty();
+		}
+	})
+})
+
+
+
+
+checker=false;*/
+
+
+
+      // Method
+     function calcList() {
+        var finalList=[];
+        var array=[];
+        for (var i=0; i<dict.length;i++){
+            array[i]=i;
+        }
+        var i = array.length,
+            j = 0,
+            temp;
+
+        while (i--) {
+
+            j = Math.floor(Math.random() * (i+1));
+
+            // swap randomly chosen element with current element
+            temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+
+        }
+        var listnum=0;
+        var indx=0;
+        do {
+        	
+           if (dict[array[indx]].remaining>0){
+                finalList[indx]=dict[array[indx]].experimentID;
+                dict[array[indx]].remaining--;
+                if (indx==80)
+                    indx=0;
+                else
+                    indx++;
+                listnum++;
+            }else{
+                if (indx==80)
+                    indx=0;
+                else
+                    indx++;
+
+            } 
+
+        }while(listnum<27)
+        return finalList;
+
+      }
+
+
+
+var comparisonSets = [
+			"Animation" ,
+			"SidebySide",
+			"Diff" 
+		];
+var visSets = [
+			"tree" ,
+			"treemap",
+			"sunburst" 
+		];
+var changeSets = [
+		"move" ,
+		"add",
+		"remove" 
+	];
+var dataSets = [
+		"small" ,
+		"medium",
+		"large" 
+	];		
+var compState=0;
+var visState=0;
+var changeState=0;
+var dataState=0;
+var dict = []; // create an empty array
+ for(var i=0; i <3;i++)
+       {
+         for (var ii=0;ii<3;ii++){
+         	for (var iii=0;iii<3;iii++){
+         		for (var iv=0;iv<3;iv++){
+	                 dict.push(
+	                   {
+	                       experimentID:   ""+comparisonSets[i]+","+visSets[ii]+","+changeSets[iii]+","+dataSets[iv]+"DOT",
+	                       remaining: 100
+	                  
+	                   }
+	                )
+             	}
+             }
+       }
+   }
+console.log(dict)
+function showNextQ(){//call question
+	//var prevQ = parseInt($('.indexKeeper').attr('id')); // get id of the submitting question
+	//choose comparison type
+
+
+
+
+
+	var personxlist=[];
+	//personxlist=calcList();
+	personxlist=["Animation,tree,move,smallDOT","Animation,tree,remove,smallDOT","Sidebyside,tree,move,smallDOT","Sidebyside,tree,remove,small"]
+	var currentindex=0;
+	var variables=personxlist[currentindex].split(",");
+	//localStorage.myArrData=JSON.stringify(personX.list);
+	var comparisonType = variables[0];
+	console.log(comparisonType)
+	console.log(personxlist)
+	var queryString = "?para1=" + currentindex;
+	window.location.href = comparisonType+".html" + queryString;
+	//window.open(comparisonType+".html", "_self");
+	 sessionStorage.setItem('myArray', personxlist);
+
+}
+
+
+
+</script>
+
+<body>
+
+
+	<div id="CONTAINER" >
+		<div class="question" id="0"> <!-- This is considered as question 0 -->
+			<span class="indexKeeper" id="0"></span>
+			<p>
+				<h2 style="text-align:center;" >Answer Questions</h2>
+				<span style="font-size:130%;">
+					The goal of this study is to measure the effect of different comparison techniques on different hierarchical data visualizations based on given parameters such as size of the hierarchy and type of change. In this experiment you will be asked to answer questions based on the change that you observe in screen.   </br></br>
+				</span>
+			
+			</p>
+
+
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;"> Age: </td></br>
+				<td>
+					<input type="radio" name="age" value="20-25" style="margin-right: 0" checked /> 20-25 years old
+					<input type="radio" name="age" value="25-35"  style="margin-right: 0" />    25-35 years old</br>
+					<input type="radio" name="age" value="34-45" style="margin-right: 0" />    35-45 years old
+					<input type="radio" name="age" value="Above 45" style="margin-right: 0" />    Above 45 years old</br>
+				</td>
+			</tr> </br>
+
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;">Sex:</td><br>
+				<td>
+					<input type="radio" name="sex" value="male" style="margin-right: 0" checked /> Male
+					<input type="radio" name="sex" value="female"  style="margin-right: 0" /> Female </br>
+				</td>
+			</tr> </br>
+
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;">Have you ever created a visualization before?</td> </br>
+				<td>
+					<input type="radio" name="hours" value="No" style="margin-right: 0" checked /> No
+					<input type="radio" name="hours" value="Yes"  style="margin-right: 0" />  Yes </br>
+				</td>
+			</tr></br>
+
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;"> Have you ever used any of the following tools or libraries to create a visualization? If so, which ones?  </td> </br>
+				<td>
+					<input type="checkbox" name="tool" value="Excel"> Microsoft Excel </br>
+					<input type="checkbox" name="tool" value="Tableau"> Tableau </br>
+					<input type="checkbox" name="tool" value="Spotfire"> Spotfire </br>
+					<input type="checkbox" name="tool" value="D3"> D3</br>
+					<input type="checkbox" name="tool" value="Processing"> Processing</br>
+					<input type="checkbox" name="other" value="Other"> Other</br>
+					<form class="others">
+					</form>
+
+				</td>
+			</tr> </br>
+
+			<!-- <ul>
+			 
+			  <li><a href="AnimationDisplay.html">Proceed</a></li>
+			 
+			</ul> -->
+			<input type="submit" value="Start Session" onclick="showNextQ()" />
+
+
+		</div>
+	</div>
+</body>
+</html>
