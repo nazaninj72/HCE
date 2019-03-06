@@ -22,7 +22,7 @@ function updateVis(selector1,selector2,compState,visState,changeState,dataState)
  	if (visState=="tree")
  		{drawTree(mediumdata,selector1,selector2,compState,changeState);}
  	else if (visState=="treemap")
- 		{drawTreeMap(mediumdata,selector);}
+ 		{drawTreeMap(mediumdata,selector1,selector2,compState,changeState);}
  	else if (visState=="sunburst")
  		{drawSunburst(mediumdata,selector);}
  	

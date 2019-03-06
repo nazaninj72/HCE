@@ -11,38 +11,58 @@
   width:100%;
 }
 #viscontainer {
-  width: 85%;
+  width: 100%;
   height: 85%;
   float: left;
   margin: auto;
   padding: 0px;
   border-width:1px;  
   border-style:solid;
+  border-color:#080808;
+  position: absolute;
+  z-index:1;
+
+}
+#viscontainer {
+  width: 95%;
+  height: 85%;
+  margin: 0px;
+  padding: 0px;
+  border-width:1px;  
+  border-style:solid;
   border-color:#080808; 
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
 }
 #viscontainer1 {
-  width: 42%;
+  width: 45%;
   height: 85%;
   float: left;
-  padding: 20px;
+  padding: 0px;
   border-width:1px;  
   border-style:solid;
   border-color:#080808;
    align-items: center;
     justify-content: center;
-    margin-left: 50px;
+    position: relative;
+    left: 2%;
+   top: 5%;
 }
 #viscontainer2 {
-  width: 42%;
+  width: 45%;
   height: 85%;
   float: left;
-  padding: 20px;
+  padding: 0px;
   border-width:1px;  
   border-style:solid;
   border-color:#080808;
    align-items: center;
     justify-content: center;
-    margin-left: 50px;
+    position: relative;
+    left: 8%;
+    top: 5%;
 }
 #beforesidebyside{
   width:50px;
@@ -66,20 +86,30 @@
     position: relative;
     left: 50%;
 }
+#currentvis{
+  width:20%;
+  height: 20px;
+    border-width:1px;  
+  border-style:solid;
+  border-color:#080808;
+  align-items: center;
+    justify-content: center;
+    position: relative;
+    left: 15%;
+}
 
 #questionbar {
-  width: 10%;
-  float: left;
-  height: 85%;
-  margin: auto;
+  width: 95%;
+  height: 20%;
+  margin: 0px;
   padding: 0px;
   border-width:1px;  
   border-style:solid;
   border-color:#080808; 
-      display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    top: 90%;
 }
 #questionparagraph{
   width: 100%;
@@ -91,17 +121,17 @@
     position: relative;
 
 
+
 }
 #buttonsbar{
     width:95%;
     height:15%;
-    float: left;
-    border-width:1px;  
-    border-style:solid;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-color:#080808; 
+    position: absolute;
+    z-index:2; 
+    top: 85%;
 }
 #animatebutton{
     width:75%;
@@ -109,11 +139,11 @@
     padding: 20px;
 }
 #viscontainerafter{
-  width: 55%;
+  width: 60%;
   height:85%;
-  float: right;
-  margin: 10px; 
-  padding: 10px;
+  float: left;
+  margin: 0px; 
+  padding: 0px;
    border-width:1px;
   border-color:#080808;
   border-style:solid;
@@ -123,8 +153,8 @@
   width: 35%;
   height: 85%;
   float: left;
-  margin: 10px;
-  padding: 10px;
+  margin: 0px;
+  padding: 0px;
   border-width:1px;
   border-color:#080808;
   border-style:solid;
@@ -168,20 +198,27 @@
   float: right;
 
 }
-#questionparagraphDiffAfter{
-    width: 100%;
-    height: 50%;
-    margin-bottom: 200px;
-    padding: 0px;
-
-    display: none;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    display: none;
+#choices{
+  width: 70%;
+  height:30%;
+  position: absolute;
+    left:0;
+    z-index:1;
+    top: 45%;
 
 }
-
+.questionbar{
+  position: absolute;
+}
+#submitbuttondiv{
+  width: 30%;
+  height: 10%;
+    position: absolute;
+    left:0;
+    top: 75%;
+      align-items: center;
+    justify-content: center;
+}
 ul {
     list-style-type: none;
     margin: 0;

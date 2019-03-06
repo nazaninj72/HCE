@@ -17,19 +17,21 @@
 		<div id= "warningbar">
 			<p>Please do not refresh the page!</p>
 		</div>
+		<div id="container">
 		<div id="viscontainer">
 			<!--visualizations go here-->
 			<!--<script type="text/javascript" src='js/ComparisonTechniques/Animation/AnimateTreeM.js'></script>-->
 			<script type="text/javascript">
-					 var queryString = decodeURIComponent(window.location.search);
+					/* var queryString = decodeURIComponent(window.location.search);
 				   
 				   	var currentStringindex=queryString.split("=")
 				   	var currentindx=parseInt(currentStringindex[1])
 				   var personSarray=[];
 				   var myArray=[];
-				   	var compState,visState,changeState,dataState;
+				   	var compState,visState,changeState,dataState;*/
 				 	window.onload = function() {
-				 		myArray = sessionStorage.getItem('myArray');
+				 		/*myArray = sessionStorage.getItem('myArray');
+				 		console.log(myArray)
 				 		personSarray=myArray.split("DOT,")
 				 		console.log(personSarray)
 				 		var states=personSarray[currentindx].split(",");
@@ -37,13 +39,13 @@
 				 		visState=states[1];
 				 		changeState=states[2];
 				 		dataState=states[3];
-				 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
-				 		//updateVis("#viscontainer","#viscontainer","Animation","tree","move","small")
+				 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)*/
+				 		updateVis("#viscontainer","#viscontainer","Animation","tree","move","small")
 
 
 				 	}
 				 	function submitAnswer(){
-				 		alert("press ok to move to the next task")
+				 	/*	alert("press ok to move to the next task")
 				 		currentindx++;
 				 		var states=personSarray[currentindx].split(",");
 				 		compState=states[0];
@@ -60,7 +62,8 @@
 
 				 		}else{
 				 			updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
-				 		}
+				 		}*/
+				 		updateVis("#viscontainer","#viscontainer","Animation","tree","remove","small")
 				 		
 				 	}
 
@@ -68,21 +71,48 @@
 				
 
 			</script> 
-
-
+			</div>
+			<div id="buttonsbar">
+				<input type="button" class ="animatebutton" id="startbutton" value="start" >
+	         	<input type="button" class ="animatebutton" id="resetbutton" value="reset" onclick="resetAnimation();">
+			</div>
 		</div>
 		<div id="questionbar"> 
-			<p>
+			<div class="questionbar" id="questionDescription">
 				Please write down the name of the node that you have detected to be moved, added, or removed:
-			</p>
-			<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
+			</div>
+				
+		
+
+			<div class="questionbar" id="choices">
+				<input type="radio" name="first" value="first"/>
+				<label id="1choice">
+        			
+        		  </label>
+			
+				  <input type="radio" id="male" value="second">
+				  <label id="2choice">
+        			
+        		  </label>
+        		
+  				
+				<input type="radio" name="gender" value="third"> 			
+					<label id="3choice">
+        			
+        		  </label>
+				<input type="radio" name="gender" value="fourth">
+				<label id="4choice">
+    			
+    		  </label> 
+			</div>
+			<div id="submitbuttondiv">
+				<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
+			</div>
+			
 
 
 
 		</div>
-		<div id="buttonsbar">
-			<input type="button" class ="animatebutton" id="startbutton" value="start" onclick="startAnimation();">
-	         <input type="button" class ="animatebutton" id="resetbutton" value="reset" onclick="resetAnimation();">
-		</div>
+		
 	</div>
 </body>

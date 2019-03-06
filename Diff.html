@@ -13,7 +13,7 @@
 
 
 	<div class ="container">
-		<div id="viscontainer">
+		<div id="DiffDescription"> Right panel shows the current visualization. Left panel shows the before and after changes in the visualization.</div>
 			<!--visualizations go here-->
 			<script type="text/javascript">
 /*				 var queryString = decodeURIComponent(window.location.search);
@@ -22,23 +22,57 @@
 			   	var currentindx=parseInt(currentStringindex[1])
 			   var personSarray=[];
 			   	var compState,visState,changeState,dataState;*/
+		   	/*	 var queryString = decodeURIComponent(window.location.search);
+		   	   
+		   	   	var currentStringindex=queryString.split("=")
+		   	   	var currentindx=parseInt(currentStringindex[1])
+		   	   	console.log(currentindx)
+		   	    var personSarray=[];
+		   	   	var compState,visState,changeState,dataState;*/
 			 	window.onload = function() {
-/*			 		var myArray = sessionStorage.getItem('myArray');
-			 		personSarray=myArray.split("DOT")
+
+ 			 		/*var myArray = sessionStorage.getItem('myArray');
+ 			 		console.log(myArray)
+ 			 		personSarray=myArray.split("DOT,")
+ 			 		console.log(personSarray)
+ 			 		var states=personSarray[currentindx].split(",");
+ 			 		compState=states[0];
+ 			 		visState=states[1];
+ 			 		changeState=states[2];
+ 			 		dataState=states[3];
+ 			 		console.log(compState)
+ 			 		updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)*/
+			 		updateVis("#viscontainerafter","#viscontainerafter","Diff","tree","remove","small")
+
+
+			 	}
+			 	function submitAnswer(){
+			 		/*alert("press ok to move to the next task")
+			 		currentindx++;
 			 		var states=personSarray[currentindx].split(",");
 			 		compState=states[0];
+			 		console.log(compState)
 			 		visState=states[1];
 			 		changeState=states[2];
-			 		dataState=states[3];*/
-			 		updateVis("#viscontainer","#viscontainer","Diff","tree","remove","small")
+			 		dataState=states[3];
+			 		if (compState!="Diff"){//should load next html page
+			 			var queryString = "?para1=" + currentindx;
+			 			window.location.href = compState+".html" + queryString;
+			 			//window.open(comparisonType+".html", "_self");
 
+			 			 sessionStorage.setItem('myArray', myArray);
 
+			 		}else{
+			 			updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
+			 		}*/
+			 		updateVis("#viscontainerafter","#viscontainerafter","Diff","tree","move","small")
+			 		
 			 	}
 
 
 			</script>
 			<div id="viscontainerafter">
-				<div id ="aftersidebyside"> After</div>
+				<div id ="currentvis"> Current Visualization</div>
 				
 			</div>
 			<div id="diffshow">
@@ -50,24 +84,45 @@
 				</div> 
 			</div>
 
-		</div>
-		<div id="questionbar"> 
-			<div id="questionparagraph"><p>
-				Please click on next button to see the changes
-			</p></div>
-				<div id="questionparagraphDiffAfter"><p>
-				Please write down the name of the node that you have detected to be moved, added, or removed:
-			</p>
-			<div id="diffsubmitbutton">
-				<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
-			</div>
-		</div>
+				<div id="questionbar"> 
+					<div class="questionbar" id="questionDescription">
+						Please write down the name of the node that you have detected to be moved, added, or removed:
+					</div>
+						
+				
+
+					<div class="questionbar" id="choices">
+						<input type="radio" name="first" value="first"/>
+						<label id="1choice">
+		        			
+		        		  </label>
+					
+						  <input type="radio" id="male" value="second">
+						  <label id="2choice">
+		        			
+		        		  </label>
+		        		
+		  				
+						<input type="radio" name="gender" value="third"> 			
+							<label id="3choice">
+		        			
+		        		  </label>
+						<input type="radio" name="gender" value="fourth">
+						<label id="4choice">
+		    			
+		    		  </label> 
+					</div>
+					<div id="submitbuttondiv">
+						<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
+					</div>
+					
+
+
+
+				</div>
 			
 
 
-		</div>
-		<div id="buttonsbar">
-			<input type="button" class ="Diffbutton" id="diffbefore" value="Next" onclick="showAfter();">
 		</div>
 	</div>
 </body>
