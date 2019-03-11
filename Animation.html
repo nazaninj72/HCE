@@ -5,10 +5,14 @@
 	<script type="text/javascript" src="js/vendor/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
+
 	<link rel="stylesheet" href="styles.css">
 </head>
 <script type="text/javascript" src='stateCheck.js'></script>
 <script type="text/javascript" src='visDrawer.js'></script>
+<script type="text/javascript" src='treemapDrawer.js'></script>
+<!--<script type="text/javascript" src="flare.json"></script>-->
+<script type="text/javascript" src='sunburstDrawer.js'></script>
 <script type="text/javascript" src='showVis.js'></script>
 <body>
 
@@ -22,15 +26,15 @@
 			<!--visualizations go here-->
 			<!--<script type="text/javascript" src='js/ComparisonTechniques/Animation/AnimateTreeM.js'></script>-->
 			<script type="text/javascript">
-					/* var queryString = decodeURIComponent(window.location.search);
+					 var queryString = decodeURIComponent(window.location.search);
 				   
 				   	var currentStringindex=queryString.split("=")
 				   	var currentindx=parseInt(currentStringindex[1])
 				   var personSarray=[];
 				   var myArray=[];
-				   	var compState,visState,changeState,dataState;*/
+				   	var compState,visState,changeState,dataState;
 				 	window.onload = function() {
-				 		/*myArray = sessionStorage.getItem('myArray');
+				 		myArray = sessionStorage.getItem('myArray');
 				 		console.log(myArray)
 				 		personSarray=myArray.split("DOT,")
 				 		console.log(personSarray)
@@ -39,13 +43,18 @@
 				 		visState=states[1];
 				 		changeState=states[2];
 				 		dataState=states[3];
-				 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)*/
-				 		updateVis("#viscontainer","#viscontainer","Animation","tree","move","small")
+				 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
+				 		//updateVis("#viscontainer","#viscontainer","Animation","sunburst","remove","small")
 
 
 				 	}
 				 	function submitAnswer(){
-				 	/*	alert("press ok to move to the next task")
+				 		if (currentindx+1 >= personSarray.length){
+				 			alert("Thank you for participating. Your session is over!")
+				 		}else{
+				 			alert("press ok to move to the next task")
+				 		}
+				 		
 				 		currentindx++;
 				 		var states=personSarray[currentindx].split(",");
 				 		compState=states[0];
@@ -53,17 +62,17 @@
 				 		visState=states[1];
 				 		changeState=states[2];
 				 		dataState=states[3];
-				 		if (compState!="Animation"){//should load next html page
+				 		//if (compState!="Animation"){//should load next html page
 				 			var queryString = "?para1=" + currentindx;
 				 			window.location.href = compState+".html" + queryString;
 				 			//window.open(comparisonType+".html", "_self");
 
 				 			 sessionStorage.setItem('myArray', myArray);
 
-				 		}else{
-				 			updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
-				 		}*/
-				 		updateVis("#viscontainer","#viscontainer","Animation","tree","remove","small")
+				 	//	}else{
+				 			//updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
+				 		//}
+				 		//updateVis("#viscontainer","#viscontainer","Animation","treemap","add","small")
 				 		
 				 	}
 
@@ -79,7 +88,7 @@
 		</div>
 		<div id="questionbar"> 
 			<div class="questionbar" id="questionDescription">
-				Please write down the name of the node that you have detected to be moved, added, or removed:
+				Please choose the node that you have detected to be moved, added, or removed:
 			</div>
 				
 		

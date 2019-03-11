@@ -7,6 +7,8 @@
 	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
 	<link rel="stylesheet" href="styles.css">
 	<script type="text/javascript" src='visDrawer.js'></script>
+	<script type="text/javascript" src='treemapDrawer.js'></script>
+	<!--<script type="text/javascript" src="flare.json"></script>-->
 <script type="text/javascript" src='showVis.js'></script>
 </head>
 <body>
@@ -16,16 +18,16 @@
 		<div id="viscontainer">
 			<!--visualizations go here-->
 			<script type="text/javascript">
-					/* var queryString = decodeURIComponent(window.location.search);
+					 var queryString = decodeURIComponent(window.location.search);
 				   
 				   	var currentStringindex=queryString.split("=")
 				   	var currentindx=parseInt(currentStringindex[1])
 				   	console.log(currentindx)
 				   var personSarray=[];
-				   	var compState,visState,changeState,dataState;*/
+				   	var compState,visState,changeState,dataState;
 			 		window.onload = function() {
 
-			 		/*var myArray = sessionStorage.getItem('myArray');
+			 		var myArray = sessionStorage.getItem('myArray');
 			 		console.log(myArray)
 			 		personSarray=myArray.split("DOT,")
 			 		console.log(personSarray)
@@ -35,15 +37,15 @@
 			 		changeState=states[2];
 			 		dataState=states[3];
 			 		console.log(compState)
-			 		updateVis("#viscontainer1","#viscontainer2",compState,visState,changeState,dataState)*/
-			 		updateVis("#viscontainer1","#viscontainer2","Sidebyside","tree","move","dataState")
+			 		updateVis("#viscontainer1","#viscontainer2",compState,visState,changeState,dataState)
+				//	updateVis("#viscontainer1","#viscontainer2","Sidebyside","treemap","remove","small")
 			 		
 			 		
 
 
 			 	}
 			 	function submitAnswer(){
-			 		/*alert("press ok to move to the next task")
+			 		alert("press ok to move to the next task")
 			 		currentindx++;
 			 		var states=personSarray[currentindx].split(",");
 			 		compState=states[0];
@@ -51,18 +53,18 @@
 			 		visState=states[1];
 			 		changeState=states[2];
 			 		dataState=states[3];
-			 		if (compState!="Sidebyside"){//should load next html page
+			 	//	if (compState!="Sidebyside"){//should load next html page
 			 			var queryString = "?para1=" + currentindx;
 			 			window.location.href = compState+".html" + queryString;
 			 			//window.open(comparisonType+".html", "_self");
 
 			 			 sessionStorage.setItem('myArray', myArray);
 
-			 		}else{
-			 			updateVis("#viscontainer1","#viscontainer2",compState,visState,changeState,dataState)
-			 		}*/
+			 		//}else{
+			 		//	updateVis("#viscontainer1","#viscontainer2",compState,visState,changeState////,dataState)
+			 	//	}
 
-			 		updateVis("#viscontainer1","#viscontainer2","Sidebyside","tree","remove","dataState")
+			 		//updateVis("#viscontainer1","#viscontainer2","Sidebyside","tree","add","dataState")
 			 	}
 
 
@@ -75,9 +77,9 @@
 			<div id="viscontainer2">
 				<div id ="aftersidebyside"> After</div>
 			</div>
-
 		</div>
-			<div id="questionbar"> 
+	</div>
+			<div id="questionbar2"> 
 				<div class="questionbar" id="questionDescription">
 					Please choose the node that you have detected to be moved, added, or removed:
 				</div>
@@ -113,5 +115,4 @@
 
 
 			</div>
-	</div>
 </body>

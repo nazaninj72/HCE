@@ -7,6 +7,8 @@
 	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
 	<link rel="stylesheet" href="styles.css">
 	<script type="text/javascript" src='visDrawer.js'></script>
+	<script type="text/javascript" src='treemapDrawer.js'></script>
+	<!--<script type="text/javascript" src="flare.json"></script>-->
 <script type="text/javascript" src='showVis.js'></script>
 </head>
 <body>
@@ -16,22 +18,17 @@
 		<div id="DiffDescription"> Right panel shows the current visualization. Left panel shows the before and after changes in the visualization.</div>
 			<!--visualizations go here-->
 			<script type="text/javascript">
-/*				 var queryString = decodeURIComponent(window.location.search);
-			   
-			   	var currentStringindex=queryString.split("=")
-			   	var currentindx=parseInt(currentStringindex[1])
-			   var personSarray=[];
-			   	var compState,visState,changeState,dataState;*/
-		   	/*	 var queryString = decodeURIComponent(window.location.search);
+
+		   		 var queryString = decodeURIComponent(window.location.search);
 		   	   
 		   	   	var currentStringindex=queryString.split("=")
 		   	   	var currentindx=parseInt(currentStringindex[1])
 		   	   	console.log(currentindx)
 		   	    var personSarray=[];
-		   	   	var compState,visState,changeState,dataState;*/
+		   	   	var compState,visState,changeState,dataState;
 			 	window.onload = function() {
 
- 			 		/*var myArray = sessionStorage.getItem('myArray');
+ 			 		var myArray = sessionStorage.getItem('myArray');
  			 		console.log(myArray)
  			 		personSarray=myArray.split("DOT,")
  			 		console.log(personSarray)
@@ -41,13 +38,16 @@
  			 		changeState=states[2];
  			 		dataState=states[3];
  			 		console.log(compState)
- 			 		updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)*/
-			 		updateVis("#viscontainerafter","#viscontainerafter","Diff","tree","remove","small")
+ 			 		console.log(visState)
+ 			 		console.log(changeState)
+ 			 		console.log(dataState)
+ 			 		updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
+			 		//updateVis("#viscontainerafter","#viscontainerafter","Diff","treemap","add","small")
 
 
 			 	}
 			 	function submitAnswer(){
-			 		/*alert("press ok to move to the next task")
+			 		alert("press ok to move to the next task")
 			 		currentindx++;
 			 		var states=personSarray[currentindx].split(",");
 			 		compState=states[0];
@@ -55,17 +55,12 @@
 			 		visState=states[1];
 			 		changeState=states[2];
 			 		dataState=states[3];
-			 		if (compState!="Diff"){//should load next html page
+			 		//if (compState!="Diff"){//should load next html page
 			 			var queryString = "?para1=" + currentindx;
 			 			window.location.href = compState+".html" + queryString;
 			 			//window.open(comparisonType+".html", "_self");
 
 			 			 sessionStorage.setItem('myArray', myArray);
-
-			 		}else{
-			 			updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
-			 		}*/
-			 		updateVis("#viscontainerafter","#viscontainerafter","Diff","tree","move","small")
 			 		
 			 	}
 
@@ -83,10 +78,9 @@
 					<div id ="aftersmalldiff"> After</div>
 				</div> 
 			</div>
-
-				<div id="questionbar"> 
-					<div class="questionbar" id="questionDescription">
-						Please write down the name of the node that you have detected to be moved, added, or removed:
+	</div><div id="questionbar2"> 
+					<div  id="questionDescription">
+						Please choose the node that you have detected to be moved, added, or removed:
 					</div>
 						
 				
@@ -123,6 +117,6 @@
 			
 
 
-		</div>
-	</div>
+		
+
 </body>

@@ -1,0 +1,122 @@
+{
+ "name": "A",
+ "children": [
+  {
+   "name": "B",
+   "children": [
+    {
+     "name": "C",
+     "children": [
+      {"name": "CS", "size": 100},
+      {"name": "JS", "size": 100}
+     ]
+    },
+      {
+   "name": "D",
+   "children": [
+    {
+     "name": "CL","size": 100
+    },
+    {
+     "name": "GR",
+     "children": [
+      {"name": "LD", "size": 100},
+      {"name": "ST", "size": 100}
+     ]
+    },
+    {
+     "name": "OP",
+     "children": [
+      {"name": "ARB", "size": 100}
+     ]
+    }
+   ]
+  },
+    {"name": "E2", "size": 100},
+    {"name": "DT1", "size": 100},
+    {"name": "DU2", "size": 100}
+   ]
+  },
+  {
+   "name": "F",
+   "children": [
+    {"name": "DS", "size": 100},
+    {"name": "TS", "size": 100}
+   ]
+  },
+  {
+   "name": "P",
+   "children": [
+    {"name": "Q",
+    "children":[
+      {
+       "name": "D2",
+       "children": [
+        {"name": "AN", "size": 100},
+        {"name": "M1", "size": 100},
+        {
+         "name": "M",
+         "children": [
+          {"name": "AD", "size": 100},
+          {"name": "MU", "size": 100},
+          {"name": "WH", "size": 100}
+         ]
+        },
+        {"name": "VA", "size": 100},
+        {"name": "XO", "size": 100}
+       ]
+      }
+    ] 
+    },
+    {"name": "GD", "size": 100},
+    {"name": "SF", "size": 100}
+   ]
+  }
+  ,
+  {
+   "name": "V",
+   "children": [
+    {
+     "name": "AX",
+     "children": [
+      {"name": "AXS", "size": 100}
+     ]
+    },
+    {
+     "name": "CD", "size":100},
+    {
+     "name": "PO",
+     "children": [
+      {
+       "name": "DI",
+       "children": [
+        {"name": "BiD", "size": 100},
+        {"name": "Dist", "size": 100}
+        
+       ]
+      },
+      {
+       "name": "E",
+       "children": [
+        {"name": "CO", "size": 100},
+        {"name": "SI", "size": 100}
+       ]
+      },
+      {
+       "name": "L",
+       "children": [
+        {"name": "Lab", "size": 100}
+       ]
+      },
+      {
+       "name": "M1",
+       "children": [
+        {"name": "TM", "size": 100}
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

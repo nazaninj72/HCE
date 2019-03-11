@@ -295,20 +295,20 @@ checker=false;*/
            if (dict[array[indx]].remaining>0){
                 finalList[indx]=dict[array[indx]].experimentID;
                 dict[array[indx]].remaining--;
-                if (indx==80)
+                if (indx==9)
                     indx=0;
                 else
                     indx++;
                 listnum++;
             }else{
-                if (indx==80)
+                if (indx==9)
                     indx=0;
                 else
                     indx++;
 
             } 
 
-        }while(listnum<27)
+        }while(listnum<9)
         return finalList;
 
       }
@@ -321,9 +321,7 @@ var comparisonSets = [
 			"Diff" 
 		];
 var visSets = [
-			"tree" ,
-			"treemap",
-			"sunburst" 
+			"tree" 
 		];
 var changeSets = [
 		"move" ,
@@ -331,9 +329,7 @@ var changeSets = [
 		"remove" 
 	];
 var dataSets = [
-		"small" ,
-		"medium",
-		"large" 
+		"small" 
 	];		
 var compState=0;
 var visState=0;
@@ -342,18 +338,15 @@ var dataState=0;
 var dict = []; // create an empty array
  for(var i=0; i <3;i++)
        {
-         for (var ii=0;ii<3;ii++){
-         	for (var iii=0;iii<3;iii++){
-         		for (var iv=0;iv<3;iv++){
-	                 dict.push(
-	                   {
-	                       experimentID:   ""+comparisonSets[i]+","+visSets[ii]+","+changeSets[iii]+","+dataSets[iv]+"DOT",
-	                       remaining: 100
-	                  
-	                   }
-	                )
-             	}
-             }
+        for (var iii=0;iii<3;iii++){
+	         dict.push(
+	           {
+	               experimentID:   ""+comparisonSets[i]+","+visSets[0]+","+changeSets[iii]+","+dataSets[0]+"DOT",
+	               remaining: 100
+	          
+	           }
+	        )
+	 	
        }
    }
 console.log(dict)
@@ -367,7 +360,8 @@ function showNextQ(){//call question
 
 	var personxlist=[];
 	//personxlist=calcList();
-	personxlist=["Animation,tree,move,smallDOT","Sidebyside,tree,remove,smallDOT","Animation,tree,remove,smallDOT","Diff,tree,remove,smallDOT","Sidebyside,tree,move,smallDOT","Diff,tree,move,small"]
+	personxlist=["Animation,tree,move,smallDOT","Sidebyside,treemap,move,smallDOT","Animation,tree,remove,smallDOT","Diff,treemap,remove,smallDOT","Sidebyside,tree,remove,smallDOT","Animation,treemap,move,smallDOT","Diff,tree,remove,smallDOT","Sidebyside,treemap,remove,smallDOT","Diff,treemap,move,smallDOT","Animation,treemap,add,smallDOT","Sidebyside,tree,move,smallDOT","Animation,treemap,remove,smallDOT","Diff,tree,move,smallDOT","Diff,tree,add,smallDOT","Diff,treemap,add,smallDOT","Sidebyside,tree,add,smallDOT","Sidebyside,treemap,add,smallDOT","Animation,tree,add,small"]
+	console.log(personxlist)
 	var currentindex=0;
 	var variables=personxlist[currentindex].split(",");
 	//localStorage.myArrData=JSON.stringify(personX.list);

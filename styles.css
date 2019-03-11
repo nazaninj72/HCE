@@ -3,26 +3,14 @@
 .container {
     width: 100%;
     height: 100%;
-    margin: auto;
-    padding: 10px;
+    margin: 0px;
+    padding: 0px;
 }
 #warningbar{
   background-color: white;
   width:100%;
 }
-#viscontainer {
-  width: 100%;
-  height: 85%;
-  float: left;
-  margin: auto;
-  padding: 0px;
-  border-width:1px;  
-  border-style:solid;
-  border-color:#080808;
-  position: absolute;
-  z-index:1;
 
-}
 #viscontainer {
   width: 95%;
   height: 85%;
@@ -34,35 +22,19 @@
     align-items: center;
     justify-content: center;
     position: relative;
-
 }
 #viscontainer1 {
-  width: 45%;
+  width: 49%;
   height: 85%;
   float: left;
-  padding: 0px;
-  border-width:1px;  
-  border-style:solid;
-  border-color:#080808;
-   align-items: center;
-    justify-content: center;
-    position: relative;
-    left: 2%;
-   top: 5%;
+  border: 3px solid #023858;
+
 }
 #viscontainer2 {
-  width: 45%;
+  width: 49%;
   height: 85%;
-  float: left;
-  padding: 0px;
-  border-width:1px;  
-  border-style:solid;
-  border-color:#080808;
-   align-items: center;
-    justify-content: center;
-    position: relative;
-    left: 8%;
-    top: 5%;
+  float: right;
+   border: 3px solid #023858;
 }
 #beforesidebyside{
   width:50px;
@@ -95,7 +67,7 @@
   align-items: center;
     justify-content: center;
     position: relative;
-    left: 15%;
+    left: 40%;
 }
 
 #questionbar {
@@ -109,7 +81,31 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    top: 90%;
+}
+#questionbar2 {
+  width: 95%;
+  height: 20%;
+  margin: 0px;
+  padding: 0px;
+  border-width:1px;  
+  border-style:solid;
+  border-color:#080808; 
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    top: -11%;
+}
+#questionbar {
+  width: 95%;
+  height: 20%;
+  margin: 0px;
+  padding: 0px;
+  border-width:1px;  
+  border-style:solid;
+  border-color:#080808; 
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
 #questionparagraph{
   width: 100%;
@@ -120,37 +116,39 @@
     justify-content: center;
     position: relative;
 
-
-
 }
 #buttonsbar{
-    width:95%;
-    height:15%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    z-index:2; 
-    top: 85%;
+  width: 95%;
+  height: 7%;
+  margin: 0px;
+  padding: 0px;
+  border-width:1px;  
+  border-style:solid;
+  border-color:#080808; 
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
-#animatebutton{
-    width:75%;
-    height:15%;
-    padding: 20px;
+.animatebutton{
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 15px;
+  position: relative;
+  left: 40%;
 }
 #viscontainerafter{
-  width: 60%;
+  width: 54%;
   height:85%;
   float: left;
   margin: 0px; 
   padding: 0px;
-   border-width:1px;
+   border-width:3px;
   border-color:#080808;
   border-style:solid;
-  display: none;
 }
 #diffshow{
-  width: 35%;
+  width: 40%;
   height: 85%;
   float: left;
   margin: 0px;
@@ -158,8 +156,6 @@
   border-width:1px;
   border-color:#080808;
   border-style:solid;
-  display: none;
-
 }
 #beforesmalldiff{
   width:50px;
@@ -171,7 +167,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  left: 10%;
+  left: 40%;
 
 }
 #aftersmalldiff{
@@ -184,18 +180,24 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  right: 70%;
+  right: 40%;
 }
 #beforediff{
-  width: 50%;
+  width: 49%;
   height: 100%;
   float: left;
+    border-width:3px;  
+  border-style:solid;
+  border-color:#080808;
 
 }
 #afterdiff{
-  width: 50%;
+  width: 49%;
   height: 100%;
   float: right;
+    border-width:3px;  
+  border-style:solid;
+  border-color:#080808;
 
 }
 #choices{
@@ -207,9 +209,7 @@
     top: 45%;
 
 }
-.questionbar{
-  position: absolute;
-}
+
 #submitbuttondiv{
   width: 30%;
   height: 10%;
