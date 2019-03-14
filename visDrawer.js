@@ -143,7 +143,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 
 
 	}
-	if (compstate=="Sidebyside"){//draw two svgs one for before one for after
+	if (compstate=="SidebySide"){//draw two svgs one for before one for after
 		var duration=0;
 		var i = 0;
 		var numNodes;
@@ -827,8 +827,10 @@ function writeInputChoices(sourceNode,changestate,root,newnodelabels,newnodeindx
 	//console.log(answerId)
 	 var answerinput = document.getElementById(''+answerId+'choice');
 
-	 	
-	 answerinput.innerHTML = answernodeStringify+"-"+"was "+ changeStringify;
+	 if (hasChildren)	
+	 	answerinput.innerHTML = answernodeStringify+"-"+"were "+ changeStringify;
+	 else
+	 	answerinput.innerHTML = answernodeStringify+"-"+"was "+ changeStringify;
 	for (var i=0;i<4;i++){
 		inputs[i]=document.getElementById(''+j+'choice');
 		j++;
@@ -851,9 +853,9 @@ function writeInputChoices(sourceNode,changestate,root,newnodelabels,newnodeindx
 				
 				var otherinput=inputs[inputindx];
 				if (changes[changeindx]=="add")
-					otherinput.innerHTML= ""+ candidates[i].data.name +" & its children"+"-"+"was "+ changes[changeindx]+"ed";
+					otherinput.innerHTML= ""+ candidates[i].data.name +" & its children"+"-"+"were "+ changes[changeindx]+"ed";
 				else
-					otherinput.innerHTML= ""+ candidates[i].data.name +" & its children"+"-"+"was "+ changes[changeindx]+"d";
+					otherinput.innerHTML= ""+ candidates[i].data.name +" & its children"+"-"+"were "+ changes[changeindx]+"d";
 				inputs.splice(inputindx, 1)
 				candidates.splice(i,1)
 				i=candidates.length;

@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+
+body {
+  font-family: "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+#gameboard {
+  height: 400px;
+  width: 400px;
+}
+
+path {
+  stroke: #fff;
+}
+
+text { 
+  pointer-events: none;
+}
+
+</style>
+<body>
+  <svg id="gameboard"></svg>
+  <input type="button" class ="animatebutton" id="startbutton" value="start" >
+  <label><input class="mode" type="radio" name="mode" value="grouped"> Grouped</label>
+
+</body>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="text/javascript" src='stateCheck.js'></script>
+<script type="text/javascript" src='visDrawer.js'></script>
+<script type="text/javascript" src='treemapDrawer.js'></script>
+<!--<script type="text/javascript" src="flare.json"></script>-->
+<script type="text/javascript" src='sunburstDrawer.js'></script>
+<script type="text/javascript" src='showVis.js'></script>
+<script>
+$(function () {
+  // helpful: https://bl.ocks.org/kerryrodden/477c1bfb081b783f80ad
+  // palettes: https://designschool.canva.com/blog/website-color-schemes/
+  // Global Variables
+  var compstate="Animation";
+  var changestate="move";
+  var gWidth = $('#gameboard').width(),   // Width of the svg palette
+    gHeight = $('#gameboard').height(),   // Height of the svg palette
+    radius = (Math.min(gWidth, gHeight) / 2) - 10,
+    svg = d3.select("svg").append("g").attr("transform", "translate(" + gWidth / 2 + "," + (gHeight / 2) + ")"),
+    color_palettes = [['#4abdac', '#fc4a1a', '#f7b733'], ['#f03b20', '#feb24c', '#ffeda0'], ['#007849', '#0375b4', '#ffce00'], ['#373737', '#dcd0c0', '#c0b283'], ['#e37222', '#07889b', '#eeaa7b'], ['#062f4f', '#813772', '#b82601'], ['#565656', '#76323f', '#c09f80']];
+    var data= {"name": "A", "children": [{
+             "name": "B",
+             "children": [{"name": "E", 
+             "children":[{"name":"J", "size": 100},{"name":"K","size":100}]
+            }, {"name": "F",
+             "children":[{"name":"I", "size": 100},{"name":"Z","size":100}]}]
+          }, {
+             "name": "D",
+             "children": [{"name": "L", "size": 100}, {"name": "M", "size": 100}, {
+                 "name": "G", "size": 100}]
+          }, {
+             "name": "N",
+             "children": [{"name": "S", 
+             "children":[{"name":"T", "size": 100},{"name":"V","size":100}]
+          }, {"name": "Q", "size": 100},{"name": "R","size": 100}]
+          }]
+      }
+
+
+  // D3 Global Variables
+ var root = d3.hierarchy(data)
+            .sum(function (d) { return d.size});
+            console.log(root) 
+    node = root, // Save root for tweening
+    x = d3.scaleLinear().range([0, 2 * Math.PI]),
+    y = d3.scaleSqrt().range([0, radius]),
+    color = d3.scaleLinear().domain([0, 0.5, 1]).range(color_palettes[~~(Math.random() * 6)]), 
+    partition = d3.partition();
+
+  // Calculate the d path for each slice.
+  var arc = d3.arc()
+    .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x0))); })
+    .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x1))); })
+    .innerRadius(function(d) { return Math.max(0, y(d.y0)); })
+    .outerRadius(function(d) { return Math.max(0, y(d.y1)); });
+  update(root); // GO!
+  //svg.selectAll("*").remove();
+  var rootC=null;
+  rootC=clonetreemap(root,root.depth,root.height)
+
+
+var startanimation = document.getElementById('startbutton');
+startanimation.onclick = function(){
+    if (changestate=="move"){
+    
+    }
+
+}
+    // Build the sunburst.
+    function update(root) {
+      var i=0;
+        // Add a <path d="[shape]" style="fill: [color];"><title>[popup text]</title></path>
+        //   to each <g> element; add click handler; save slice widths for tweening
+       // Return white for root.
+     var gSlices = svg.selectAll("g").data(partition(root).descendants(),function(d) { return d.id|| (d.id = ++i); }).enter().append("g");
+      
+    gSlices.append("path").style("fill", function (d) { return d.parent ? color(d.x0) : "white"; })
+        .append("title").text(function (d) { return d.data.name; });  // Return white for root.
+      gSlices.append("text").attr("dy", ".35em").text(function (d) { return d.parent ? d.data.name : ""; }).attr("id", function (d) { return "w" + d.data.name; }); // TODO: was d.data.word
+      svg.selectAll("path").append("title").text(function (d) { return d.data.name; })
+      svg.selectAll("path").transition().duration(1000).attrTween("d", arcTweenData);
+      svg.selectAll("text").transition("update").duration(0).attrTween("transform", function (d, i) { return arcTweenText(d, i); })
+      .attr('text-anchor', function (d) { return d.textAngle > 180 ? "start" : "end"; })
+      .attr("dx", function (d) { return d.textAngle > 180 ? -13 : 13; })
+      .attr("opacity", function (e) { return e.x1 - e.x0 > 0.01 ? 1 : 0; });
+    }
+  // When switching data: interpolate the arcs in data space.
+  function arcTweenData(a, i) {
+    // (a.x0s ? a.x0s : 0) -- grab the prev saved x0 or set to 0 (for 1st time through)
+    // avoids the stash() and allows the sunburst to grow into being
+    var oi = d3.interpolate({ x0: (a.x0s ? a.x0s : 0), x1: (a.x1s ? a.x1s : 0) }, a);  
+    function tween(t) {
+      var b = oi(t);
+      a.x0s = b.x0;  
+      a.x1s = b.x1;  
+      return arc(b);
+    }
+    if (i == 0) { 
+      // If we are on the first arc, adjust the x domain to match the root node
+      // at the current zoom level. (We only need to do this once.)
+      var xd = d3.interpolate(x.domain(), [node.x0, node.x1]);
+      return function (t) {
+        x.domain(xd(t));
+        return tween(t);
+      };
+    } else {
+      return tween;
+    }
+  }
+  function arcTweenText(a, i) {
+
+      var oi = d3.interpolate({ x0: (a.x0s ? a.x0s : 0), x1: (a.x1s ? a.x1s : 0), y0: (a.y0s ? a.y0s : 0), y1: (a.y1s ? a.y1s : 0) }, a);
+      function tween(t) {
+        var b = oi(t);
+        var ang = ((x((b.x0 + b.x1) / 2) - Math.PI / 2) / Math.PI * 180);
+        b.textAngle = (ang > 90) ? 180 + ang : ang;
+        a.centroid = arc.centroid(b);
+        //b.opacity = (b.x1 - b.x0) > 0.01 ? 0 : 0;
+        //console.log(b.data.name + " x1:" + b.x1 + " x0:" + b.x0);
+        return "translate(" + arc.centroid(b) + ")rotate(" + b.textAngle + ")";
+      }
+      return tween;
+    }
+  // When zooming: interpolate the scales.
+  function arcTweenZoom(d) {
+    var xd = d3.interpolate(x.domain(), [d.x0, d.x1]),
+        yd = d3.interpolate(y.domain(), [d.y0, 1]), // [d.y0, 1]
+        yr = d3.interpolate(y.range(), [d.y0 ? 40 : 0, radius]);
+    return function (d, i) {
+      return i
+          ? function (t) { return arc(d); }
+          : function (t) { x.domain(xd(t)); y.domain(yd(t)).range(yr(t)); return arc(d); };
+    };
+  }
+});
+function clonenode2(node, isleaf, depth, height){
+  var newNode = {
+     
+      name: node.data.name,
+    };
+
+    //Creates a Node from newNode object using d3.hierarchy(.)
+    var newNode = d3.hierarchy(newNode);
+    newNode.depth = depth
+    newNode.height = height
+    newNode.id=node.id
+    newNode.x1=node.x1;
+    newNode.y1=node.y1;
+    newNode.x0=node.x0;
+    newNode.y0=node.y0;
+    newNode.value=node.value;
+
+    //newNode.height = root.height - 1
+    if(!isleaf){
+      newNode.children=[];
+      newNode.data.children=[];
+    }
+   
+    return newNode;
+}
+function clonetreemap(root, depth, height){
+
+  var cloneroot=clonenode2(root, typeof root.children=='undefined', depth, height)
+ 
+
+  if (typeof root.children!='undefined'){
+   // console.log("entered here")
+ 
+    root.children.forEach(function(f){
+      var newNode=clonetreemap(f, depth + 1, height - 1)
+     //console.log("newnode")
+     //console.log(newNode)
+      cloneroot.children.push(newNode)
+      cloneroot.data.children.push(newNode.data)
+      newNode.parent=cloneroot;
+    })
+      
+     
+     // console.log("newnode after adding children")
+     // console.log(newNode)
+    
+    //j=0;
+    return cloneroot;
+  }else{
+   // console.log(cloneroot)
+  // j=0;
+    return cloneroot;
+
+  }
+}
+
+
+
+
+</script>

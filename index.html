@@ -11,262 +11,31 @@
 <script type="text/javascript" src='stateCheck.js'></script>
 <script type="text/javascript" src='visDrawer.js'></script>
 <script type="text/javascript" src='showVis.js'></script>
+	
+	<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+
 <script type="text/javascript">
+	var config = {
+	  apiKey: "AIzaSyCDvpYTQwRRPDmC-w3Quq5nSMmwruYQSt0",
+	  authDomain: "hierarchical-269d0.firebaseapp.com",
+	  databaseURL: "https://hierarchical-269d0.firebaseio.com",
+	  projectId: "hierarchical-269d0",
+	  storageBucket: "hierarchical-269d0.appspot.com",
+	  messagingSenderId: "754209883401"
+	};
+	firebase.initializeApp(config);
+	var stream0 = "";
+	var stream1 = "";
+	var stream2 = "";
+	var stream3="";
+	var stream4="";
 
-//var stream0 = "";
-//var stream1 = "";
-//var questionID = "";
-//var stream2 = "";
-//var stream3="";
-//var stream4="";
-//var checkpoint = 0;
-//var x;
-
-//dataProcessor.processFile("data/cars.csv");
-
-
-// init
-
-/*function init(){
-var mydb = new Firebase("https://intense-torch-1450.firebaseio.com/");
-var sets = {
-			'Anomalies' : {total:100, sessions: []},
-			'Cluster': {total:100, sessions: []},
-			'Correlation' : {total:100,  sessions: []},
-			'Derived' : {total:100, sessions: []},
-			'Distribution' : {total:100, sessions: []},
-			'Extremum' : {total:100, sessions: []},
-			'Filter' : {total:100, sessions: []},
-			'Order' : {total:100, sessions: []},
-			'Range' : {total:100, sessions: []},
-			'Retrieve' : {total:100, sessions: []}
-		};
-mydb.push(sets); //push sets into db
+function writeUserData(userId, stream0) {
+  firebase.database().ref('users/' + userId).set({
+    username: userId,
+    bio: stream0
+  });
 }
-
-
-//var dataset={};
-
-var max_val, max_label;
-var set;
-
-
-var ref = new Firebase("https://intense-torch-1450.firebaseio.com/-KJw3KXSd7Nxnz3DfJdz");
-cleaner();
-continueExecution();
-
-// ref.once("value", function(snapshot) {
-// 	dataset = snapshot.val();
-// 	continueExecution();
-// });
-
-function cleaner(){
-	ref.transaction(function(sets) {
-		if(sets != null){
-
-			for(var x in sets )
-			{
-				var notExpired = [];
-				//console.log(sets[x]);
-				if(typeof sets[x].sessions != "undefined"){
-					sets[x].sessions.forEach(function(s,i){
-						var now = new Date().getTime();
-						//console.log(x, s, now-s);
-						if(now-s <= 40*60*1000){
-							notExpired.push(s);
-						} else {
-							sets[x].total++;
-						}
-					});
-					sets[x].sessions = notExpired;
-				}
-			}
-		}
-		return sets;
-
-	}, function(error, committed, snapshot) {
-  if (error) {
-    console.warn('Transaction failed abnormally!', error);
-  } else if (!committed) {
-    console.warn('Transaction aborted.');
-  } else {
-    console.log('All good!');
-  }
-  //console.log("data: ", snapshot.val());
-});
-
-}
-
-function continueExecution()
-{
-	ref.transaction(function(sets) {
-		if(sets != null){
-			max_val = -Infinity;
-			max_label="";
-
-			var x;
-			for(x in sets )
-			{
-			//	console.log(x);
-			    if(sets[x].total > max_val)
-			    {
-			        max_val = sets[x].total;
-			        max_label = x;
-			    }
-			}
-			if(max_val>1)
-			{
-			    set = max_label;
-			}
-
-			sets[max_label].total = sets[max_label].total - 1;
-			var timestamp = new Date().getTime();
-			if(typeof sets[max_label].sessions == "undefined"){
-				sets[max_label].sessions = [];
-			}
-			sets[max_label].sessions.push(timestamp);
-		}
-		return sets;
-
-	}, function(error, committed, snapshot) {
-  if (error) {
-    console.warn('Transaction failed abnormally!', error);
-  } else if (!committed) {
-    console.warn('Transaction aborted!');
-  } else {
-    console.log('All good!');
-  }
-  //console.log("data: ", snapshot.val());
-});
-
-}
-
-
-
-function getSurCode(){
-	$('#sur_btn').hide();
-	$('#sur_code').text(timestamp);
-	console.log('timestamp:', timestamp);
-}
-
-var timestamp="";
-//var set = "Range";
-function saveAnswers()
-{
-	//sets[max_label] = max_val-1;
-	//ref.update(sets);
-
-  timestamp = new Date().getTime();
-	var mydb = new Firebase("https://intense-torch-1450.firebaseio.com/");
-	// console.log(stream0, stream1);
-	var obj = {
-		userid: timestamp,
-		bio: stream0,
-		time: stream2.slice(0, -1),
-		accuracy: stream1.slice(0, -1),
-		ranking: stream3.slice(0, -1),
-		comments:stream4
-	}
-	mydb.push(obj);
-}
-
-function shuffle(a) {
-    var j, x, i;
-    for (i = a.length; i; i -= 1) {
-        j = Math.floor(Math.random() * i);
-        x = a[i - 1];
-        a[i - 1] = a[j];
-        a[j] = x;
-    }
-}
-
-
-
-var shortSet = new Array(35);
-for(var i=0; i<shortSet.length; i++){
-	shortSet[i] = i;
-}
-var shortSlice = shortSet.slice(8, 29);
-shuffle(shortSlice);
-Array.prototype.splice.apply(shortSet, [8, shortSlice.length].concat(shortSlice));
-console.log(shortSet);
-
-// Long set
-var longSet = new Array(48);
-for(var i=0; i<longSet.length; i++){
-	longSet[i] = i;
-}
-var longSlice = longSet.slice(8, 40);
-shuffle(longSlice);
-Array.prototype.splice.apply(longSet, [8, longSlice.length].concat(longSlice));
-console.log(longSet);
-
-function callQuestions(currentQ,set)
-{
-	var totalq;
-	var list;
-	if(set == "Correlation"){ // SHORT
-		totalq = 25;
-		list = shortSet;
-	} else { // LONG
-		totalq = 38;
-		list = longSet;
-	}
-	$("#CONTAINER").load("Questions/"+set+".html #" + list[currentQ], function() {
-		var span;
-		if(currentQ<=7 || $('#'+ list[currentQ]).hasClass('comment') || $('#'+ list[currentQ]).hasClass('end')){
-			span = '<span class="indexKeeper" id="'+ currentQ +'"></span>';
-		} else {
-			span = '<span class="indexKeeper" id="'+ currentQ +'">'+ '(' + parseInt(currentQ-7) + ' / ' + totalq + ') - ' +'</span>';
-		}
-		$('#'+ list[currentQ]).prepend(span);
-		console.log(currentQ);
-		updateChart(list[currentQ],set);
-		if(list[currentQ] <= 6)
-			bindEvent();
-	});
-}
-
-function bindEvent(){
-	$('input[type=radio][name=answer]').on('change', function() {
-
-		if (this.value == 'Correct') {
-			$("#Answer").text("Correct !!");
-			$("#Answer").css('color', 'green');
-			$('#Answer').css("font-weight","bold");
-		}
-		else if (this.value == 'Wrong') {
-			$("#Answer").text("Your answer is incorrect. Please try it again.");
-			$("#Answer").css('color', 'red');
-			$('#Answer').css("font-weight","bold");
-		}
-
-	});
-}
-
-
-$(function() {
-	$('input[type=checkbox][name=other]').change(function() {
-		if(this.checked) {
-			$('.others').empty();
-			text="Ohter"
-			$('.others').append('<input type="text" /> ' + '<br />');
-
-		}
-		else
-		{
-			$('.others').empty();
-		}
-	})
-})
-
-
-
-
-checker=false;*/
-
-
-
       // Method
      function calcList() {
         var finalList=[];
@@ -290,25 +59,27 @@ checker=false;*/
         }
         var listnum=0;
         var indx=0;
+        var ind=0;
         do {
         	
            if (dict[array[indx]].remaining>0){
-                finalList[indx]=dict[array[indx]].experimentID;
+                finalList[ind]=dict[array[indx]].experimentID;
                 dict[array[indx]].remaining--;
-                if (indx==9)
+                if (indx==26)
                     indx=0;
                 else
                     indx++;
                 listnum++;
+                ind++;
             }else{
-                if (indx==9)
+                if (indx==26)
                     indx=0;
                 else
                     indx++;
 
             } 
 
-        }while(listnum<9)
+        }while(listnum<27)
         return finalList;
 
       }
@@ -321,7 +92,9 @@ var comparisonSets = [
 			"Diff" 
 		];
 var visSets = [
-			"tree" 
+			"tree",
+			"treemap",
+			"sunburst" 
 		];
 var changeSets = [
 		"move" ,
@@ -329,40 +102,68 @@ var changeSets = [
 		"remove" 
 	];
 var dataSets = [
-		"small" 
+		"small"
 	];		
 var compState=0;
 var visState=0;
 var changeState=0;
 var dataState=0;
 var dict = []; // create an empty array
- for(var i=0; i <3;i++)
-       {
-        for (var iii=0;iii<3;iii++){
-	         dict.push(
-	           {
-	               experimentID:   ""+comparisonSets[i]+","+visSets[0]+","+changeSets[iii]+","+dataSets[0]+"DOT",
-	               remaining: 100
-	          
-	           }
-	        )
-	 	
-       }
+ for(var i=0; i<3;i++){
+       	 for (var ii=0; ii<3;ii++){
+	         for (var iii=0;iii<3;iii++){
+	        		dict.push(
+	        		  {
+	        		      experimentID:""+comparisonSets[i]+","+visSets[ii]+","+changeSets[iii]+","+"small"+"DOT",
+	        		      remaining: 100
+	        		 
+	        		  })
+	        	
+		         
+	       }
+       	}
+
    }
 console.log(dict)
+var userids=[];
+var uindx=0;
+var currentindex=0;
 function showNextQ(){//call question
 	//var prevQ = parseInt($('.indexKeeper').attr('id')); // get id of the submitting question
 	//choose comparison type
+	timestamp=new Date().getTime();
+	
+		if(currentindex == 0) // going to load 1st Q, store personal details from prev page
+	{
+
+		var count=0;
+		stream0 += $('input:radio[name="age"]:checked').val();
+		stream0 += "," + $('input:radio[name="sex"]:checked').val();
+		stream0 += "," + $('input:radio[name="hours"]:checked').val()+",";
 
 
+		$('input:checkbox').each(function () {
+			if(this.checked)
+			{
+				if(count ==0) stream0 += $(this).val();
+				else stream0 += "_" +$(this).val();
+
+				count++;
+
+			}
+		});
+		
+
+	}
 
 
-
+	userids[uindx++]=timestamp;
+	writeUserData(timestamp, stream0)
 	var personxlist=[];
-	//personxlist=calcList();
-	personxlist=["Animation,tree,move,smallDOT","Sidebyside,treemap,move,smallDOT","Animation,tree,remove,smallDOT","Diff,treemap,remove,smallDOT","Sidebyside,tree,remove,smallDOT","Animation,treemap,move,smallDOT","Diff,tree,remove,smallDOT","Sidebyside,treemap,remove,smallDOT","Diff,treemap,move,smallDOT","Animation,treemap,add,smallDOT","Sidebyside,tree,move,smallDOT","Animation,treemap,remove,smallDOT","Diff,tree,move,smallDOT","Diff,tree,add,smallDOT","Diff,treemap,add,smallDOT","Sidebyside,tree,add,smallDOT","Sidebyside,treemap,add,smallDOT","Animation,tree,add,small"]
-	console.log(personxlist)
-	var currentindex=0;
+	personxlist=calcList();
+	console.log(dict)
+	console.log(userids)
+	//personxlist=["Animation,sunburst,move,smallDOT","Sidebyside,treemap,move,smallDOT","Animation,sunburst,remove,smallDOT","Diff,treemap,remove,smallDOT","Sidebyside,tree,remove,smallDOT","Animation,treemap,move,smallDOT","Diff,sunburst,remove,smallDOT","Sidebyside,treemap,remove,smallDOT","Diff,treemap,move,smallDOT","Animation,treemap,add,smallDOT","Sidebyside,tree,move,smallDOT","Sidebyside,sunburst,move,smallDOT","Animation,treemap,remove,smallDOT","Diff,sunburst,move,smallDOT","Diff,tree,add,smallDOT","Diff,treemap,add,smallDOT","Sidebyside,tree,add,smallDOT","Sidebyside,sunburst,add,smallDOT","Sidebyside,treemap,add,smallDOT","Animation,tree,add,small"]	
 	var variables=personxlist[currentindex].split(",");
 	//localStorage.myArrData=JSON.stringify(personX.list);
 	var comparisonType = variables[0];

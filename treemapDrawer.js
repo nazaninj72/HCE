@@ -137,7 +137,7 @@
 			}
 		}
 
-		if (compstate=="Sidebyside"){
+		if (compstate=="SidebySide"){
 
 
 	    	var duration=0;
@@ -357,6 +357,7 @@
 			 	console.log(sourceNode)
 				 movetochildrenTM(destNode,sourceNode)
 				 console.log(destNode)
+				 console.log(rootC)
 				// svg.selectAll("*").remove();
 				updateValues(rootC)
 				updateTMDepth(rootC,treemap)
@@ -527,8 +528,8 @@ function movetochildrenTM(d,f){
   var index = f.parent.children.indexOf(f);
    // console.log(index)
    if (index > -1) {
-   	console.log(f.value)
-   	 f.parent.value-=f.value;
+   //	console.log(f.value)
+   	// f.parent.value-=f.value;
      f.parent.children.splice(index, 1);
      f.parent.data.children.splice(index, 1);
      
@@ -554,13 +555,15 @@ function movetochildrenTM(d,f){
     }
 
    d.data.children.push(f.data);
-   d.value+=f.value;
-   console.log(d.value)
+  // d.value+=f.value;
+   //console.log(d.value)
  
 }
 function updateValues(root){
 	sum=0;
 	if (!root.children){
+		
+		root.value=100;
 		return root.value;
 	}else{
 		
@@ -605,7 +608,7 @@ function newtreemapNode(selected,nodename,root,treemap){
   //Push it to parent.children array  
   selected.children.push(newNode);
   selected.data.children.push(newNode.data);
-  selected.value+=newNode.value;
+  //selected.value+=newNode.value;
   if (newNode.height<0){
   	updateTMDepth(root,treemap)
   }
@@ -653,7 +656,7 @@ function removeTMdata(f,svg,root){
 	   console.log("root.children after")
 	 	console.log(root.children)
 	 }
-	 console.log(root)
+	 //console.log(root)
 	 return root;
 
 } 

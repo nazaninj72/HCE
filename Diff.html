@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="styles.css">
 	<script type="text/javascript" src='visDrawer.js'></script>
 	<script type="text/javascript" src='treemapDrawer.js'></script>
+	<script type="text/javascript" src='sunburstDrawer.js'></script>
 	<!--<script type="text/javascript" src="flare.json"></script>-->
 <script type="text/javascript" src='showVis.js'></script>
 </head>
@@ -25,10 +26,11 @@
 		   	   	var currentindx=parseInt(currentStringindex[1])
 		   	   	console.log(currentindx)
 		   	    var personSarray=[];
+		   	    var myArray=[];
 		   	   	var compState,visState,changeState,dataState;
 			 	window.onload = function() {
 
- 			 		var myArray = sessionStorage.getItem('myArray');
+ 			 		 myArray= sessionStorage.getItem('myArray');
  			 		console.log(myArray)
  			 		personSarray=myArray.split("DOT,")
  			 		console.log(personSarray)
@@ -42,12 +44,14 @@
  			 		console.log(changeState)
  			 		console.log(dataState)
  			 		updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
-			 		//updateVis("#viscontainerafter","#viscontainerafter","Diff","treemap","add","small")
-
-
+			// updateVis("#viscontainerafter","#viscontainerafter","Diff","sunburst","remove","small")
 			 	}
 			 	function submitAnswer(){
-			 		alert("press ok to move to the next task")
+			 		if (currentindx+1 >= personSarray.length){
+			 			alert("Thank you for participating. Your session is over!")
+			 		}else{
+			 			alert("press ok to move to the next task")
+			 		}
 			 		currentindx++;
 			 		var states=personSarray[currentindx].split(",");
 			 		compState=states[0];
@@ -57,10 +61,11 @@
 			 		dataState=states[3];
 			 		//if (compState!="Diff"){//should load next html page
 			 			var queryString = "?para1=" + currentindx;
+			 			sessionStorage.setItem('myArray', myArray);
 			 			window.location.href = compState+".html" + queryString;
 			 			//window.open(comparisonType+".html", "_self");
 
-			 			 sessionStorage.setItem('myArray', myArray);
+			 			 
 			 		
 			 	}
 
@@ -86,22 +91,22 @@
 				
 
 					<div class="questionbar" id="choices">
-						<input type="radio" name="first" value="first"/>
+						<input type="radio"  name="choice" value="first"/>
 						<label id="1choice">
 		        			
 		        		  </label>
 					
-						  <input type="radio" id="male" value="second">
+						  <input type="radio" name="choice" value="second">
 						  <label id="2choice">
 		        			
 		        		  </label>
 		        		
 		  				
-						<input type="radio" name="gender" value="third"> 			
+						<input type="radio" name="choice" value="third"> 			
 							<label id="3choice">
 		        			
 		        		  </label>
-						<input type="radio" name="gender" value="fourth">
+						<input type="radio" name="choice" value="fourth">
 						<label id="4choice">
 		    			
 		    		  </label> 

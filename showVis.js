@@ -30,7 +30,8 @@ function updateVis(selector1,selector2,compState,visState,changeState,dataState)
       }, {"name": "Q", "size": 100},{"name": "R","size": 100}]
       }]
   };*/
-  readTextFile("flare.json", function(text){
+
+  readTextFile("data/medium1.json", function(text){
     var mediumdata = JSON.parse(text);
     //console.log(mediumdata);
 

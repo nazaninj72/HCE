@@ -1,7 +1,8 @@
 <html>
 <head>
 	<title></title>
-	<script src="js/vendor/d3.min.js" type="text/javascript"></script>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
@@ -23,8 +24,7 @@
 		</div>
 		<div id="container">
 		<div id="viscontainer">
-			<!--visualizations go here-->
-			<!--<script type="text/javascript" src='js/ComparisonTechniques/Animation/AnimateTreeM.js'></script>-->
+			
 			<script type="text/javascript">
 					 var queryString = decodeURIComponent(window.location.search);
 				   
@@ -63,16 +63,17 @@
 				 		changeState=states[2];
 				 		dataState=states[3];
 				 		//if (compState!="Animation"){//should load next html page
+				 			
+				 			 sessionStorage.setItem('myArray', myArray);
 				 			var queryString = "?para1=" + currentindx;
 				 			window.location.href = compState+".html" + queryString;
 				 			//window.open(comparisonType+".html", "_self");
 
-				 			 sessionStorage.setItem('myArray', myArray);
 
 				 	//	}else{
 				 			//updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
 				 		//}
-				 		//updateVis("#viscontainer","#viscontainer","Animation","treemap","add","small")
+				 	//	updateVis("#viscontainer","#viscontainer","Animation","sunburst","add","small")
 				 		
 				 	}
 
@@ -83,7 +84,7 @@
 			</div>
 			<div id="buttonsbar">
 				<input type="button" class ="animatebutton" id="startbutton" value="start" >
-	         	<input type="button" class ="animatebutton" id="resetbutton" value="reset" onclick="resetAnimation();">
+	         	<input type="button" class ="animatebutton" id="resetbutton" value="reset">
 			</div>
 		</div>
 		<div id="questionbar"> 
@@ -94,22 +95,22 @@
 		
 
 			<div class="questionbar" id="choices">
-				<input type="radio" name="first" value="first"/>
+				<input type="radio"  name="choice" value="first"/>
 				<label id="1choice">
         			
         		  </label>
 			
-				  <input type="radio" id="male" value="second">
+				  <input type="radio" name="choice" value="second">
 				  <label id="2choice">
         			
         		  </label>
         		
   				
-				<input type="radio" name="gender" value="third"> 			
+				<input type="radio" name="choice" value="third"> 			
 					<label id="3choice">
         			
         		  </label>
-				<input type="radio" name="gender" value="fourth">
+				<input type="radio" name="choice" value="fourth">
 				<label id="4choice">
     			
     		  </label> 
