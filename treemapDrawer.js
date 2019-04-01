@@ -65,9 +65,10 @@
 					if (changestate=="move"){
 
 						movetochildrenTM(destNode,sourceNode)
-						console.log(sourceNode.parent)
-						duration=750;
+					
+						duration=1000;
 						 //updatetree(root,root,svg1,duration,treemap)
+						 bringtoFront(sourceNode,svg)
 						 console.log(rootC)
 						 updateValues(rootC)
 						 console.log(rootC)
@@ -75,44 +76,57 @@
 						 updatetreemap(rootC,chartLayer,duration,treemap)
 						 svg.selectAll("*").style("opacity",1)
 					}
-					if (changestate=="remove"){
-						removeNode(sourceNode,svg)
+					if (changestate=="delete"){
+						removeTMnode(sourceNode,svg,duration)
 						//removelink(sourceNode,svg)
 						removedata(sourceNode,svg)
 						console.log(rootC)
-						
+						 svg.selectAll("g.node").transition().delay(1000)
 						//updatetree(root,root,svg1,duration,treemap)
-						duration=750;
+						duration=1000;
 						updateValues(rootC)
 						updatetreemap(rootC,chartLayer,duration,treemap)
 						svg.selectAll("*").style("opacity",1)
 					}
-					if (changestate=="add"){
-						var selected=null;
-						console.log(destNode)
-						updatetreemap(root,chartLayer,duration,treemap)
-						svg.selectAll("g.node").filter(function(d){
-
-						  if (d.id==destNode.id)
-						  {
-						  	console.log(d)
-						    selected=d
-						    return true;
-						  }
-						  else
-						    return false;
-						})
-						
-						newnode=newtreemapNode(selected,newlabels[newindx],rootC,treemap)
-						console.log(newnode)
-						duration=750;
-						updateValues(root)
-						updatetreemap(root,chartLayer,duration,treemap)
-						svg.selectAll("*").style("opacity",1)
+				if (changestate=="add"){
+					var selected=null;
 					
+					updatetreemap(root,chartLayer,duration,treemap)
+					svg.selectAll("g.node").filter(function(d){
 
-				
-				}
+					  if (d.id==destNode.id)
+					  {
+					  	
+					    selected=d
+					    return true;
+					  }
+					  else
+					    return false;
+					})
+					
+					newnode=newtreemapNode(selected,newlabels[newindx],rootC,treemap)
+					console.log(newnode)
+					duration=0;
+					updateValues(root)
+					updatetreemap(root,chartLayer,duration,treemap)
+					svg.selectAll("*").style("opacity",1)
+					svg.selectAll("g.node").filter(function(d){
+
+					  if (d.id==newnode.id)
+					  {
+					  	
+					   
+					    return true;
+					  }
+					  else
+					    return false;
+					})
+					.style("opacity", 0.0)
+						.transition()
+						.duration(1000)
+						.style("opacity", 1.0)
+					console.log(newnode.id)
+			}
 				document.getElementById("startbutton").disabled = true;
 			}
 
@@ -216,7 +230,7 @@
 				 svg2.selectAll("*").style("opacity", 1);
 
 			}
-			if (changestate=="remove"){
+			if (changestate=="delete"){
 				console.log(sourceNode)
 				removedata(sourceNode,svg2)
 				updateValues(rootC)
@@ -242,8 +256,8 @@
 		}
 		if (compstate=="Diff"){
 
-	    	var duration=0;
-	    	var width,height
+	       var duration=0;
+	       var width,height
 		   var chartWidth, chartHeight
 		   var margin
 		   var svg = d3.select("#viscontainerafter").append("svg")
@@ -312,29 +326,16 @@
      	               .paddingBottom(4)
                         .paddingInner(3) 
 	                     .round(true); 
-             var treemap1 = d3.treemap()
-                    .size([chartWidth1, chartHeight1])
-	               .paddingTop(28)
-	               .paddingRight(4)
-	               .paddingLeft(4)
-	               .paddingBottom(4)
-                   .paddingInner(3) 
-                    .round(true); 
-            var treemap2 = d3.treemap()
-                   .size([chartWidth2, chartHeight2])
-	               .paddingTop(28)
-	               .paddingRight(4)
-	               .paddingLeft(4)
-	               .paddingBottom(4)
-                  .paddingInner(3) 
-                   .round(true); 
+              
+
          var root = d3.hierarchy(data)
  	  				root.sum(function(d) {
  	  				return d.size;
  					}) 
 	      	//console.log(root)
 			updatetreemap(root,chartLayer,duration,treemap)
-			chartLayer.selectAll("*").remove();
+
+			
        	    var rootC=null;
        		
        		rootC=clonetreemap(root,root.depth,root.height)
@@ -347,65 +348,296 @@
 			  var newindx=getRndInteger(0,newlabels.length-1)
 			  destNode=selectednodes[1];
 			  sourceNode=selectednodes[0];
+			  var beforewidth=0;
+			  var beforeheight=0;
+			  var afterwidth=0;
+			  var afterheight=0;
+			  chartLayer.selectAll(".node rect").filter(function(d){
+			  	if (d.id==sourceNode.parent.id)
+			  	{	
+			  		beforewidth=d.x1-d.x0;
+			  		
+
+			  		if (beforewidth>chartWidth1)
+			  			beforewidth=chartWidth1
+			  		beforeheight=d.y1 - d.y0;
+			  		if (beforeheight>chartHeight1)
+			  			beforeheight=chartHeight1
+			  		
+			  	}
+			  	return true;
+			  })
+			  
+	           var treemap1 = d3.treemap()
+	                  .size([beforewidth, beforeheight])
+		               .paddingTop(28)
+		               .paddingRight(4)
+		               .paddingLeft(4)
+		               .paddingBottom(4)
+	                 .paddingInner(3) 
+	                  .round(true);
+	          chartLayer.selectAll("*").remove();
 			  writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
-			  beforeSubtree=clonetreemap(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
+				beforeSubtree=clonetreemap(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)	
 				updateTMDepth(beforeSubtree,treemap1)
 				updateValues(beforeSubtree)
 			if (changestate=="move"){ 
 				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+				var diV = document.getElementById('startdots');
+				var diV2 = document.getElementById('startdots2');
+				if (sourceNode.parent.parent== null)
+					diV.style.display='none';
+				chartLayerDiffBefore.selectAll("*").remove()
+				updateTMDepth(beforeSubtree,treemap1)
+				updateValues(beforeSubtree)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
 				svgDiffBefore.selectAll("*").style("opacity", 1);
-			 	console.log(sourceNode)
+				svgDiffBefore.selectAll('.node rect').filter(function(d){
+				
+					if (d.id==sourceNode.parent.id)
+					{
+						
+						diV.style.position = "relative";
+						diV.style.left = ((d.x1 - d.x0)/2)+'px';
+						diV.style.top = (-15)+'px';
+
+					}
+				})
+				var sIDs=[];
+				var sNodes=[];
+				sNodes=addToAdjacencyList(sourceNode,sNodes)
+				var k=0;
+				sNodes.forEach(function(f){
+					sIDs[k++]=f.id;
+				})
+				sIDs[k++]=sourceNode.parent.id;
 				 movetochildrenTM(destNode,sourceNode)
-				 console.log(destNode)
-				 console.log(rootC)
+				// console.log(destNode)
+				 //console.log(rootC)
 				// svg.selectAll("*").remove();
 				updateValues(rootC)
 				updateTMDepth(rootC,treemap)
 				 updatetreemap(rootC,chartLayer,duration,treemap)
 				 chartLayer.selectAll("*").style("opacity", 1);
+				 chartLayer.selectAll(".node rect").filter(function(d){
+			  	if (d.id==destNode.id)
+			  	{	
+			  		afterwidth=d.x1-d.x0;
+			  		if (afterwidth>chartWidth1)
+			  			afterwidth=chartWidth1
+			  		afterheight=d.y1 - d.y0;
+			  		if (afterheight>chartHeight1)
+			  			afterheight=chartHeight1
+			  		
+			  	}
+			  	return true;
+			  })
+	           var treemap2 = d3.treemap()
+	                  .size([afterwidth, afterheight])
+	 	               .paddingTop(28)
+	 	               .paddingRight(4)
+	 	               .paddingLeft(4)
+	 	               .paddingBottom(4)
+	                 .paddingInner(3) 
+	                  .round(true); 
 				 afterSubtree=clonetreemap(destNode,destNode.depth,destNode.height)
 				 updateTMDepth(afterSubtree,treemap2)
 				 updateValues(afterSubtree)
+				 updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2)
+				 //afterSubtree=trimTMSubtrees(afterSubtree,sourceNode,svgDiffBefore)
+				 chartLayerDiffAfter.selectAll("*").remove()
+				 updateTMDepth(afterSubtree,treemap2)
+				 updateValues(afterSubtree)
+				 updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2)
 				 
-				updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2)
-				svgDiffAfter.selectAll("*").style("opacity", 1);
+				 svgDiffAfter.selectAll("*").style("opacity", 1);
+				 if (destNode.parent== null)
+					diV2.style.display='none';
+				 svgDiffAfter.selectAll('.node rect').filter(function(d){
+				 	if (d.id==destNode.id)
+				 	{
+				 		
+				 		diV2.style.position = "relative";
+				 		diV2.style.left = ((d.x1 - d.x0)/2)+'px';
+				 		diV2.style.top = (-15)+'px';
 
-			}
-			if (changestate=="remove"){
-				beforeSubtree=clonetreemap(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
-				updateTMDepth(beforeSubtree,treemap1)
-				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
-				updatetreemap(beforeSubtree,chartLayerDiffAfter,duration,treemap2)
-				chartLayerDiffAfter.selectAll("*").remove()
-				removeTMdata(sourceNode,svgDiffAfter,beforeSubtree)
-				console.log(sourceNode)
-				console.log(beforeSubtree)
+				 	}
+				 })
+				 dashedTMUpdate(afterSubtree,sourceNode,chartLayerDiffAfter,treemap2,changestate)
+				chartLayerDiffBefore.selectAll("*").remove()
+				updateTMDepth(beforeSubtree,treemap2)
 				updateValues(beforeSubtree)
-				updatetreemap(beforeSubtree,chartLayerDiffAfter,duration,treemap2)
-				chartLayerDiffBefore.selectAll("*").style("opacity",1)
-				svgDiffAfter.selectAll("*").style("opacity",1)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap2)
+				
+			
+				svgDiffBefore.selectAll("*").style("opacity", 1);
+				
+				svgDiffBefore.selectAll('.node rect').filter(function(d){
+					if (sIDs.includes(d.id))
+					{
+						return false;
+					}else{
+						return true;
+					}
+				}).style("opacity",0);
+				svgDiffBefore.selectAll('.node text').filter(function(d){
+					if (sIDs.includes(d.id))
+					{
+						return false;
+					}else{
+						return true;
+					}
+				}).style("opacity",0);
+				//dashedTMUpdate(beforeSubtree,sourceNode,chartLayerDiffBefore,treemap2,changestate)
+					
+			}
+			if (changestate=="delete"){
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+				var diV = document.getElementById('startdots');
+				var diV2 = document.getElementById('startdots2');
+				if (sourceNode.parent.parent== null)
+					diV.style.display='none';
 				removedata(sourceNode,svg)
 				updateTMDepth(rootC,treemap)
 				updateValues(rootC)
-
 				updatetreemap(rootC,chartLayer,duration,treemap)
 				svg.selectAll("*").style("opacity",1)
+				chartLayer.selectAll(".node rect").filter(function(d){
+			  		if (d.id==sourceNode.parent.id)
+			  		{	
+			  		afterwidth=d.x1-d.x0;
+			  		if (afterwidth>chartWidth1)
+			  			afterwidth=chartWidth1
+			  		afterheight=d.y1 - d.y0;
+			  		if (afterheight>chartHeight1)
+			  			afterheight=chartHeight1
+			  		}
+			  	return true;
+			  	})
+	           var treemap2 = d3.treemap()
+                  .size([afterwidth, afterheight])
+ 	               .paddingTop(28)
+ 	               .paddingRight(4)
+ 	               .paddingLeft(4)
+ 	               .paddingBottom(4)
+                 .paddingInner(3) 
+                  .round(true);
+				chartLayerDiffBefore.selectAll("*").remove()
+				updateTMDepth(beforeSubtree,treemap1)
+				updateValues(beforeSubtree)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap2)
+				svgDiffBefore.selectAll("*").style("opacity", 1);
+				svgDiffBefore.selectAll('.node rect').filter(function(d){
+					if (d.id==sourceNode.parent.id)
+					{
+						
+						diV.style.position = "relative";
+						diV.style.left = ((d.x1 - d.x0)/2)+'px';
+						diV.style.top = (-15)+'px';
+
+					}
+				})
+				dashedTMUpdate(beforeSubtree,sourceNode,chartLayerDiffBefore,treemap1,"move")
+				chartLayerDiffAfter.selectAll("*").remove()
+				removeTMdata(sourceNode,svgDiffAfter,beforeSubtree)
+				updateValues(beforeSubtree)
+				
+				updatetreemap(beforeSubtree,chartLayerDiffAfter,duration,treemap2)
+				chartLayerDiffAfter.selectAll("*").style("opacity",1)
+				svgDiffAfter.selectAll('.node rect').filter(function(d){
+				
+					if (d.id==sourceNode.parent.id)
+					{
+						
+						diV2.style.position = "relative";
+						diV2.style.left = ((d.x1 - d.x0)/2)+'px';
+						diV2.style.top = (-15)+'px';
+
+					}
+				})
+				dashedTMUpdate(beforeSubtree,sourceNode,chartLayerDiffAfter,treemap2,"move")
+				
 			}
 			if (changestate=="add"){
-				beforeSubtree=clonetreemap(destNode,destNode.depth,destNode.height)
+				var diV = document.getElementById('startdots');
+				var diV2 = document.getElementById('startdots2');
+				if (sourceNode.parent== null)
+					diV.style.display='none';
+				beforeSubtree=clonetreemap(sourceNode,sourceNode.depth,sourceNode.height)
+				
+				//updateTMDepth(beforeSubtree,treemap1)
+				chartLayerDiffBefore.selectAll("*").remove()
 				updateTMDepth(beforeSubtree,treemap1)
+				updateValues(beforeSubtree)
 				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+				
 				chartLayerDiffBefore.selectAll("*").style("opacity",1)
-				newnode=newtreemapNode(destNode,newlabels[newindx],rootC,treemap)
-				console.log(newnode.value)
+				newnode=newtreemapNode(sourceNode,newlabels[newindx],rootC,treemap)
 				updateValues(rootC)
-				console.log(rootC)
-				afterSubtree=clonetreemap(newnode.parent,newnode.parent.depth,newnode.parent.height)
-				updateTMDepth(afterSubtree,treemap2)
-				updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2)
-				svgDiffAfter.selectAll("*").style("opacity",1)
 				updatetreemap(rootC,chartLayer,duration,treemap)
 				svg.selectAll("*").style("opacity",1)
+				 chartLayer.selectAll(".node rect").filter(function(d){
+			  	if (d.id==sourceNode.id)
+			  	{	
+			  		afterwidth=d.x1-d.x0;
+			  		if (afterwidth>chartWidth1)
+			  			afterwidth=chartWidth1
+			  		afterheight=d.y1 - d.y0;
+			  		if (afterheight>chartHeight1)
+			  			afterheight=chartHeight1
+			  		
+			  	}
+
+			  	return true;
+			  })
+				 treemap1 = d3.treemap()
+	                  .size([afterwidth, afterheight])
+	 	               .paddingTop(28)
+	 	               .paddingRight(4)
+	 	               .paddingLeft(4)
+	 	               .paddingBottom(4)
+	                 .paddingInner(3) 
+	                  .round(true);
+			   updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+	           dashedTMUpdate(beforeSubtree,sourceNode,chartLayerDiffBefore,treemap1,changestate)
+	           svgDiffBefore.selectAll('.node rect').filter(function(d){
+	           
+	           	if (d.id==sourceNode.id)
+	           	{
+	           		
+	           		diV.style.position = "relative";
+	           		diV.style.left = ((d.x1 - d.x0)/2)+'px';
+	           		diV.style.top = (-15)+'px';
+
+	           	}
+	           })
+	           var treemap2 = d3.treemap()
+	                  .size([afterwidth, afterheight])
+	 	               .paddingTop(28)
+	 	               .paddingRight(4)
+	 	               .paddingLeft(4)
+	 	               .paddingBottom(4)
+	                 .paddingInner(3) 
+	                  .round(true); 
+				afterSubtree=clonetreemap(sourceNode,sourceNode.depth,sourceNode.height)
+				updateTMDepth(afterSubtree,treemap2)
+				updateValues(afterSubtree)
+				updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2)
+				svgDiffAfter.selectAll("*").style("opacity",1)
+				dashedTMUpdate(afterSubtree,newnode,chartLayerDiffAfter,treemap1,changestate)
+	           
+				svgDiffAfter.selectAll('.node rect').filter(function(d){
+				
+					if (d.id==sourceNode.id)
+					{
+						
+						diV2.style.position = "relative";
+						diV2.style.left = ((d.x1 - d.x0)/2)+'px';
+						diV2.style.top = (-15)+'px';
+
+					}
+				})
+				
 			}
 
 		}
@@ -414,6 +646,20 @@
 
 
     	 
+}
+function bringtoFront(sourceNode,svg){
+	var list=[];
+	var lid=[];
+	var k=0;
+	list=addToAdjacencyList(sourceNode,list)
+	list.forEach(function(f){
+		lid[k++]=f.id;
+	})
+	svg.selectAll("g.node").filter(function(d){
+		if (lid.includes(d.id)){
+			d3.select(this).raise();
+		}
+	})
 }
 
 function updatetreemap(root,chartLayer,duration,treemap){
@@ -452,7 +698,7 @@ function updatetreemap(root,chartLayer,duration,treemap){
 	    .attr("y", function(d) { return d.y0  })
 	    .attr("width", function(d) { return d.x1 - d.x0 })
 	    .attr("height", function(d) { return d.y1 - d.y0})
-	    .attr("fill", "white")
+	    .style("fill","#deebf7")
 	    
 	chartLayer
 	    .selectAll(".node text")    
@@ -647,16 +893,128 @@ function removeTMdata(f,svg,root){
 		//	return true;
 		}
 	};
-
-	  console.log(index)
 	 if (index > -1) {
-	 	console.log("root.children before")
-	 	console.log(root.children)
 	   root.children.splice(index, 1);
-	   console.log("root.children after")
-	 	console.log(root.children)
+
 	 }
 	 //console.log(root)
 	 return root;
 
 } 
+function trimTMSubtrees(subtree,sourceNode,svg){
+	var removingnode=[];
+	//console.log(sourceNode)
+	if (typeof subtree.children!="undefined"){
+		subtree.children.forEach(function(d){
+			//console.log(d)
+		if (d.id!=sourceNode.id){
+			removingnode.push(d)
+		}
+	})
+	for (var i=0;i<(removingnode.length);i++)
+		removeTMdata(removingnode[i],svg,subtree)
+
+	}
+	return subtree;
+
+}
+function dashedTMUpdate(root,sourceNode,chartLayer,treemap,changestate){
+		var i=0;
+	    var treeData = treemap(root);
+	    var solidLinkNodes=[];
+	    var otherids=[];
+	    var l=0; 
+	    var solidlinkids=[];
+	    var solidadd=[];
+	    var k=0;
+	 	if (changestate=="add"){
+	    	k=0;
+    		solidadd[k++]=sourceNode.parent.id;
+    		solidadd[k++]=sourceNode.id;
+	    	
+	    }
+	    k=0; 
+    	solidLinkNodes=addToAdjacencyList(sourceNode,solidLinkNodes)
+    	console.log(solidLinkNodes)
+    	
+    	solidLinkNodes.forEach(function(f){
+    		solidlinkids[k++]=f.id;
+    	})
+    	if (changestate=="move")
+    	{
+    		solidlinkids[k++]=sourceNode.parent.id;
+			chartLayer.selectAll(".node rect").filter(function(d,i){
+				if (solidlinkids.includes(d.id)){
+					return false;
+				}else{
+					return true;
+				}
+			}).style("opacity",0)
+
+			chartLayer.selectAll(".node text").filter(function(d){
+				if (solidlinkids.includes(d.id)){
+					return false;
+				}else{
+					return true;
+				}
+			}).style("opacity",0)
+		}
+		if (changestate=="add"){
+			chartLayer.selectAll(".node rect").filter(function(d,i){
+				if (solidadd.includes(d.id)){
+					return false;
+				}else{
+					return true;
+				}
+			}).style("opacity",0)
+			
+
+			chartLayer.selectAll(".node text").filter(function(d){
+				console.log(d)
+				if (solidadd.includes(d.id)){
+					return false;
+				}else{
+					return true;
+				}
+			}).style("opacity",0)
+		}
+	    	
+}
+function removeTMnode(f,svg,duration){
+	if (typeof f.children!='undefined'){
+	   f.children.forEach(function(d){
+	   	//console.log(d)
+	     removeNode(d,svg)
+
+	 })
+
+	}else{
+		svg.selectAll('g.node')
+		  .filter(function(d, i) {
+		  	//console.log(d)
+		    if (d.id == f.id){
+		    console.log(d)
+		      return true;
+		    }else{
+		      return false;
+		    }
+		 }).style("opacity", 1.0)
+						.transition()
+						.duration(1000)
+						.style("opacity", 0.0)
+
+	 
+	}
+	svg.selectAll('g.node')
+		  .filter(function(d, i) {
+		    if (d.id == f.id){
+		   
+		      return true;
+		    }else{
+		      return false;
+		    }
+		 }).style("opacity", 1.0)
+						.transition()
+						.duration(1000)
+						.style("opacity", 0.0)
+}

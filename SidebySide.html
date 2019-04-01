@@ -16,7 +16,6 @@
 
 
 	<div class ="container">
-		<div id="viscontainer">
 			<!--visualizations go here-->
 			<script type="text/javascript">
 					var queryString = decodeURIComponent(window.location.search);
@@ -28,7 +27,6 @@
 				   var myArray=[];
 				   	var compState,visState,changeState,dataState;
 			 		window.onload = function() {
-
 			 		myArray = sessionStorage.getItem('myArray');
 			 		console.log(myArray)
 			 		personSarray=myArray.split("DOT,")
@@ -40,11 +38,9 @@
 			 		dataState=states[3];
 			 		console.log(compState)
 			 		updateVis("#viscontainer1","#viscontainer2",compState,visState,changeState,dataState)
-					//updateVis("#viscontainer1","#viscontainer2","Sidebyside","sunburst","add","small")
+					//updateVis("#viscontainer1","#viscontainer2","SidebySide","tree","move","small")
 			 		
 			 		
-
-
 			 	}
 			 	function submitAnswer(){
 			 		if (currentindx+1 >= personSarray.length){
@@ -64,36 +60,27 @@
 			 			 sessionStorage.setItem('myArray', myArray);
 			 			window.location.href = compState+".html" + queryString;
 			 			//window.open(comparisonType+".html", "_self");
-
 			 			
-
 			 		//}else{
 			 		//	updateVis("#viscontainer1","#viscontainer2",compState,visState,changeState////,dataState)
 			 	//	}
-
 			 		//updateVis("#viscontainer1","#viscontainer2","Sidebyside","tree","add","dataState")
 			 	}
-
-
-
 			</script>
+			<div id="beforesidebyside"> Before</div>
 			<div id="viscontainer1">
-				<div id="beforesidebyside"> Before</div>
+				
 				
 			</div>
-			<div id="viscontainer2">
 				<div id ="aftersidebyside"> After</div>
-			</div>
-		</div>
-	</div>
-			<div id="questionbar2"> 
-				<div class="questionbar" id="questionDescription">
-					Please choose the node that you have detected to be moved, added, or removed:
-				</div>
+				<div id="viscontainer2">
 					
-			
-
+				</div>
+		
+	
+		<div id="questionbar2"> 
 			<div class="questionbar" id="choices">
+				Please choose the node that you have detected to be moved, added, or removed:</br></br>
 				<input type="radio"  name="choice" value="first"/>
 				<label id="1choice">
         			
@@ -112,14 +99,11 @@
 				<input type="radio" name="choice" value="fourth">
 				<label id="4choice">
     			
-    		  </label> 
-			</div>
+    		  	</label> 
+				</div>
 				<div id="submitbuttondiv">
 					<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
 				</div>
-				
-
-
-
-			</div>
+		</div>
+	</div>
 </body>

@@ -13,7 +13,7 @@ function readTextFile(file, callback) {
 function updateVis(selector1,selector2,compState,visState,changeState,dataState){
 	//var visDrawer = require('visDrawer.js');
  // d3.select(selector1).remove();
-	/*var mediumdata= {"name": "A", "children": [{
+/*	var mediumdata= {"name": "A", "children": [{
          "name": "B",
          "children": [{"name": "E", 
          "children":[{"name":"J", "size": 100},{"name":"K","size":100}]
@@ -31,9 +31,10 @@ function updateVis(selector1,selector2,compState,visState,changeState,dataState)
       }]
   };*/
 
-  readTextFile("medium1.json", function(text){
-    var mediumdata = JSON.parse(text);
-    //console.log(mediumdata);
+ readTextFile("large1.json", function(text){
+   var mediumdata = JSON.parse(text);
+  //  var mediumdata = require('medium1.json');
+    //console.log(medium1);
 
 
 

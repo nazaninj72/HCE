@@ -87,18 +87,18 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				console.log(sourceNode)
 				console.log(rootC)
 				updateDepth(rootC,treemap)
-				duration=750;
+				duration=1000;
 				 //updatetree(root,root,svg1,duration,treemap)
 				 updatetree(rootC,rootC,svg,duration,treemap)
 			}
-			if (changestate=="remove"){
+			if (changestate=="delete"){
 				removeNode(sourceNode,svg)
 				removelink(sourceNode,svg)
 				removedata(sourceNode,svg)
 				console.log(rootC)
 				
 				//updatetree(root,root,svg1,duration,treemap)
-				duration=750;
+				duration=1000;
 				updatetree(rootC,rootC,svg,duration,treemap)
 
 			}
@@ -112,6 +112,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				  {
 				  	console.log(d)
 				    selected=d
+				    d3.select(this).raise();
 				    return true;
 				  }
 				  else
@@ -120,7 +121,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				
 				newnode=newNode(selected,newlabels[newindx],rootC,svg,treemap)
 				console.log(newnode)
-				duration=750;
+				duration=1000;
 				updatetree(selected,root,svg,duration,treemap)
 
 			}
@@ -218,7 +219,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 updatetree(rootC,rootC,svg2,duration,treemap)
 
 		}
-		if (changestate=="remove"){
+		if (changestate=="delete"){
 			console.log(sourceNode)
 			removedata(sourceNode,svg2)
 			svg1.selectAll("*").style("opacity", 1);
@@ -266,7 +267,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 var svg = d3.select("#viscontainerafter").append("svg")
 			      .attr("width", width + margin.left + margin.right)
 			      .attr("height", height + margin.top + margin.bottom)
-			     .append('g').attr("transform","translate(" + width /15 + "," + height/8 + ")")
+			     .append('g').attr("transform","translate(" + width /8 + "," + height/4 + ")")
 			.append('g');
 			root = d3.hierarchy(data, function(d) {
 			  return d.children;
@@ -275,7 +276,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			root.x0 = height / 2;
 			// declares a tree layout and assigns the size
 			var treemap = d3.tree()
-			    .size([1.3*height, width]);
+			    .size([1.4*height, width]).separation(function separation(a, b) { return a.parent == b.parent ? 2 : 2; });
 			var rootC;
 			rootC=clonetree(root,root.depth,root.height)
 			updatetree(rootC,rootC,svg,duration,treemap)
@@ -284,31 +285,22 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 excludedNodes = tempData2.descendants();
 
 			 numNodes=excludedNodes.length;
-			 var selectednodes=[]
+			 var selectednodes=[];
 			 selectednodes=randomization(excludedNodes,numNodes)
 			 destNode=selectednodes[1];
 			 sourceNode=selectednodes[0];
-			 var beforeSubtree=clonetree(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
-			 updateDepth(beforeSubtree,treemap)
-			 console.log("beforeSubtree")
-			 console.log(beforeSubtree)
-
+			 var beforeSubtree;
+			 beforeSubtree=clonetree(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
+			
 			  var newlabels=["W","X","Y","C","O","H","P","U"];
-			  var newindx=getRndInteger(0,newlabels.length-1)
-
-			  	 	
+			  var newindx=getRndInteger(0,newlabels.length-1) 	 	
 			 // answerinput.innerHTML = ""+sourceNode.data.name+"-"+ changestate;
-			  
 			  writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
-
-		 	
 			 var afterSubtree;
-
-
 			 var diffWidth = +d3.select("#beforediff").style('width').slice(0, -2)
-			console.log(diffWidth)
+			
 			 var diffheight = +d3.select("#beforediff").style('height').slice(0, -2)
-			 console.log(diffheight)
+			
 			 // set the dimensions and margins of the diagram
 			 margin = {top: 40, right: 90, bottom: 50, left: 90},
 			     diffWidth1 = diffWidth - margin.left - margin.right,
@@ -319,63 +311,157 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 var svgDiffBefore = d3.select("#beforediff").append("svg")
 			       .attr("width", diffWidth1 + margin.left + margin.right)
 			       .attr("height", diffheight1 + margin.top + margin.bottom)
-			      .append('g').attr("transform","translate(" + diffWidth /15 + "," + diffheight/8 + ")")
+			      .append('g').attr("transform","translate(" + (-diffWidth1/19) + "," + diffheight/3 + ")")
 			 .append('g');
 
 			 var svgDiffAfter = d3.select("#afterdiff").append("svg")
 			       .attr("width", diffWidth1 + margin.left + margin.right)
 			       .attr("height", diffheight1 + margin.top + margin.bottom)
-			       .append('g').attr("transform","translate(" +diffWidth /15 + "," + diffheight/8 + ")")
+			       .append('g').attr("transform","translate(" + (-diffWidth1/19) + "," + diffheight/3 + ")")
 			       .append('g');
 			      //
 			 var treemap1 = d3.tree()
-			     .size([diffheight1/2, diffWidth1/2]);
+			     .size([diffheight1/1.3, diffWidth1/2]).separation(function separation(a, b) { return a.parent == b.parent ? 1 : 2; });;
 			 // declares a tree layout and assigns the size
-			 
+			 var dashable=false;
 			if (changestate=="move"){
-				console.log("sourceNode")
-			 	console.log(sourceNode)
-				 addtochildren(destNode,sourceNode)
-				 console.log(destNode)
+				updateDepth(beforeSubtree,treemap1)
+				console.log(destNode)
+				var diV = document.getElementById('startdots');
+				var diV2 = document.getElementById('startdots2');
+				if (sourceNode.parent.parent== null)
+					diV.style.display='none';
+				 beforeSubtree=trimSubtrees(beforeSubtree,sourceNode)
+				 console.log(beforeSubtree)
+				updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1)
+				
+				svgDiffBefore.selectAll('g.node').filter(function(d){
+					if (d.id==sourceNode.parent.id)
+					{
+						
+						diV.style.position = "relative";
+						diV.style.left = (-diffWidth1/19 +d.x0-3)+'px';
+						diV.style.top = (diffheight/3 -30)+'px';
+
+					}
+				})
+				dashedUpdate(beforeSubtree,sourceNode,svgDiffBefore,treemap1,changestate)
+				addtochildren(destNode,sourceNode)
+				
 				 svg.selectAll("*").remove();
 				 updateDepth(rootC,treemap)
 				 updatetree(rootC,rootC,svg,duration,treemap)
+				 
 				 afterSubtree=clonetree(destNode,destNode.depth,destNode.height)
+				 beforeSubtree=trimSubtrees(afterSubtree,sourceNode)
 				 updateDepth(afterSubtree,treemap1)
+				if (destNode.parent== null)
+					diV2.style.display='none';
+				 //afterSubtree=trimSubtrees(afterSubtree,sourceNode)
 				 updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1)
-				 updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1)
+				svgDiffAfter.selectAll('g.node').filter(function(d){
+					if (d.id==destNode.id)
+					{
+						
+						diV2.style.position = "relative";
+						diV2.style.left = (-diffWidth1/19 +d.x0-3)+'px';
+						diV2.style.top = (diffheight/3 -30)+'px';
 
+					}
+				})
+
+				 
+				 dashedUpdate(afterSubtree,sourceNode,svgDiffAfter,treemap1,changestate)
+			
 			}
-			if (changestate=="remove"){
-				beforeSubtree=clonetree(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
+			if (changestate=="delete"){
+				//beforeSubtree=clonetree(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
 			//	console.log(beforeSubtree)
-
-				updateDepth(beforeSubtree,treemap1)
+				var diV = document.getElementById('startdots');
+				var diV2 = document.getElementById('startdots2');
+				if (sourceNode.parent.parent== null)
+				{
+					diV.style.display='none';
+					diV2.style.display='none';
+				}
+					
+					updateDepth(beforeSubtree,treemap1)
+			
+				
 				updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1)
-				updatetree(beforeSubtree,beforeSubtree,svgDiffAfter,duration,treemap1)
-				removedata(sourceNode,svgDiffAfter)
-				removeNode(sourceNode,svgDiffAfter)
-				removelink(sourceNode,svgDiffAfter)
+				svgDiffBefore.selectAll('g.node').filter(function(d){
+					if (d.id==sourceNode.parent.id)
+					{
+						
+						diV.style.position = "relative";
+						diV.style.left = (-diffWidth1/19 +d.x0-3)+'px';
+						diV.style.top = (diffheight/3 -30)+'px';
 
-				//updatetree(root,root,svg1,duration,treemap)
-				updatetree(rootC,rootC,svg,duration,treemap)
-
-			}
-			if(changestate=="add"){
-				beforeSubtree=clonetree(destNode,destNode.depth,destNode.height)
-				updateDepth(beforeSubtree,treemap1)
-				updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1)
-				newnode=newNode(destNode,newlabels[newindx])
-				duration=0;
-				afterSubtree=clonetree(newnode.parent,newnode.parent.depth,newnode.parent.height)
+					}
+				})
+				dashedUpdate(beforeSubtree,sourceNode,svgDiffBefore,treemap1,"move")
+				removedata(sourceNode)
+				
+				afterSubtree=clonetree(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
+				//updatetree(beforeSubtree,beforeSubtree,svgDiffAfter,duration,treemap1)
 				updateDepth(afterSubtree,treemap1)
 				updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1)
+				svgDiffAfter.selectAll('g.node').filter(function(d){
+					if (d.id==sourceNode.parent.id)
+					{
+						
+						diV2.style.position = "relative";
+						diV2.style.left = (-diffWidth1/19 +d.x0-3)+'px';
+						diV2.style.top = (diffheight/3 -30)+'px';
+
+					}
+				})
+				dashedUpdate(afterSubtree,sourceNode,svgDiffAfter,treemap1,"move")
+				updatetree(rootC,rootC,svg,duration,treemap)
+			}
+			if(changestate=="add"){
+				var diV = document.getElementById('startdots');
+				var diV2 = document.getElementById('startdots2');
+				if (sourceNode.parent== null)
+				{
+					diV.style.display='none';
+					diV2.style.display='none';
+				}
+				beforeSubtree=clonetree(sourceNode,sourceNode.depth,sourceNode.height)
+				updateDepth(beforeSubtree,treemap1)
+				updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1)
+				svgDiffBefore.selectAll('g.node').filter(function(d){
+					if (d.id==sourceNode.id)
+					{
+						
+						diV.style.position = "relative";
+						diV.style.left = (-diffWidth1/19 +d.x0-3)+'px';
+						diV.style.top = (diffheight/3 -30)+'px';
+
+					}
+				})
+				
+				newnode=newNode(sourceNode,newlabels[newindx])
+				duration=0;
+
+				dashedUpdate(beforeSubtree,sourceNode,svgDiffBefore,treemap1,"beforeadd")
+				afterSubtree=clonetree(sourceNode,sourceNode.depth,sourceNode.height)
+				updateDepth(afterSubtree,treemap1)
+				updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1)
+				svgDiffAfter.selectAll('g.node').filter(function(d){
+					if (d.id==sourceNode.id)
+					{
+						
+						diV2.style.position = "relative";
+						diV2.style.left = (-diffWidth1/19 +d.x0-3)+'px';
+						diV2.style.top = (diffheight/3 -30)+'px';
+
+					}
+				})
+				dashedUpdate(afterSubtree,newnode,svgDiffAfter,treemap1,"move")
 				updatetree(rootC,rootC,svg,duration,treemap)
 
 			}
-			
-		
-
 
 	}
 
@@ -410,7 +496,6 @@ function updatetree(source,root,svg,duration,treemap){
     	append('line').
       attr("class", "link").
       attr("stroke-width", 2).
-      attr("stroke", 'black').
       attr('x1', function(d) {
       	return source.x0;
       }).
@@ -499,7 +584,7 @@ function updatetree(source,root,svg,duration,treemap){
     	attr('class', 'node').
       attr('r', 10).
       style("fill", function(d) {
-      	return "#ffffff";
+      	return "#f6e8c3";
       });
 
       nodeEnter.append("text")
@@ -521,7 +606,7 @@ function updatetree(source,root,svg,duration,treemap){
     attr('class', 'node').
         attr('r', 10).
         style("fill", function(d) {
-          return "#ffffff";
+          return "#f6e8c3";
         });
 
     // Remove any exiting nodes
@@ -635,6 +720,7 @@ function addtochildren(d,f){
 function randomization(excludedNodes,numNodes){
 	var adjacentNodes=[];
 	var selectednodes=[];
+	var sourceNode=null;
 	 SourceId=getRndInteger(2,numNodes);
 	// console.log(SourceId)
 	// console.log(excludedNodes)
@@ -716,19 +802,11 @@ function removeNode(f,svg){
 	 	    }
 	 	 }).remove();
 
-
-  
-
-   
-
-
-  
-
 }
-function removedata(f,svg){
+function removedata(f){
 	 //remove the data too
     var index = f.parent.children.indexOf(f);
-      console.log(index)
+
      if (index > -1) {
        f.parent.children.splice(index, 1);
        f.parent.data.children.splice(index, 1);
@@ -742,7 +820,7 @@ function removedata(f,svg){
 function removelink(f,svg){
   if (typeof f.children!='undefined'){
 	    f.children.forEach(function(d){
-	    	console.log(d)
+	
 	      removelink(d,svg)
 
 	  })
@@ -771,23 +849,20 @@ function removelink(f,svg){
 	 	 }).remove();
 
 }
-function updatesvg(svg,selector){
-
-
-
-}
 function trimSubtrees(subtree,sourceNode){
 	var removingnode=[];
+	//console.log(sourceNode)
 	if (typeof subtree.children!="undefined"){
-	subtree.children.forEach(function(d){
+		subtree.children.forEach(function(d){
+			//console.log(d)
 		if (d.id!=sourceNode.id){
 			removingnode.push(d)
 		}
 	})
-	for (var i=0;i<removingnode.length;i++)
+	for (var i=0;i<(removingnode.length-1);i++)
 		removedata(removingnode[i])
+
 	}
-	
 	return subtree;
 
 }
@@ -821,7 +896,7 @@ function writeInputChoices(sourceNode,changestate,root,newnodelabels,newnodeindx
 	
 	var nodes=root.descendants();
 	var inputindx,changeindx,randnodeindx;
-	var changes=["move","remove","add"]
+	var changes=["move","delete","add"]
 	var j=1;
  	var answerId=getRndInteger(1,4);
 	//console.log(answerId)
@@ -868,13 +943,18 @@ function writeInputChoices(sourceNode,changestate,root,newnodelabels,newnodeindx
 	while (inputs.length>0){
 		inputindx=getRndInteger(0,(inputs.length-1))
 		changeindx=getRndInteger(0,2)
-		
 		var otherinput=inputs[inputindx];
-		if (changes[changeindx]=="add")
-			otherinput.innerHTML= ""+ candidates[k].data.name+"-"+"was "+ changes[changeindx]+"ed";
-		else
-			otherinput.innerHTML= ""+ candidates[k].data.name+"-"+"was "+ changes[changeindx]+"d";
-		inputs.splice(inputindx, 1)
+		if (candidates[k].children){
+			otherinput.innerHTML= ""+ candidates[k].data.name +" & its children"+"-"+"were "+ changes[changeindx]+"d";
+		}else{
+			if (changes[changeindx]=="add")
+				otherinput.innerHTML= ""+ candidates[k].data.name+"-"+"was "+ changes[changeindx]+"ed";
+			else
+				otherinput.innerHTML= ""+ candidates[k].data.name+"-"+"was "+ changes[changeindx]+"d";
+
+		}
+		
+				inputs.splice(inputindx, 1)
 		k++;
 	}	
 
@@ -932,7 +1012,7 @@ function newNode(selected,nodename,rootC,svg,treemap){
 function updateDepth(root,treemap){
 	var data=treemap(root)
 	var nodes=data.descendants();
-	console.log(nodes)
+	//console.log(nodes)
     nodes.forEach(function(d){
     if (d.parent!=null){
     d.depth = d.parent.depth+1 
@@ -942,4 +1022,79 @@ function updateDepth(root,treemap){
 
     }
 		});
+}
+function dashedUpdate(root,sourceNode,svg,treemap,changestate){
+		var i=0;
+	    var treeData = treemap(root);
+	    var solidLinkNodes=[];
+	    var otherids=[];
+	    var l=0;   
+	    sourceNode.parent.children.forEach(function(m){
+	    			if (m.id!=sourceNode.id)
+	    				otherids[l++]=m.id;
+	    		})
+	  	otherids[l++]=sourceNode.parent.id;
+	    // Compute the new tree layout.
+	    var nodes = treeData.descendants(),
+	    	links = treeData.descendants().slice(1);
+
+	    // Normalize for fixed-depth.
+	    nodes.forEach(function(d){
+	    	d.y = d.depth * 50
+	    });
+	    // ### LINKS
+
+	    // Update the links...
+	    var link = svg.selectAll('line.link').
+	    	data(links, function(d) {
+	      	return d.id;
+	      });
+	    	
+	    	var flag=true;
+	    	solidLinkNodes=addToAdjacencyList(sourceNode,solidLinkNodes)
+	    	var solidlinkids=[];
+	    	var k=0;
+	    	solidLinkNodes.forEach(function(f){
+	    		solidlinkids[k++]=f.id;
+	    	})
+	    	//
+	    	console.log(solidLinkNodes)
+	    	console.log(solidlinkids)
+	    		svg.selectAll('line.link').filter(function(d,i){
+	    			if (solidlinkids.includes(d.id)){
+	    				return false;
+	    			}else{
+	    				return true;
+	    			}
+	    		}).style("opacity",0)
+	    		
+	    		solidlinkids[k++]=sourceNode.parent.id;
+	    		svg.selectAll('g.node').filter(function(d,i){
+	    			if (solidlinkids.includes(d.id)){
+	    				return false;
+	    			}else{
+	    				return true;
+	    			}
+	    		}).style("opacity",0)
+	    		if (changestate=="beforeadd"){
+	    			svg.selectAll('line.link').filter(function(d,i){
+	    				if (d.id==sourceNode.id){
+	    					return false;
+	    				}else{
+	    					return true;
+	    				}
+	    			}).style("opacity",0)
+	    			
+	    			
+	    			svg.selectAll('g.node').filter(function(d,i){
+	    				if (d.id==sourceNode.id){
+	    					return false;
+	    				}else{
+	    					return true;
+	    				}
+	    			}).style("opacity",0)
+	    		}
+	    	
+	    	
+	    	
 }

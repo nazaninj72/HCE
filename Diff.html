@@ -6,6 +6,7 @@
 	<script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
 	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
 	<link rel="stylesheet" href="styles.css">
+	
 	<script type="text/javascript" src='visDrawer.js'></script>
 	<script type="text/javascript" src='treemapDrawer.js'></script>
 	<script type="text/javascript" src='sunburstDrawer.js'></script>
@@ -16,11 +17,11 @@
 
 
 	<div class ="container">
-		<div id="DiffDescription"> Right panel shows the current visualization. Left panel shows the before and after changes in the visualization.</div>
+		<div id="DiffDescription"> <h3>Right panel shows the current visualization. Left panel shows the before and after changes in the visualization.</h3> </div>
 			<!--visualizations go here-->
 			<script type="text/javascript">
 
-		   		 var queryString = decodeURIComponent(window.location.search);
+		   		var queryString = decodeURIComponent(window.location.search);
 		   	   
 		   	   	var currentStringindex=queryString.split("=")
 		   	   	var currentindx=parseInt(currentStringindex[1])
@@ -44,7 +45,7 @@
  			 		console.log(changeState)
  			 		console.log(dataState)
  			 		updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
-			// updateVis("#viscontainerafter","#viscontainerafter","Diff","sunburst","remove","small")
+			 //updateVis("#viscontainerafter","#viscontainerafter","Diff","sunburst","move","small")
 			 	}
 			 	function submitAnswer(){
 			 		if (currentindx+1 >= personSarray.length){
@@ -71,57 +72,37 @@
 
 
 			</script>
-			<div id="viscontainerafter">
-				<div id ="currentvis"> Current Visualization</div>
-				
+			<div id ="currentvis"> Current Visualization</div>
+			<div id ="beforesmalldiff"> Before</div>
+			<div id ="aftersmalldiff"> After</div>
+			<div id="viscontainerafter">	
 			</div>
 			<div id="diffshow">
-				<div id="beforediff">
-					<div id ="beforesmalldiff"> Before</div>
-				</div>
-				<div id="afterdiff">
-					<div id ="aftersmalldiff"> After</div>
-				</div> 
-			</div>
-	</div><div id="questionbar2"> 
-					<div  id="questionDescription">
-						Please choose the node that you have detected to be moved, added, or removed:
-					</div>
-						
 				
-
-					<div class="questionbar" id="choices">
-						<input type="radio"  name="choice" value="first"/>
-						<label id="1choice">
-		        			
-		        		  </label>
-					
-						  <input type="radio" name="choice" value="second">
-						  <label id="2choice">
-		        			
-		        		  </label>
-		        		
-		  				
-						<input type="radio" name="choice" value="third"> 			
-							<label id="3choice">
-		        			
-		        		  </label>
-						<input type="radio" name="choice" value="fourth">
-						<label id="4choice">
-		    			
-		    		  </label> 
-					</div>
-					<div id="submitbuttondiv">
-						<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
-					</div>
-					
-
-
-
-				</div>
-			
-
-
-		
-
+				<div id="beforediff"><div id="startdots"></div></div>
+				
+				<div id="afterdiff"><div id="startdots2"></div></div>
+				 
+			</div>
+	<div class="questionbar2"> 
+		<div class="questionbar" id="choices">
+			Please choose the node that you have detected to be moved, added, or removed:</br></br>
+			<input type="radio"  name="choice" value="first"/>
+			<label id="1choice">
+    		  </label>
+			  <input type="radio" name="choice" value="second">
+			  <label id="2choice">
+    		  </label>
+			<input type="radio" name="choice" value="third"> 	
+				<label id="3choice">
+    		  </label>
+			<input type="radio" name="choice" value="fourth">
+			<label id="4choice">
+		  </label> 
+		</div>
+		<div id="submitbuttondiv">
+			<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
+		</div>
+	</div>
+		</div>
 </body>

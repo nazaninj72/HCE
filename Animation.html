@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="styles.css">
 </head>
 <script type="text/javascript" src='stateCheck.js'></script>
+<script type="text/javascript" src='medium1.js'></script>
 <script type="text/javascript" src='visDrawer.js'></script>
 <script type="text/javascript" src='treemapDrawer.js'></script>
 <!--<script type="text/javascript" src="flare.json"></script>-->
@@ -17,17 +18,14 @@
 <script type="text/javascript" src='showVis.js'></script>
 <body>
 
-
-	<div class ="container">
-		<div id= "warningbar">
-			<p>Please do not refresh the page!</p>
-		</div>
-		<div id="container">
+		<div class="container">
+			<div id= "warningbar">
+				<h4>Please do not refresh the page!</h4>
+			</div>
 		<div id="viscontainer">
 			
 			<script type="text/javascript">
 					 var queryString = decodeURIComponent(window.location.search);
-				   
 				   	var currentStringindex=queryString.split("=")
 				   	var currentindx=parseInt(currentStringindex[1])
 				   var personSarray=[];
@@ -44,7 +42,7 @@
 				 		changeState=states[2];
 				 		dataState=states[3];
 				 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
-				 		//updateVis("#viscontainer","#viscontainer","Animation","sunburst","remove","small")
+				 		//updateVis("#viscontainer","#viscontainer","Animation","tree","move","small")
 
 
 				 	}
@@ -76,53 +74,33 @@
 				 	//	updateVis("#viscontainer","#viscontainer","Animation","sunburst","add","small")
 				 		
 				 	}
-
-
-				
-
 			</script> 
-			</div>
+			
+		</div>
 			<div id="buttonsbar">
 				<input type="button" class ="animatebutton" id="startbutton" value="start" >
 	         	<input type="button" class ="animatebutton" id="resetbutton" value="reset">
 			</div>
-		</div>
-		<div id="questionbar"> 
-			<div class="questionbar" id="questionDescription">
-				Please choose the node that you have detected to be moved, added, or removed:
-			</div>
-				
 		
-
-			<div class="questionbar" id="choices">
-				<input type="radio"  name="choice" value="first"/>
-				<label id="1choice">
-        			
-        		  </label>
-			
-				  <input type="radio" name="choice" value="second">
-				  <label id="2choice">
-        			
-        		  </label>
-        		
-  				
-				<input type="radio" name="choice" value="third"> 			
-					<label id="3choice">
-        			
-        		  </label>
-				<input type="radio" name="choice" value="fourth">
-				<label id="4choice">
-    			
-    		  </label> 
+			<div class="questionbarAnim"> 
+				<div class="questionbar" id="choices">
+					Please choose the node that you have detected to be moved, added, or removed:</br></br>
+					<input type="radio"  name="choice" value="first"/>
+					<label id="1choice">
+		    		  </label>
+					  <input type="radio" name="choice" value="second">
+					  <label id="2choice">
+		    		  </label>
+					<input type="radio" name="choice" value="third"> 	
+						<label id="3choice">
+		    		  </label>
+					<input type="radio" name="choice" value="fourth">
+					<label id="4choice">
+				  </label> 
+				</div>
+				<div id="submitbuttondiv">
+					<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
+				</div>
 			</div>
-			<div id="submitbuttondiv">
-				<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
-			</div>
-			
-
-
-
 		</div>
-		
-	</div>
 </body>
