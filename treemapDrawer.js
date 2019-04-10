@@ -3,48 +3,51 @@
 			if (compstate=="Animation"){
 
 
-				    	var duration=0;
-				    	var width,height
-					   var chartWidth, chartHeight
-					   var margin
-					   var svg = d3.select(selector1).append("svg")
-					   var chartLayer = svg.append("g").classed("chartLayer", true)
+		    	var duration=0;
+		    	var width,height
+			   var chartWidth, chartHeight
+			   var margin
+			   var svg = d3.select(selector1).append("svg")
+			   var chartLayer = svg.append("g").classed("chartLayer", true)
 
-				       width = document.querySelector(selector1).clientWidth
-				       height = document.querySelector(selector1).clientHeight
-				   
-				       margin = {top:0, left:0, bottom:0, right:0 }
-				       
-				       
-				       chartWidth = width - (margin.left+margin.right)
-				       chartHeight = height - (margin.top+margin.bottom)
-				       
-				       svg.attr("width", width).attr("height", height)
-				       
-				       var i=0;
-				       chartLayer
-				           .attr("width", chartWidth)
-				           .attr("height", chartHeight)
-				           .attr("transform", "translate("+[margin.left, margin.top]+")")
+		       width = document.querySelector(selector1).clientWidth
+		       height = document.querySelector(selector1).clientHeight
+		   
+		       margin = {top:0, left:0, bottom:0, right:0 }
+		       
+		       
+		       chartWidth = width - (margin.left+margin.right)
+		       chartHeight = height - (margin.top+margin.bottom)
+		       
+		       svg.attr("width", width).attr("height", height)
+		       
+		       var i=0;
+		       chartLayer
+		           .attr("width", chartWidth)
+		           .attr("height", chartHeight)
+		           .attr("transform", "translate("+[margin.left, margin.top]+")")
 
-				        var treemap = d3.treemap()
-				               .size([chartWidth, chartHeight])
-				               .paddingTop(28)
-			                   .paddingRight(4)
-			                   .paddingLeft(4)
-			                   .paddingBottom(4)
-			                   .paddingInner(3) 
-				               .round(true); 
-				       var root = d3.hierarchy(data)
-				       	  				root.sum(function(d) {
-				       	  				return d.size;
-				       					}) 
-						console.log(root)
-							
-				       	    var rootC=null;
-				       		
-				       		console.log(rootC)
-				updatetreemap(root,chartLayer,duration,treemap)
+		        var treemap = d3.treemap()
+		               .size([chartWidth, chartHeight])
+		               .paddingTop(28)
+	                   .paddingRight(4)
+	                   .paddingLeft(4)
+	                   .paddingBottom(4)
+	                   .paddingInner(3) 
+		               .round(true); 
+		       var root = d3.hierarchy(data)
+		       	  				root.sum(function(d) {
+		       	  				return d.size;
+		       					}) 
+				
+				
+	       	    var rootC=null;
+	       		
+	       	
+	       		var lid=[];
+	       		
+	       		var list=[];
+				updatetreemap(root,chartLayer,duration,treemap,lid)
 				svg.selectAll("*").style("opacity",1)
 				rootC=clonetreemap(root,root.depth,root.height)
 				var startanimation = document.getElementById('startbutton');
@@ -58,40 +61,47 @@
 				 sourceNode=selectednodes[0];
 				 console.log(destNode)
 				 console.log(sourceNode)
+				 var k=0;
+				 list=addToAdjacencyList(sourceNode,list)
+				 list.forEach(function(f){
+				 	lid[k++]=f.id;
+				 })
 				var newlabels=["W","X","Y","C","O","H","P","U"];
 		 		var newindx=getRndInteger(0,newlabels.length-1)
-		 		writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
+		 		//writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
 				startanimation.onclick = function(){
 					if (changestate=="move"){
 
 						movetochildrenTM(destNode,sourceNode)
 					
-						duration=1000;
+						duration=1500;
 						 //updatetree(root,root,svg1,duration,treemap)
-						 bringtoFront(sourceNode,svg)
-						 console.log(rootC)
+						 bringtoFront(sourceNode,svg,"g.node")
 						 updateValues(rootC)
-						 console.log(rootC)
 						 updateTMDepth(rootC,treemap)
-						 updatetreemap(rootC,chartLayer,duration,treemap)
+						 
+						 updatetreemap(rootC,chartLayer,duration,treemap,lid)
 						 svg.selectAll("*").style("opacity",1)
 					}
 					if (changestate=="delete"){
-						removeTMnode(sourceNode,svg,duration)
-						//removelink(sourceNode,svg)
-						removedata(sourceNode,svg)
-						console.log(rootC)
-						 svg.selectAll("g.node").transition().delay(1000)
-						//updatetree(root,root,svg1,duration,treemap)
-						duration=1000;
-						updateValues(rootC)
-						updatetreemap(rootC,chartLayer,duration,treemap)
+						duration=1500;
+						var alldata = treemap(rootC).descendants();
+						 alldata.forEach(function(f){
+						 
+				 				lid[k++]=f.id;
+			 			 })
+			 		
+						removeTMnode(sourceNode,svg,duration,"g.node",function(){
+							removedata(sourceNode,svg)
+							updateValues(rootC)
+							updatetreemap(rootC,chartLayer,duration,treemap,lid)
+						})
 						svg.selectAll("*").style("opacity",1)
 					}
 				if (changestate=="add"){
 					var selected=null;
 					
-					updatetreemap(root,chartLayer,duration,treemap)
+					updatetreemap(root,chartLayer,duration,treemap,lid)
 					svg.selectAll("g.node").filter(function(d){
 
 					  if (d.id==destNode.id)
@@ -108,7 +118,7 @@
 					console.log(newnode)
 					duration=0;
 					updateValues(root)
-					updatetreemap(root,chartLayer,duration,treemap)
+					updatetreemap(root,chartLayer,duration,treemap,lid)
 					svg.selectAll("*").style("opacity",1)
 					svg.selectAll("g.node").filter(function(d){
 
@@ -123,7 +133,7 @@
 					})
 					.style("opacity", 0.0)
 						.transition()
-						.duration(1000)
+						.duration(1500)
 						.style("opacity", 1.0)
 					console.log(newnode.id)
 			}
@@ -134,6 +144,7 @@
 
 				var resetanimation = document.getElementById('resetbutton');
 				resetanimation.onclick = function(){
+					var lid=[];
 					duration=0;
 					if (changestate=="add"){
 						//newnode.parent.value-=newnode.value;
@@ -144,7 +155,7 @@
 						updateValues(root)
 
 					}
-					updatetreemap(root,chartLayer,duration,treemap)
+					updatetreemap(root,chartLayer,duration,treemap,lid)
 					svg.selectAll("*").style("opacity",1)
 					document.getElementById("startbutton").disabled = false;
 
@@ -159,6 +170,7 @@
 	    	var exesheight;
 		   var chartWidth, chartHeight
 		   var margin
+		   var lid=[];
 		   var svg1 = d3.select(selector1).append("svg")
 		   var chartLayer1 = svg1.append("g").classed("chartLayer", true)
 		   var svg2 = d3.select(selector2).append("svg")
@@ -202,7 +214,7 @@
 				
 	       	 var rootC=null;
 	       		
-	        updatetreemap(root,chartLayer1,duration,treemap)
+	        updatetreemap(root,chartLayer1,duration,treemap,lid)
 			console.log(root)
 			svg1.selectAll("*").style("opacity", 0);
 			rootC=clonetreemap(root,root.depth,root.height)
@@ -218,7 +230,7 @@
 			  	 	
 			 // answerinput.innerHTML = ""+sourceNode.data.name+"-"+ changestate;
 			  
-			  writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
+			 // writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
 			if (changestate=="move"){
 
 				 movetochildrenTM(destNode,sourceNode)
@@ -226,7 +238,7 @@
 				 svg1.selectAll("*").style("opacity", 1);
 				 //updatetree(root,root,svg1,duration,treemap)
 				 updateTMDepth(rootC,treemap)
-				 updatetreemap(rootC,chartLayer2,duration,treemap)
+				 updatetreemap(rootC,chartLayer2,duration,treemap,lid)
 				 svg2.selectAll("*").style("opacity", 1);
 
 			}
@@ -236,7 +248,7 @@
 				updateValues(rootC)
 				svg1.selectAll("*").style("opacity", 1);
 				//updatetree(root,root,svg1,duration,treemap)
-				 updatetreemap(rootC,chartLayer2,duration,treemap)
+				 updatetreemap(rootC,chartLayer2,duration,treemap,lid)
 				 svg2.selectAll("*").style("opacity", 1);
 
 			}
@@ -247,7 +259,7 @@
 						console.log(newnode.value)
 						updateValues(rootC)
 						console.log(rootC)
-						updatetreemap(rootC,chartLayer2,duration,treemap)
+						updatetreemap(rootC,chartLayer2,duration,treemap,lid)
 						svg2.selectAll("*").style("opacity", 1);
 
 			}
@@ -332,8 +344,9 @@
  	  				root.sum(function(d) {
  	  				return d.size;
  					}) 
+ 					var lid=[];
 	      	//console.log(root)
-			updatetreemap(root,chartLayer,duration,treemap)
+			updatetreemap(root,chartLayer,duration,treemap,lid)
 
 			
        	    var rootC=null;
@@ -377,12 +390,13 @@
 	                 .paddingInner(3) 
 	                  .round(true);
 	          chartLayer.selectAll("*").remove();
-			  writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
+			 // writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
 				beforeSubtree=clonetreemap(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)	
 				updateTMDepth(beforeSubtree,treemap1)
 				updateValues(beforeSubtree)
+
 			if (changestate=="move"){ 
-				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1,lid)
 				var diV = document.getElementById('startdots');
 				var diV2 = document.getElementById('startdots2');
 				if (sourceNode.parent.parent== null)
@@ -390,7 +404,7 @@
 				chartLayerDiffBefore.selectAll("*").remove()
 				updateTMDepth(beforeSubtree,treemap1)
 				updateValues(beforeSubtree)
-				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1,lid)
 				svgDiffBefore.selectAll("*").style("opacity", 1);
 				svgDiffBefore.selectAll('.node rect').filter(function(d){
 				
@@ -417,7 +431,7 @@
 				// svg.selectAll("*").remove();
 				updateValues(rootC)
 				updateTMDepth(rootC,treemap)
-				 updatetreemap(rootC,chartLayer,duration,treemap)
+				 updatetreemap(rootC,chartLayer,duration,treemap,lid)
 				 chartLayer.selectAll("*").style("opacity", 1);
 				 chartLayer.selectAll(".node rect").filter(function(d){
 			  	if (d.id==destNode.id)
@@ -443,12 +457,12 @@
 				 afterSubtree=clonetreemap(destNode,destNode.depth,destNode.height)
 				 updateTMDepth(afterSubtree,treemap2)
 				 updateValues(afterSubtree)
-				 updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2)
+				 updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2,lid)
 				 //afterSubtree=trimTMSubtrees(afterSubtree,sourceNode,svgDiffBefore)
 				 chartLayerDiffAfter.selectAll("*").remove()
 				 updateTMDepth(afterSubtree,treemap2)
 				 updateValues(afterSubtree)
-				 updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2)
+				 updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2,lid)
 				 
 				 svgDiffAfter.selectAll("*").style("opacity", 1);
 				 if (destNode.parent== null)
@@ -467,7 +481,7 @@
 				chartLayerDiffBefore.selectAll("*").remove()
 				updateTMDepth(beforeSubtree,treemap2)
 				updateValues(beforeSubtree)
-				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap2)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap2,lid)
 				
 			
 				svgDiffBefore.selectAll("*").style("opacity", 1);
@@ -492,7 +506,7 @@
 					
 			}
 			if (changestate=="delete"){
-				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1,lid)
 				var diV = document.getElementById('startdots');
 				var diV2 = document.getElementById('startdots2');
 				if (sourceNode.parent.parent== null)
@@ -500,7 +514,7 @@
 				removedata(sourceNode,svg)
 				updateTMDepth(rootC,treemap)
 				updateValues(rootC)
-				updatetreemap(rootC,chartLayer,duration,treemap)
+				updatetreemap(rootC,chartLayer,duration,treemap,lid)
 				svg.selectAll("*").style("opacity",1)
 				chartLayer.selectAll(".node rect").filter(function(d){
 			  		if (d.id==sourceNode.parent.id)
@@ -525,7 +539,7 @@
 				chartLayerDiffBefore.selectAll("*").remove()
 				updateTMDepth(beforeSubtree,treemap1)
 				updateValues(beforeSubtree)
-				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap2)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap2,lid)
 				svgDiffBefore.selectAll("*").style("opacity", 1);
 				svgDiffBefore.selectAll('.node rect').filter(function(d){
 					if (d.id==sourceNode.parent.id)
@@ -542,7 +556,7 @@
 				removeTMdata(sourceNode,svgDiffAfter,beforeSubtree)
 				updateValues(beforeSubtree)
 				
-				updatetreemap(beforeSubtree,chartLayerDiffAfter,duration,treemap2)
+				updatetreemap(beforeSubtree,chartLayerDiffAfter,duration,treemap2,lid)
 				chartLayerDiffAfter.selectAll("*").style("opacity",1)
 				svgDiffAfter.selectAll('.node rect').filter(function(d){
 				
@@ -569,12 +583,12 @@
 				chartLayerDiffBefore.selectAll("*").remove()
 				updateTMDepth(beforeSubtree,treemap1)
 				updateValues(beforeSubtree)
-				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+				updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1,lid)
 				
 				chartLayerDiffBefore.selectAll("*").style("opacity",1)
 				newnode=newtreemapNode(sourceNode,newlabels[newindx],rootC,treemap)
 				updateValues(rootC)
-				updatetreemap(rootC,chartLayer,duration,treemap)
+				updatetreemap(rootC,chartLayer,duration,treemap,lid)
 				svg.selectAll("*").style("opacity",1)
 				 chartLayer.selectAll(".node rect").filter(function(d){
 			  	if (d.id==sourceNode.id)
@@ -598,7 +612,7 @@
 	 	               .paddingBottom(4)
 	                 .paddingInner(3) 
 	                  .round(true);
-			   updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1)
+			   updatetreemap(beforeSubtree,chartLayerDiffBefore,duration,treemap1,lid)
 	           dashedTMUpdate(beforeSubtree,sourceNode,chartLayerDiffBefore,treemap1,changestate)
 	           svgDiffBefore.selectAll('.node rect').filter(function(d){
 	           
@@ -622,7 +636,7 @@
 				afterSubtree=clonetreemap(sourceNode,sourceNode.depth,sourceNode.height)
 				updateTMDepth(afterSubtree,treemap2)
 				updateValues(afterSubtree)
-				updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2)
+				updatetreemap(afterSubtree,chartLayerDiffAfter,duration,treemap2,lid)
 				svgDiffAfter.selectAll("*").style("opacity",1)
 				dashedTMUpdate(afterSubtree,newnode,chartLayerDiffAfter,treemap1,changestate)
 	           
@@ -647,7 +661,7 @@
 
     	 
 }
-function bringtoFront(sourceNode,svg){
+function bringtoFront(sourceNode,svg,selector){
 	var list=[];
 	var lid=[];
 	var k=0;
@@ -655,14 +669,14 @@ function bringtoFront(sourceNode,svg){
 	list.forEach(function(f){
 		lid[k++]=f.id;
 	})
-	svg.selectAll("g.node").filter(function(d){
+	svg.selectAll(selector).filter(function(d){
 		if (lid.includes(d.id)){
 			d3.select(this).raise();
 		}
 	})
 }
 
-function updatetreemap(root,chartLayer,duration,treemap){
+function updatetreemap(root,chartLayer,duration,treemap,lid){
 	treemap(root)
 	var i=0;
 	//calcValues(root)
@@ -692,8 +706,16 @@ function updatetreemap(root,chartLayer,duration,treemap){
 	chartLayer
 	    .selectAll(".node rect")
 	    .transition()
-	    //.delay(function(d,i){ return i * 100 })
-	    .duration(duration)
+/*	    .delay(function(d,i){ 
+	    	if (d.id ==id)
+	    		return i * 50
+    		else
+    			return 0; })*/
+	    .duration(function(d,i){ 
+	    	if (lid.includes(d.id))
+	    		return duration
+    		else
+    			return 0;})
 	    .attr("x", function(d) { return d.x0 })
 	    .attr("y", function(d) { return d.y0  })
 	    .attr("width", function(d) { return d.x1 - d.x0 })
@@ -703,8 +725,13 @@ function updatetreemap(root,chartLayer,duration,treemap){
 	chartLayer
 	    .selectAll(".node text")    
 	    .transition()
-	   // .delay(function(d,i){ return i * 100 })
-	    .duration(duration)
+	    //.delay(function(d,i){ if (d.id ==id)return i * 50 else
+    		//	return 0;})
+	    .duration(function(d,i){ 
+	    	if (lid.includes(d.id))
+	    		return duration
+    		else
+    			return 0;})
 	    .text(function(d){return  d.data.name })
 	    .attr("y", "1.2em")
 	    .attr("x", "0.2em")
@@ -980,41 +1007,32 @@ function dashedTMUpdate(root,sourceNode,chartLayer,treemap,changestate){
 		}
 	    	
 }
-function removeTMnode(f,svg,duration){
-	if (typeof f.children!='undefined'){
-	   f.children.forEach(function(d){
-	   	//console.log(d)
-	     removeNode(d,svg)
-
-	 })
-
-	}else{
-		svg.selectAll('g.node')
+function removeTMnode(f,svg,duration,selector,callback){
+	var lid=[];
+	var k=0;
+	var list=[];
+	list=addToAdjacencyList(f,list)
+	list.forEach(function(f){
+		lid[k++]=f.id;
+	})
+		svg.selectAll(selector)
 		  .filter(function(d, i) {
-		  	//console.log(d)
-		    if (d.id == f.id){
-		    console.log(d)
+		    if (lid.includes(d.id)){
+		    
 		      return true;
 		    }else{
 		      return false;
 		    }
 		 }).style("opacity", 1.0)
 						.transition()
-						.duration(1000)
+						.duration(duration)
 						.style("opacity", 0.0)
+						.on("end", callback);
+	
+}
+function sleep(miliseconds) {
+   var currentTime = new Date().getTime();
 
-	 
-	}
-	svg.selectAll('g.node')
-		  .filter(function(d, i) {
-		    if (d.id == f.id){
-		   
-		      return true;
-		    }else{
-		      return false;
-		    }
-		 }).style("opacity", 1.0)
-						.transition()
-						.duration(1000)
-						.style("opacity", 0.0)
+   while (currentTime + miliseconds >= new Date().getTime()) {
+   }
 }

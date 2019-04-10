@@ -1,11 +1,13 @@
 var treemap;
+var sourceNode;
+var destNode;
+var newnode;
 function drawTree (data,selector1,selector2,compstate,changestate){
 	console.log(compstate)
 	console.log(changestate)
 	d3.select(selector1).selectAll("svg").remove();
 	d3.select(selector2).selectAll("svg").remove();
-	var sourceNode;
-	var destNode;
+
 	var adjacentNodes=[];
 
 	if (compstate=="Animation"){//draw a single svg and add animation functions
@@ -44,8 +46,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		});
 		root.y0 = 100;
 		root.x0 = height / 2;
-		var sourceNode;
-		var destNode;
+		//var sourceNode;
+		//var destNode;
 		updatetree(root,root,svg,duration,treemap)
 		numNodes=0;
 		var startanimation = document.getElementById('startbutton');
@@ -75,7 +77,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		 	 	
 		// answerinput.innerHTML = ""+sourceNode.data.name+"-"+ changestate;
 		 
-		 writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
+		// writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
 		startanimation.onclick = function(){
 
 			if (changestate=="move"){
@@ -87,19 +89,24 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				console.log(sourceNode)
 				console.log(rootC)
 				updateDepth(rootC,treemap)
-				duration=1000;
+				duration=1500;
 				 //updatetree(root,root,svg1,duration,treemap)
 				 updatetree(rootC,rootC,svg,duration,treemap)
 			}
 			if (changestate=="delete"){
-				removeNode(sourceNode,svg)
-				removelink(sourceNode,svg)
-				removedata(sourceNode,svg)
+				duration=1500;
+				removelink(sourceNode,svg,duration)
+				removeNode(sourceNode,svg,duration,function(){
+					
+					removedata(sourceNode);
+					updatetree(rootC,rootC,svg,duration,treemap)
+				})
+				//
 				console.log(rootC)
 				
 				//updatetree(root,root,svg1,duration,treemap)
-				duration=1000;
-				updatetree(rootC,rootC,svg,duration,treemap)
+				
+				//
 
 			}
 			if (changestate=="add"){
@@ -112,7 +119,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				  {
 				  	console.log(d)
 				    selected=d
-				    d3.select(this).raise();
+				  
 				    return true;
 				  }
 				  else
@@ -121,7 +128,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				
 				newnode=newNode(selected,newlabels[newindx],rootC,svg,treemap)
 				console.log(newnode)
-				duration=1000;
+				duration=1500;
 				updatetree(selected,root,svg,duration,treemap)
 
 			}
@@ -133,10 +140,14 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			duration=0;
 			if (changestate=="add"){
 
-				removeNode(newnode,svg)
+				removeNode(newnode,svg,duration)
 				removedata(newnode,svg)
-				removelink(newnode,svg)
+				removelink(newnode,svg,duration)
 			}
+			if (changestate=="delete"){
+				svg.selectAll("*").style("opacity",1);
+			}
+
 			updatetree(root,root,svg,duration,treemap)
 			document.getElementById("startbutton").disabled = false;
 		}
@@ -161,7 +172,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		var svg1 = d3.select(selector1).append("svg")
 		      .attr("width", width1 + margin.left + margin.right)
 		      .attr("height", height1 + margin.top + margin.bottom)
-		     .append('g').attr("transform","translate(" + width1 / 19 + "," + height1/8+ ")")
+		     .append('g').attr("transform","translate(" + width1 / 6 + "," + height1/8+ ")")
 		.append('g');
 
 		var containerWidth2 = +d3.select(selector2).style('width').slice(0, -2)
@@ -177,12 +188,11 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		var svg2 = d3.select(selector2).append("svg")
 		      .attr("width", width2 + margin.left + margin.right)
 		      .attr("height", height2 + margin.top + margin.bottom)
-		     .append('g').attr("transform","translate(" + width2 / 19 + "," + height2/8 + ")")
+		     .append('g').attr("transform","translate(" + width2 / 6 + "," + height2/8 + ")")
 		.append('g');
 
 		// declares a tree layout and assigns the size
-		treemap = d3.tree()
-		    .size([1.4*height1, width1]);
+		
 
 		//  assigns the data to a hierarchy using parent-child relationships
 
@@ -191,6 +201,24 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		});
 		root.y0 = 100;
 		root.x0 = height1 / 2;
+		var levelWidth = [1];
+		var childCount = function(level, n) {
+
+		  if(n.children && n.children.length > 0) {
+		    if(levelWidth.length <= level + 1) levelWidth.push(0);
+
+		    levelWidth[level+1] += n.children.length;
+		    n.children.forEach(function(d) {
+		      childCount(level + 1, d);
+		    });
+		  }
+		};
+		childCount(0, root);  
+		var newHeight = d3.max(levelWidth) * 30;
+		// declares a tree layout and assigns the size
+		var treemap = d3.tree()
+		    .size([width1,1.4*newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
+		
 		updatetree(root,root,svg1,duration,treemap)
 		console.log(root)
 		svg1.selectAll("*").style("opacity", 0);
@@ -205,10 +233,6 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		  var newindx=getRndInteger(0,newlabels.length-1)
 		  destNode=selectednodes[1];
 		  sourceNode=selectednodes[0];
-		  	 	
-		 // answerinput.innerHTML = ""+sourceNode.data.name+"-"+ changestate;
-		  
-		  writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
 		if (changestate=="move"){
 			console.log(destNode)
 			 addtochildren(destNode,sourceNode)
@@ -216,7 +240,16 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 svg1.selectAll("*").style("opacity", 1);
 			 updateDepth(rootC,treemap)
 			 //updatetree(root,root,svg1,duration,treemap)
-			 updatetree(rootC,rootC,svg2,duration,treemap)
+			 childCount(0, rootC);  
+			 newHeight = d3.max(levelWidth) * 30;
+
+			 if (newHeight>height1)
+					newHeight=height1-height1/8;
+			 // declares a tree layout and assigns the size
+			 var treemap1 = d3.tree()
+			     .size([width2,1.4*newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
+			 
+			 updatetree(rootC,rootC,svg2,duration,treemap1)
 
 		}
 		if (changestate=="delete"){
@@ -224,14 +257,30 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			removedata(sourceNode,svg2)
 			svg1.selectAll("*").style("opacity", 1);
 			//updatetree(root,root,svg1,duration,treemap)
-			updatetree(rootC,rootC,svg2,duration,treemap)
+			childCount(0, rootC);  
+			newHeight = d3.max(levelWidth) * 30;
+			if (newHeight>height2)
+					newHeight=height2-height2/8;
+			// declares a tree layout and assigns the size
+			var treemap1 = d3.tree()
+			    .size([width2,1.4*newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
+			
+			updatetree(rootC,rootC,svg2,duration,treemap1)
 
 		}
 		if (changestate=="add"){
 			 	svg1.selectAll("*").style("opacity", 1);
 				newnode=newNode(destNode,newlabels[newindx])
 				duration=0;
-				updatetree(rootC,rootC,svg2,duration,treemap)
+				childCount(0, rootC);  
+				newHeight = d3.max(levelWidth) * 30;
+				if (newHeight>height2)
+					newHeight=height2-height2/8;
+				// declares a tree layout and assigns the size
+				var treemap1 = d3.tree()
+				    .size([width2,1.4*newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
+				
+				updatetree(rootC,rootC,svg2,duration,treemap1)
 
 		}
 
@@ -250,8 +299,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		//  assigns the data to a hierarchy using parent-child relationships
 
 		
-		var sourceNode;
-		var destNode;
+		//var sourceNode;
+		//var destNode;
 	//	updatetree(root,root,svg,duration,treemap)
 		//	svg.selectAll("*").remove();
 		var	containerWidth = +d3.select("#viscontainerafter").style('width').slice(0, -2)
@@ -267,19 +316,39 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 var svg = d3.select("#viscontainerafter").append("svg")
 			      .attr("width", width + margin.left + margin.right)
 			      .attr("height", height + margin.top + margin.bottom)
-			     .append('g').attr("transform","translate(" + width /8 + "," + height/4 + ")")
+			     .append('g').attr("transform","translate(" + (width /19) + "," + height/6 + ")")
 			.append('g');
 			root = d3.hierarchy(data, function(d) {
 			  return d.children;
 			});
 			root.y0 = 100;
 			root.x0 = height / 2;
+			var levelWidth = [1];
+			var childCount = function(level, n) {
+
+			  if(n.children && n.children.length > 0) {
+			    if(levelWidth.length <= level + 1) levelWidth.push(0);
+
+			    levelWidth[level+1] += n.children.length;
+			    n.children.forEach(function(d) {
+			      childCount(level + 1, d);
+			    });
+			  }
+			};
+			childCount(0, root);  
+			var newHeight = d3.max(levelWidth) * 30;
 			// declares a tree layout and assigns the size
 			var treemap = d3.tree()
-			    .size([1.4*height, width]).separation(function separation(a, b) { return a.parent == b.parent ? 2 : 2; });
+			    .size([width,1.4*newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
 			var rootC;
 			rootC=clonetree(root,root.depth,root.height)
 			updatetree(rootC,rootC,svg,duration,treemap)
+			/*svg.selectAll("g.node").filter(function(d){
+				if (d.data.name=="WH")
+					destNode=d;
+				if (d.data.name=="B")
+					sourceNode=d;
+			})*/
 			svg.selectAll("*").remove();
 			 var tempData2 = treemap(rootC);
 			 excludedNodes = tempData2.descendants();
@@ -287,6 +356,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 numNodes=excludedNodes.length;
 			 var selectednodes=[];
 			 selectednodes=randomization(excludedNodes,numNodes)
+			 
 			 destNode=selectednodes[1];
 			 sourceNode=selectednodes[0];
 			 var beforeSubtree;
@@ -295,7 +365,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			  var newlabels=["W","X","Y","C","O","H","P","U"];
 			  var newindx=getRndInteger(0,newlabels.length-1) 	 	
 			 // answerinput.innerHTML = ""+sourceNode.data.name+"-"+ changestate;
-			  writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
+			//  writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
 			 var afterSubtree;
 			 var diffWidth = +d3.select("#beforediff").style('width').slice(0, -2)
 			
@@ -311,18 +381,22 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 var svgDiffBefore = d3.select("#beforediff").append("svg")
 			       .attr("width", diffWidth1 + margin.left + margin.right)
 			       .attr("height", diffheight1 + margin.top + margin.bottom)
-			      .append('g').attr("transform","translate(" + (-diffWidth1/19) + "," + diffheight/3 + ")")
+			      .append('g').attr("transform","translate(" + diffWidth1/10 + "," + diffheight/6 + ")")
 			 .append('g');
 
 			 var svgDiffAfter = d3.select("#afterdiff").append("svg")
 			       .attr("width", diffWidth1 + margin.left + margin.right)
 			       .attr("height", diffheight1 + margin.top + margin.bottom)
-			       .append('g').attr("transform","translate(" + (-diffWidth1/19) + "," + diffheight/3 + ")")
+			       .append('g').attr("transform","translate(" + diffWidth1/10 + "," + diffheight/6 + ")")
 			       .append('g');
 			      //
-			 var treemap1 = d3.tree()
-			     .size([diffheight1/1.3, diffWidth1/2]).separation(function separation(a, b) { return a.parent == b.parent ? 1 : 2; });;
-			 // declares a tree layout and assigns the size
+		      childCount(0, beforeSubtree);  
+		       newHeight = d3.max(levelWidth) * 10;
+		       if (newHeight>diffheight1)
+		      	newHeight=diffheight1-diffheight1/6;
+		      var treemap1 = d3.tree()
+		       			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
+		      // declares a tree layout and assigns the size
 			 var dashable=false;
 			if (changestate=="move"){
 				updateDepth(beforeSubtree,treemap1)
@@ -340,21 +414,39 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					{
 						
 						diV.style.position = "relative";
-						diV.style.left = (-diffWidth1/19 +d.x0-3)+'px';
-						diV.style.top = (diffheight/3 -30)+'px';
+						diV.style.left = (diffWidth1/10 +d.x0-3)+'px';
+						diV.style.top = (diffheight/6 -30)+'px';
 
 					}
 				})
 				dashedUpdate(beforeSubtree,sourceNode,svgDiffBefore,treemap1,changestate)
 				addtochildren(destNode,sourceNode)
-				
+				childCount(0, rootC); 
+				console.log(height); 
+				newHeight = d3.max(levelWidth) * 10;
+				console.log(newHeight);
+
+				if (newHeight>height)
+					newHeight=height-height/6;
+				console.log(newHeight);
+				treemap = d3.tree()
+					.size([width,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });;
+					 
 				 svg.selectAll("*").remove();
 				 updateDepth(rootC,treemap)
 				 updatetree(rootC,rootC,svg,duration,treemap)
 				 
 				 afterSubtree=clonetree(destNode,destNode.depth,destNode.height)
-				 beforeSubtree=trimSubtrees(afterSubtree,sourceNode)
-				 updateDepth(afterSubtree,treemap1)
+				 
+				 afterSubtree=trimSubtrees(afterSubtree,sourceNode)
+				 
+				 childCount(0, afterSubtree);
+				 newHeight = d3.max(levelWidth) * 10;
+				 if (newHeight>diffheight1)
+					newHeight=diffheight1-diffheight1/6;
+				 treemap1 = d3.tree()
+				 			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
+				updateDepth(afterSubtree,treemap1)		 
 				if (destNode.parent== null)
 					diV2.style.display='none';
 				 //afterSubtree=trimSubtrees(afterSubtree,sourceNode)
@@ -364,8 +456,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					{
 						
 						diV2.style.position = "relative";
-						diV2.style.left = (-diffWidth1/19 +d.x0-3)+'px';
-						diV2.style.top = (diffheight/3 -30)+'px';
+						diV2.style.left = (diffWidth1/10 +d.x0-3)+'px';
+						diV2.style.top = (diffheight/6 -30)+'px';
 
 					}
 				})
@@ -394,8 +486,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					{
 						
 						diV.style.position = "relative";
-						diV.style.left = (-diffWidth1/19 +d.x0-3)+'px';
-						diV.style.top = (diffheight/3 -30)+'px';
+						diV.style.left = (diffWidth1/10 +d.x0-3)+'px';
+						diV.style.top = (diffheight/6 -30)+'px';
 
 					}
 				})
@@ -404,6 +496,12 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				
 				afterSubtree=clonetree(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
 				//updatetree(beforeSubtree,beforeSubtree,svgDiffAfter,duration,treemap1)
+				 childCount(0, afterSubtree);
+				 newHeight = d3.max(levelWidth) * 10;
+				 if (newHeight>diffheight1)
+					newHeight=diffheight1-diffheight1/6;
+				 treemap1 = d3.tree()
+				 			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
 				updateDepth(afterSubtree,treemap1)
 				updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1)
 				svgDiffAfter.selectAll('g.node').filter(function(d){
@@ -411,8 +509,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					{
 						
 						diV2.style.position = "relative";
-						diV2.style.left = (-diffWidth1/19 +d.x0-3)+'px';
-						diV2.style.top = (diffheight/3 -30)+'px';
+						diV2.style.left = (diffWidth1/10 +d.x0-3)+'px';
+						diV2.style.top = (diffheight/6 -30)+'px';
 
 					}
 				})
@@ -428,6 +526,13 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					diV2.style.display='none';
 				}
 				beforeSubtree=clonetree(sourceNode,sourceNode.depth,sourceNode.height)
+				 childCount(0, beforeSubtree);
+				 newHeight = d3.max(levelWidth) * 10;
+				 if (newHeight>diffheight1)
+					newHeight=diffheight1-diffheight1/6;
+				 treemap1 = d3.tree()
+				 			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
+				
 				updateDepth(beforeSubtree,treemap1)
 				updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1)
 				svgDiffBefore.selectAll('g.node').filter(function(d){
@@ -435,8 +540,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					{
 						
 						diV.style.position = "relative";
-						diV.style.left = (-diffWidth1/19 +d.x0-3)+'px';
-						diV.style.top = (diffheight/3 -30)+'px';
+						diV.style.left = (diffWidth1/10 +d.x0-3)+'px';
+						diV.style.top = (diffheight/6 -30)+'px';
 
 					}
 				})
@@ -446,6 +551,13 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 
 				dashedUpdate(beforeSubtree,sourceNode,svgDiffBefore,treemap1,"beforeadd")
 				afterSubtree=clonetree(sourceNode,sourceNode.depth,sourceNode.height)
+				 childCount(0, afterSubtree);
+				 newHeight = d3.max(levelWidth) * 10;
+				 if (newHeight>diffheight1)
+					newHeight=diffheight1-diffheight1/6;
+				 treemap1 = d3.tree()
+				 			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
+				
 				updateDepth(afterSubtree,treemap1)
 				updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1)
 				svgDiffAfter.selectAll('g.node').filter(function(d){
@@ -453,8 +565,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					{
 						
 						diV2.style.position = "relative";
-						diV2.style.left = (-diffWidth1/19 +d.x0-3)+'px';
-						diV2.style.top = (diffheight/3 -30)+'px';
+						diV2.style.left = (diffWidth1/10 +d.x0-3)+'px';
+						diV2.style.top = (diffheight/6 -30)+'px';
 
 					}
 				})
@@ -465,8 +577,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 
 	}
 
-
-    }
+	
+}
      
 function updatetree(source,root,svg,duration,treemap){
 	var i=0;
@@ -543,7 +655,7 @@ function updatetree(source,root,svg,duration,treemap){
       });
 
     // Remove any exiting links
-    var linkExit = link.exit().
+   /* var linkExit = link.exit().
     	transition().
       duration(duration).
       attr('x1', function(d) {
@@ -558,7 +670,7 @@ function updatetree(source,root,svg,duration,treemap){
       attr('y2', function(d) {
       	return source.y;
       }).
-      remove();
+      remove();*/
 
   	// ### CIRCLES
 
@@ -610,16 +722,16 @@ function updatetree(source,root,svg,duration,treemap){
         });
 
     // Remove any exiting nodes
-    var nodeExit = node.exit().
+   /* var nodeExit = node.exit().
     	transition().
       duration(duration).
       attr("transform", function(d) {
       	return "translate(" + source.x + "," + source.y + ")";
       }).
-      remove();
+      remove();*/
 
     // On exit reduce the node circles size to 0
-    nodeExit.select('circle').attr('r', 0);
+    //nodeExit.select('circle').attr('r', 0);
     
     // Store the old positions for transition.
     nodes.forEach(function(d){
@@ -682,7 +794,9 @@ function clonetree(root, depth, height){
   }
 }
 function getRndInteger(min, max) {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  var diff = max - min,
+       rnd = Math.random();
+   return rnd !== 1? Math.floor((diff + 1) * rnd) + min : min + diff;
 }
 
 function addtochildren(d,f){
@@ -720,9 +834,9 @@ function addtochildren(d,f){
 function randomization(excludedNodes,numNodes){
 	var adjacentNodes=[];
 	var selectednodes=[];
-	var sourceNode=null;
+	//var sourceNode=null;
 	 SourceId=getRndInteger(2,numNodes);
-	// console.log(SourceId)
+	 console.log(SourceId)
 	// console.log(excludedNodes)
 	   excludedNodes.forEach(function(d){
 	     if (d.id==SourceId){
@@ -770,37 +884,30 @@ function addToAdjacencyList(sourceNode,adjacentNodes){
   return adjacentNodes;
 }
 
-function removeNode(f,svg){
-	 if (typeof f.children!='undefined'){
-	    f.children.forEach(function(d){
-	    	//console.log(d)
-	      removeNode(d,svg)
-
-	  })
-
-	 }else{
-	 	svg.selectAll('g.node')
-	 	  .filter(function(d, i) {
-	 	  	//console.log(d)
-	 	    if (d.id == f.id){
-	 	    console.log(d)
-	 	      return true;
-	 	    }else{
-	 	      return false;
-	 	    }
-	 	 }).remove();
-
-	  
-	 }
+function removeNode(f,svg,duration,callback){
+	 var lid=[];
+	 var list=[];
+	 var k=0;
+	 list=addToAdjacencyList(f,list)
+	 list.forEach(function(d){
+	 	lid[k++]=d.id;
+	 })
 	 svg.selectAll('g.node')
 	 	  .filter(function(d, i) {
-	 	    if (d.id == f.id){
-	 	   
+	 	    if (lid.includes(d.id)){
+	 	   	  var index = lid.indexOf(d.id);
+	 	   	  lid.splice(index, 1);
 	 	      return true;
 	 	    }else{
 	 	      return false;
 	 	    }
-	 	 }).remove();
+	 	 }).style("opacity", 1.0)
+				.transition()
+				.duration(duration)
+				.style("opacity", 0.0)
+				.on("end", callback);
+
+
 
 }
 function removedata(f){
@@ -816,12 +923,13 @@ function removedata(f){
          delete f.parent.children
          delete f.parent.data.children
          }
+         
 }
-function removelink(f,svg){
+function removelink(f,svg,duration){
   if (typeof f.children!='undefined'){
 	    f.children.forEach(function(d){
 	
-	      removelink(d,svg)
+	      removelink(d,svg,duration)
 
 	  })
 
@@ -834,7 +942,10 @@ function removelink(f,svg){
 	 	    }else{
 	 	      return false;
 	 	    }
-	 	 }).remove();
+	 	 }).style("opacity", 1.0)
+						.transition()
+						.duration(duration)
+						.style("opacity", 0.0);
 
 	  
 	 }
@@ -846,7 +957,10 @@ function removelink(f,svg){
 	 	    }else{
 	 	      return false;
 	 	    }
-	 	 }).remove();
+	 	 }).style("opacity", 1.0)
+						.transition()
+						.duration(duration)
+						.style("opacity", 0.0);
 
 }
 function trimSubtrees(subtree,sourceNode){
@@ -1098,3 +1212,4 @@ function dashedUpdate(root,sourceNode,svg,treemap,changestate){
 	    	
 	    	
 }
+

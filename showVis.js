@@ -31,7 +31,7 @@ function updateVis(selector1,selector2,compState,visState,changeState,dataState)
       }]
   };*/
 
- readTextFile("large1.json", function(text){
+ readTextFile(dataState+".json", function(text){
    var mediumdata = JSON.parse(text);
   //  var mediumdata = require('medium1.json');
     //console.log(medium1);

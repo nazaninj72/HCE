@@ -1,23 +1,59 @@
 <html>
 <head>
 	<title></title>
-	<script src="js/vendor/d3.min.js" type="text/javascript"></script>
-	<script type="text/javascript" src="js/vendor/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
-	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	<script src="https://d3js.org/d3.v4.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<link rel="stylesheet" href="styles.css">
-	<script type="text/javascript" src='visDrawer.js'></script>
+	
+</head>
+<script type="text/javascript" src='visDrawer.js'></script>
 	<script type="text/javascript" src='treemapDrawer.js'></script>
 	<script type="text/javascript" src='sunburstDrawer.js'></script>
 	<!--<script type="text/javascript" src="flare.json"></script>-->
 <script type="text/javascript" src='showVis.js'></script>
-</head>
+<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>	
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
 <body>
 
 
 	<div class ="container">
-			<!--visualizations go here-->
 			<script type="text/javascript">
+				var startime;
+				var endtime;
+				var config = {
+				  apiKey: "AIzaSyCDvpYTQwRRPDmC-w3Quq5nSMmwruYQSt0",
+				  authDomain: "hierarchical-269d0.firebaseapp.com",
+				  databaseURL: "https://hierarchical-269d0.firebaseio.com",
+				  projectId: "hierarchical-269d0",
+				  storageBucket: "hierarchical-269d0.appspot.com",
+				  messagingSenderId: "754209883401"
+				};
+				firebase.initializeApp(config);
+				
+				function writeUserInput(userId, session,ans,t) {
+				  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
+				    session: session,
+				    time: t,
+				    answer: ans
+				  }).then(function () {
+    					currentindx++;
+				 		var states=personSarray[currentindx].split(",");
+				 		compState=states[0];
+				 		console.log(compState)
+				 		visState=states[1];
+				 		changeState=states[2];
+				 		dataState=states[3];
+			 			sessionStorage.setItem('myArray', myArray);
+			 			localStorage.setItem('correctanswers',corrects)
+			 			queryString = "?para1=" + currentindx;
+			 			window.location.href = compState+".html" + queryString;
+  					});
+				}
 					var queryString = decodeURIComponent(window.location.search);
 				   
 				   	var currentStringindex=queryString.split("=")
@@ -27,6 +63,8 @@
 				   var myArray=[];
 				   	var compState,visState,changeState,dataState;
 			 		window.onload = function() {
+		 			var f=new Date();
+			 		startime=f.getTime();
 			 		myArray = sessionStorage.getItem('myArray');
 			 		console.log(myArray)
 			 		personSarray=myArray.split("DOT,")
@@ -42,68 +80,104 @@
 			 		
 			 		
 			 	}
-			 	function submitAnswer(){
-			 		if (currentindx+1 >= personSarray.length){
-			 			alert("Thank you for participating. Your session is over!")
-			 		}else{
-			 			alert("press ok to move to the next task")
-			 		}
-			 		currentindx++;
-			 		var states=personSarray[currentindx].split(",");
-			 		compState=states[0];
-			 		console.log(compState)
-			 		visState=states[1];
-			 		changeState=states[2];
-			 		dataState=states[3];
-			 	//	if (compState!="Sidebyside"){//should load next html page
-			 			var queryString = "?para1=" + currentindx;
-			 			 sessionStorage.setItem('myArray', myArray);
-			 			window.location.href = compState+".html" + queryString;
-			 			//window.open(comparisonType+".html", "_self");
-			 			
-			 		//}else{
-			 		//	updateVis("#viscontainer1","#viscontainer2",compState,visState,changeState////,dataState)
-			 	//	}
-			 		//updateVis("#viscontainer1","#viscontainer2","Sidebyside","tree","add","dataState")
-			 	}
+			 	 	function submitAnswer(){
+			 	 		
+			 	 		var empt =document.getElementById('label').value;
+			 		 	if (empt =="" || $('input[name=change]:checked').length <= 0)
+			 		 	{
+			 		 		if (empt ==""){
+			 		 		  $('#label').css('border-color', 'red'); 
+			 		 		  alert("Please enter node label");
+			 		 		}
+			 		 		else { 
+			 		 		   	$('#label').css('border-color', '');
+			 		 		}
+			 		 		if ($('input[name=change]:checked').length <= 0){
+			 		 				alert("Change type is not selected!");
+			 		 		}
+			 		 		
+			 		 		
+			 		 	}else {
+			 		 		var radioValue = $("input[name='change']:checked").val();
+			 		 		var textvalue = document.getElementById('label').value;
+			 		 		var node;
+					 		if (changeState=="add")
+					 			node=newnode.data.name;
+					 		else
+					 			node=sourceNode.data.name
+					 
+					 		var correctanswer=checkUserInput(radioValue,textvalue,node);
+					 		console.log(correctanswer)
+					 		var d = new Date();
+  							endtime = d.getTime();
+			 		 		corrects = localStorage.getItem('correctanswers');
+			 		 		if (correctanswer)
+			 		 			corrects++;
+			 		 		if (currentindx+1 >= personSarray.length){
+			 		 			alert("Thank you for participating. Your session is over! Total Number of correct answers:"+corrects)
+			 		 		}else{
+			 		 			alert("press ok to move to the next task")
+			 		 		}
+			 		 		var currentuser=localStorage.getItem('userid');
+					 		spentime=endtime-startime;
+					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime)
+			 		 		
+			 		 	}
+			 	 		
+			 	 	}
+			 	 	function checkUserInput(r,t,name)
+				 	{
+				 		console.log(r)
+				 		console.log(t)
+				 		console.log(sourceNode)
+					 	if (r==changeState && t ==name)
+					 		return true;
+					 	else
+					 		return false;
+				 		
+				 	}
 			</script>
-			<div id="beforesidebyside"> Before</div>
-			<div id="viscontainer1">
-				
+			<div class="headers">
+				<div id="beforesidebyside"> Before</div><div id ="aftersidebyside"> After</div>
 				
 			</div>
-				<div id ="aftersidebyside"> After</div>
-				<div id="viscontainer2">
-					
-				</div>
-		
-	
-		<div id="questionbar2"> 
-			<div class="questionbar" id="choices">
-				Please choose the node that you have detected to be moved, added, or removed:</br></br>
-				<input type="radio"  name="choice" value="first"/>
-				<label id="1choice">
-        			
-        		  </label>
 			
-				  <input type="radio" name="choice" value="second">
-				  <label id="2choice">
-        			
-        		  </label>
-        		
-  				
-				<input type="radio" name="choice" value="third"> 			
-					<label id="3choice">
-        			
-        		  </label>
-				<input type="radio" name="choice" value="fourth">
-				<label id="4choice">
-    			
-    		  	</label> 
+			<div id="viscontainer1">
+			</div>
+			
+			<div id="viscontainer2">
+			</div>
+		
+		
+			
+			   <div class="col-xs-2" id="labelbar2">
+			       <label for="ex1">Node:</label>
+			       <input class="form-control" id="label" type="text" input autocomplete="off">
+			     </div>
+			
+		 	<div class="questionbar" id="choices3">
+				<div id="changes">
+					
+					<input type="radio"  name="change" value="add" input autocomplete="off"/>
+						<label id="1choice">
+							added
+		    		  	</label></br>
+				  	<input type="radio" name="change" value="delete" input autocomplete="off">
+					  <label id="2choice">
+					  	deleted
+		    		  </label></br>
+					<input type="radio" name="change" value="move" input autocomplete="off"> 	
+						<label id="3choice">
+							moved
+		    		  	</label></br>
+				<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
 				</div>
-				<div id="submitbuttondiv">
-					<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
-				</div>
-		</div>
+				
+				
+				
+			</div> 
+			 
+		
+		
 	</div>
 </body>

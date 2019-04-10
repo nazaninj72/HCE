@@ -1,6 +1,11 @@
 <html>
 <head>
 	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	<script src="https://d3js.org/d3.v4.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 	<script type="text/javascript" src="js/vendor/jquery-2.1.4.min.js"></script>
@@ -9,13 +14,16 @@
 
 	<link rel="stylesheet" href="styles.css">
 </head>
-<script type="text/javascript" src='stateCheck.js'></script>
-<script type="text/javascript" src='medium1.js'></script>
 <script type="text/javascript" src='visDrawer.js'></script>
 <script type="text/javascript" src='treemapDrawer.js'></script>
 <!--<script type="text/javascript" src="flare.json"></script>-->
 <script type="text/javascript" src='sunburstDrawer.js'></script>
 <script type="text/javascript" src='showVis.js'></script>
+
+<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>	
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+
+
 <body>
 
 		<div class="container">
@@ -25,13 +33,47 @@
 		<div id="viscontainer">
 			
 			<script type="text/javascript">
-					 var queryString = decodeURIComponent(window.location.search);
+				var startime;
+				var endtime;
+				var config = {
+				  apiKey: "AIzaSyCDvpYTQwRRPDmC-w3Quq5nSMmwruYQSt0",
+				  authDomain: "hierarchical-269d0.firebaseapp.com",
+				  databaseURL: "https://hierarchical-269d0.firebaseio.com",
+				  projectId: "hierarchical-269d0",
+				  storageBucket: "hierarchical-269d0.appspot.com",
+				  messagingSenderId: "754209883401"
+				};
+				firebase.initializeApp(config);
+				
+				function writeUserInput(userId, session,ans,t) {
+				  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
+				    session: session,
+				    time: t,
+				    answer: ans
+				  }).then(function () {
+    					currentindx++;
+				 		var states=personSarray[currentindx].split(",");
+				 		compState=states[0];
+				 		console.log(compState)
+				 		visState=states[1];
+				 		changeState=states[2];
+				 		dataState=states[3];
+			 			sessionStorage.setItem('myArray', myArray);
+			 			localStorage.setItem('correctanswers',corrects)
+			 			queryString = "?para1=" + currentindx;
+			 			window.location.href = compState+".html" + queryString;
+  					});
+				}
+					var queryString = decodeURIComponent(window.location.search);
 				   	var currentStringindex=queryString.split("=")
 				   	var currentindx=parseInt(currentStringindex[1])
-				   var personSarray=[];
-				   var myArray=[];
+				   	var personSarray=[];
+				   	var myArray=[];
 				   	var compState,visState,changeState,dataState;
+				   
 				 	window.onload = function() {
+				 		var f=new Date();
+				 		startime=f.getTime();
 				 		myArray = sessionStorage.getItem('myArray');
 				 		console.log(myArray)
 				 		personSarray=myArray.split("DOT,")
@@ -42,65 +84,109 @@
 				 		changeState=states[2];
 				 		dataState=states[3];
 				 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
-				 		//updateVis("#viscontainer","#viscontainer","Animation","tree","move","small")
+				 		//updateVis("#viscontainer","#viscontainer","Animation","sunburst","move","small")
 
 
 				 	}
 				 	function submitAnswer(){
-				 		if (currentindx+1 >= personSarray.length){
-				 			alert("Thank you for participating. Your session is over!")
-				 		}else{
-				 			alert("press ok to move to the next task")
-				 		}
 				 		
-				 		currentindx++;
-				 		var states=personSarray[currentindx].split(",");
-				 		compState=states[0];
-				 		console.log(compState)
-				 		visState=states[1];
-				 		changeState=states[2];
-				 		dataState=states[3];
-				 		//if (compState!="Animation"){//should load next html page
-				 			
-				 			 sessionStorage.setItem('myArray', myArray);
-				 			var queryString = "?para1=" + currentindx;
-				 			window.location.href = compState+".html" + queryString;
-				 			//window.open(comparisonType+".html", "_self");
-
-
-				 	//	}else{
-				 			//updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
-				 		//}
-				 	//	updateVis("#viscontainer","#viscontainer","Animation","sunburst","add","small")
+				 		var empt =document.getElementById('label').value;
+					 	if (empt =="" || $('input[name=change]:checked').length <= 0)
+					 	{
+					 		if (empt ==""){
+					 		  $('#label').css('border-color', 'red'); 
+					 		  alert("Please enter node label");
+					 		}
+					 		else { 
+					 		   	$('#label').css('border-color', '');
+					 		}
+					 		if ($('input[name=change]:checked').length <= 0){
+					 				alert("Change type is not selected!");
+					 		}
+					 		
+					 		
+					 	}else {
+					 		var radioValue = $("input[name='change']:checked").val();
+			 		 		var textvalue = document.getElementById('label').value;
+			 		 		var node;
+					 		if (changeState=="add")
+					 			node=newnode.data.name;
+					 		else
+					 			node=sourceNode.data.name
+					 
+					 		var correctanswer=checkUserInput(radioValue,textvalue,node)
+					 		corrects = localStorage.getItem('correctanswers');
+					 		
+					 		 var d = new Date();
+  							endtime = d.getTime();
+					 		if (correctanswer)
+					 			corrects++;
+					 		if (currentindx+1 >= personSarray.length){
+					 			alert("Thank you for participating. Your session is over! Total Number of correct answers:"+corrects)
+					 		}else{
+					 			alert("press ok to move to the next task")
+					 		}
+					 		var currentuser=localStorage.getItem('userid');
+					 		
+					 		spentime=endtime-startime;
+					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime)
+					 		
+					 		
+					 	}
+				 		
+				 	}
+				 	function checkUserInput(r,t,name)
+				 	{
+				 		console.log(r)
+				 		console.log(t)
+				 		console.log(sourceNode)
+					 	if (r==changeState && t ==name)
+					 		return true;
+					 	else
+					 		return false;
 				 		
 				 	}
 			</script> 
 			
 		</div>
 			<div id="buttonsbar">
-				<input type="button" class ="animatebutton" id="startbutton" value="start" >
-	         	<input type="button" class ="animatebutton" id="resetbutton" value="reset">
+				<!-- <input type="button" class ="animatebutton"  value="start" >
+	         	<input type="button" class ="animatebutton"  value="reset"> -->
+	         	<div class ="animatebutton">
+	         	<button type="button" class="btn btn-basic btn-sm" id="startbutton">Start</button>
+	         	<button type="button" class="btn btn-basic btn-sm" id="resetbutton">Reset</button>
+	         	</div>
 			</div>
 		
 			<div class="questionbarAnim"> 
-				<div class="questionbar" id="choices">
-					Please choose the node that you have detected to be moved, added, or removed:</br></br>
-					<input type="radio"  name="choice" value="first"/>
-					<label id="1choice">
-		    		  </label>
-					  <input type="radio" name="choice" value="second">
-					  <label id="2choice">
-		    		  </label>
-					<input type="radio" name="choice" value="third"> 	
-						<label id="3choice">
-		    		  </label>
-					<input type="radio" name="choice" value="fourth">
-					<label id="4choice">
-				  </label> 
-				</div>
-				<div id="submitbuttondiv">
-					<input type="button" class ="submitbutton" id="submit" value="submit" onclick="submitAnswer();">
-				</div>
+				<form>
+				   <div class="col-xs-2">
+				       <label for="ex1">Node:</label>
+				       <input class="form-control" id="label" type="text" input autocomplete="off">
+				     </div>
+				 </form>
+			 	<div class="questionbar" id="choices">
+					<div id="changes">
+						
+						<input type="radio"  name="change" value="add" input autocomplete="off"/>
+							<label id="1choice">
+								added
+			    		  	</label></br>
+					  	<input type="radio" name="change" value="delete" input autocomplete="off">
+						  <label id="2choice">
+						  	deleted
+			    		  </label></br>
+						<input type="radio" name="change" value="move" input autocomplete="off"> 	
+							<label id="3choice">
+								moved
+			    		  	</label></br>
+					
+					</div>
+					 <div id="submitbuttondiv">
+					<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
+					</div> 
+				</div> 
+				 
 			</div>
 		</div>
 </body>
