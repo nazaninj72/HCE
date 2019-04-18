@@ -30,6 +30,17 @@ function updateVis(selector1,selector2,compState,visState,changeState,dataState)
       }, {"name": "Q", "size": 100},{"name": "R","size": 100}]
       }]
   };*/
+ /*var mediumdata= {"name": "root A", "children": [{
+         "name": "B",
+         "children": [{"name": "D", "size": 100
+        }, {"name": "E", "size": 100},{"name":"F","size":100}]
+      }, {
+         "name": "C",
+         "children": [{"name": "G", "size": 100}, {"name": "H", "size": 100}]
+      }]
+    };*/
+
+ 
 
  readTextFile(dataState+".json", function(text){
    var mediumdata = JSON.parse(text);

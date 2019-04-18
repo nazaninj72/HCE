@@ -20,8 +20,11 @@
 <script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
 <body>
 
-
-	<div class ="container">
+<div class="headers">
+				<div id="beforesidebyside"><h4>Before</h4> </div>
+				<div id ="aftersidebyside"><h4>After</h4> </div>
+			</div>
+	<div class ="container2">
 			<script type="text/javascript">
 				var startime;
 				var endtime;
@@ -35,25 +38,27 @@
 				};
 				firebase.initializeApp(config);
 				
-				function writeUserInput(userId, session,ans,t) {
-				  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
-				    session: session,
-				    time: t,
-				    answer: ans
-				  }).then(function () {
-    					currentindx++;
-				 		var states=personSarray[currentindx].split(",");
-				 		compState=states[0];
-				 		console.log(compState)
-				 		visState=states[1];
-				 		changeState=states[2];
-				 		dataState=states[3];
-			 			sessionStorage.setItem('myArray', myArray);
-			 			localStorage.setItem('correctanswers',corrects)
-			 			queryString = "?para1=" + currentindx;
-			 			window.location.href = compState+".html" + queryString;
-  					});
-				}
+					function writeUserInput(userId, session,ans,t,n,txt) {
+					  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
+					    session: session,
+					    time: t,
+					    result: ans,
+					    realnode:n,
+					    userAnswer:txt
+					  }).then(function () {
+							currentindx++;
+					 		var states=personSarray[currentindx].split(",");
+					 		compState=states[0];
+					 		console.log(compState)
+					 		visState=states[1];
+					 		changeState=states[2];
+					 		dataState=states[3];
+				 			sessionStorage.setItem('myArray', myArray);
+				 			localStorage.setItem('correctanswers',corrects)
+				 			queryString = "?para1=" + currentindx;
+				 			window.location.href = compState+".html" + queryString;
+							});
+					}
 					var queryString = decodeURIComponent(window.location.search);
 				   
 				   	var currentStringindex=queryString.split("=")
@@ -63,8 +68,9 @@
 				   var myArray=[];
 				   	var compState,visState,changeState,dataState;
 			 		window.onload = function() {
-		 			var f=new Date();
-			 		startime=f.getTime();
+		 			//var f=new Date();
+			 		//startime=f.getTime();
+			 		t0=performance.now();
 			 		myArray = sessionStorage.getItem('myArray');
 			 		console.log(myArray)
 			 		personSarray=myArray.split("DOT,")
@@ -80,84 +86,130 @@
 			 		
 			 		
 			 	}
-			 	 	function submitAnswer(){
-			 	 		
-			 	 		var empt =document.getElementById('label').value;
-			 		 	if (empt =="" || $('input[name=change]:checked').length <= 0)
-			 		 	{
-			 		 		if (empt ==""){
-			 		 		  $('#label').css('border-color', 'red'); 
-			 		 		  alert("Please enter node label");
-			 		 		}
-			 		 		else { 
-			 		 		   	$('#label').css('border-color', '');
-			 		 		}
-			 		 		if ($('input[name=change]:checked').length <= 0){
-			 		 				alert("Change type is not selected!");
-			 		 		}
-			 		 		
-			 		 		
-			 		 	}else {
-			 		 		var radioValue = $("input[name='change']:checked").val();
-			 		 		var textvalue = document.getElementById('label').value;
-			 		 		var node;
-					 		if (changeState=="add")
-					 			node=newnode.data.name;
-					 		else
-					 			node=sourceNode.data.name
-					 
-					 		var correctanswer=checkUserInput(radioValue,textvalue,node);
-					 		console.log(correctanswer)
-					 		var d = new Date();
-  							endtime = d.getTime();
-			 		 		corrects = localStorage.getItem('correctanswers');
-			 		 		if (correctanswer)
-			 		 			corrects++;
-			 		 		if (currentindx+1 >= personSarray.length){
-			 		 			alert("Thank you for participating. Your session is over! Total Number of correct answers:"+corrects)
-			 		 		}else{
-			 		 			alert("press ok to move to the next task")
-			 		 		}
-			 		 		var currentuser=localStorage.getItem('userid');
-					 		spentime=endtime-startime;
-					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime)
-			 		 		
-			 		 	}
-			 	 		
-			 	 	}
-			 	 	function checkUserInput(r,t,name)
+				function submitAnswer(){
+			 		var radioValue = $("input[name='change']:checked").val();
+		 		 	var textvalue = document.getElementById('label').value;
+		 		 	var letters = /^[0-9a-zA-Z]+$/;
+
+				 	if (textvalue =="" || $('input[name=change]:checked').length <= 0||!textvalue.match(letters))
+				 	{
+				 		if (textvalue ==""){
+				 		  $('#label').css('border-color', 'red'); 
+				 		  alert("Please enter node label");
+				 		}
+				 		else { 
+				 		   	$('#label').css('border-color', '');
+				 		}
+				 		if(!textvalue.match(letters))
+						{
+							$('#label').css('border-color', 'red'); 
+				 		  	alert('Please input alphanumeric characters only');
+				 		  	document.getElementById("label").value="";
+						}
+						else { 
+				 		   	$('#label').css('border-color', '');
+				 		}
+				 		if ($('input[name=change]:checked').length <= 0){
+				 				alert("Change type is not selected!");
+				 		}
+				 		
+				 		
+				 	}else {
+				 		
+		 		 		var node;
+
+				 		if (changeState=="add")
+				 		{
+
+				 			node=newnode.data.name;
+				 		}
+				 		else
+				 			node=sourceNode.data.name
+				 
+				 		var correctanswer=checkUserInput(radioValue,textvalue,node)
+				 		corrects = localStorage.getItem('correctanswers');
+				 		t1 = performance.now();
+				 		// var d = new Date();
+							//endtime = d.getTime();
+				 		if (correctanswer)
+				 			corrects++;
+				 		if (currentindx+1 >= personSarray.length){
+				 			alert("Thank you for participating. Your session is over! Total Number of correct answers:"+corrects)
+				 		}else{
+				 			alert("press ok to move to the next task")
+				 		}
+				 		var currentuser=localStorage.getItem('userid');
+				 		
+				 		//spentime=endtime-startime;
+				 		spentime=t1-t0;
+				 
+				 		alert(spentime)
+
+				 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue)
+				 		
+				 		
+				 	}
+				 		
+				 	}
+				 	function checkUserInput(r,t,name)
 				 	{
 				 		console.log(r)
 				 		console.log(t)
-				 		console.log(sourceNode)
-					 	if (r==changeState && t ==name)
+					 	if (r==changeState && t.toLowerCase() ==name.toLowerCase())
+					 	{
+					 		alert("correct!")
 					 		return true;
+					 	}	
 					 	else
 					 		return false;
+					 	
 				 		
 				 	}
+			
 			</script>
-			<div class="headers">
-				<div id="beforesidebyside"> Before</div><div id ="aftersidebyside"> After</div>
-				
-			</div>
+			
 			
 			<div id="viscontainer1">
 			</div>
 			
 			<div id="viscontainer2">
 			</div>
-		
-		
+		<div class="questionbar"> 
+			<div id="textpart">
+				<div class="col-xs-2">
+			       <label for="ex1">Node:</label>
+			       <input class="form-control" id="label" type="text" input autocomplete="off">
+				</div>
+			</div>
 			
+		 	<div class="choices2">
+
+					<input type="radio"  name="change" value="add" input autocomplete="off"/>
+						<label id="1choice">
+							added
+		    		  	</label></br>
+				  	<input type="radio" name="change" value="delete" input autocomplete="off">
+					  <label id="2choice">
+					  	deleted
+		    		  </label></br>
+					<input type="radio" name="change" value="move" input autocomplete="off"> 	
+						<label id="3choice">
+							moved
+		    		  	</label></br>
+				 <div id="submitbuttondiv">
+				<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
+				</div> 
+			</div> 
+			 
+		</div>
+		
+			<!-- 
 			   <div class="col-xs-2" id="labelbar2">
 			       <label for="ex1">Node:</label>
 			       <input class="form-control" id="label" type="text" input autocomplete="off">
 			     </div>
 			
-		 	<div class="questionbar" id="choices3">
-				<div id="changes">
-					
+		 	<div id="choices3">	
 					<input type="radio"  name="change" value="add" input autocomplete="off"/>
 						<label id="1choice">
 							added
@@ -171,11 +223,11 @@
 							moved
 		    		  	</label></br>
 				<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
-				</div>
+		
 				
 				
 				
-			</div> 
+			</div>  -->
 			 
 		
 		

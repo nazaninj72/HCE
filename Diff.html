@@ -14,17 +14,17 @@
 	<script type="text/javascript" src='treemapDrawer.js'></script>
 	<script type="text/javascript" src='sunburstDrawer.js'></script>
 	<!--<script type="text/javascript" src="flare.json"></script>-->
-<script type="text/javascript" src='showVis.js'></script>
+	<script type="text/javascript" src='showVis.js'></script>
 
-<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>	
-<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+	<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>	
+	<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
 </head>
 <body>
 <div id="Sstartdots"></div>
 <div id="Startdots2"></div>
 	<div class ="container">
-
-		<div id="DiffDescription"> <h3>Right panel shows the current visualization. Left panel shows the before and after changes in the visualization.</h3> </div>
+		<br>
+		<div id="DiffDescription"> <h4>Right panel shows the current visualization. Left panel shows the before and after changes in the visualization.</h4> </div><br><br>
 			<!--visualizations go here-->
 			<script type="text/javascript">
 
@@ -40,11 +40,13 @@
 				};
 				firebase.initializeApp(config);
 				
-				function writeUserInput(userId, session,ans,t) {
+				function writeUserInput(userId, session,ans,t,n,txt) {
 				  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
 				    session: session,
 				    time: t,
-				    answer: ans
+				    result: ans,
+				    realnode:n,
+				    userAnswer:txt
 				  }).then(function () {
 						currentindx++;
 				 		var states=personSarray[currentindx].split(",");
@@ -68,8 +70,9 @@
 		   	    var myArray=[];
 		   	   	var compState,visState,changeState,dataState;
 			 	window.onload = function() {
-			 		var f=new Date();
-				 		startime=f.getTime();
+			 		//var f=new Date();
+				 	//	startime=f.getTime();
+				 	t0=performance.now();
  			 		 myArray= sessionStorage.getItem('myArray');
  			 		console.log(myArray)
  			 		personSarray=myArray.split("DOT,")
@@ -84,18 +87,29 @@
  			 			document.getElementById('Startdots2').style.display='none';
  			 		}
  			 		updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
-			 //updateVis("#viscontainerafter","#viscontainerafter","Diff","sunburst","delete","small")
+			 		//updateVis("#viscontainerafter","#viscontainerafter","Diff","sunburst","delete","large")
 			 	}
-			 	function submitAnswer(){
-				 		
-				 		var empt =document.getElementById('label').value;
-					 	if (empt =="" || $('input[name=change]:checked').length <= 0)
+				function submitAnswer(){
+				 		var radioValue = $("input[name='change']:checked").val();
+			 		 	var textvalue = document.getElementById('label').value;
+			 		 	var letters = /^[0-9a-zA-Z]+$/;
+
+					 	if (textvalue =="" || $('input[name=change]:checked').length <= 0||!textvalue.match(letters))
 					 	{
-					 		if (empt ==""){
+					 		if (textvalue ==""){
 					 		  $('#label').css('border-color', 'red'); 
 					 		  alert("Please enter node label");
 					 		}
 					 		else { 
+					 		   	$('#label').css('border-color', '');
+					 		}
+					 		if(!textvalue.match(letters))
+							{
+								$('#label').css('border-color', 'red'); 
+					 		  	alert('Please input alphanumeric characters only');
+					 		  	document.getElementById("label").value="";
+							}
+							else { 
 					 		   	$('#label').css('border-color', '');
 					 		}
 					 		if ($('input[name=change]:checked').length <= 0){
@@ -104,19 +118,22 @@
 					 		
 					 		
 					 	}else {
-					 		var radioValue = $("input[name='change']:checked").val();
-					 		var textvalue = document.getElementById('label').value;
-					 		var node;
+					 		
+			 		 		var node;
+
 					 		if (changeState=="add")
+					 		{
+
 					 			node=newnode.data.name;
+					 		}
 					 		else
 					 			node=sourceNode.data.name
 					 
-					 		var correctanswer=checkUserInput(radioValue,textvalue,node);
-					 		console.log(correctanswer)
-					 		var d = new Date();
-  							endtime = d.getTime();
+					 		var correctanswer=checkUserInput(radioValue,textvalue,node)
 					 		corrects = localStorage.getItem('correctanswers');
+					 		t1 = performance.now();
+					 		// var d = new Date();
+  							//endtime = d.getTime();
 					 		if (correctanswer)
 					 			corrects++;
 					 		if (currentindx+1 >= personSarray.length){
@@ -125,8 +142,14 @@
 					 			alert("press ok to move to the next task")
 					 		}
 					 		var currentuser=localStorage.getItem('userid');
-					 		spentime=endtime-startime;
-					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime)
+					 		
+					 		//spentime=endtime-startime;
+					 		spentime=t1-t0;
+					 		alert(spentime)
+
+					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue)
+					 		
+					 		
 					 	}
 				 		
 				 	}
@@ -134,55 +157,61 @@
 				 	{
 				 		console.log(r)
 				 		console.log(t)
-				 		console.log(sourceNode)
-					 	if (r==changeState && t ==name)
+					 	if (r==changeState && t.toLowerCase() ==name.toLowerCase())
+					 	{
+					 		alert("correct!")
 					 		return true;
+					 	}	
 					 	else
 					 		return false;
+					 	
 				 		
 				 	}
 
-
 			</script>
-			<div id ="currentvis"> Current Visualization</div>
-			<div id ="beforesmalldiff"> Before</div>
-			<div id ="aftersmalldiff"> After</div>
-			<div id="viscontainerafter">	
+			<div class="headers">
+				<div id ="currentvis"><h4>Current Visualization</h4>
+				</div>
+				<div id ="beforesmalldiff"><h4>Before</h4> </div>
+				<div id ="aftersmalldiff"> <h4>After</h4> </div>
 			</div>
-			<div id="diffshow">
-				
-				<div id="beforediff"><div id="startdots"></div></div>
-				
-				<div id="afterdiff"><div id="startdots2"></div></div>
-				 
+			<div class="diffcontainer">
+				<div id="viscontainerafter">	
+				</div>
+					<div id="beforediff"><div id="startdots"></div></div>
+					<div id="afterdiff"><div id="startdots2"></div></div>
 			</div>
+			
+			 <div class="questionbar2"> 
+			<div id="textpart">
+				<div class="col-xs-2">
+			       <label for="ex1">Node:</label>
+			       <input class="form-control" id="label" type="text" input autocomplete="off">
+				</div>
+			</div>
+			
+		 	<div class="choices3">
+
+					<input type="radio"  name="change" value="add" input autocomplete="off"/>
+						<label id="1choice">
+							added
+		    		  	</label></br>
+				  	<input type="radio" name="change" value="delete" input autocomplete="off">
+					  <label id="2choice">
+					  	deleted
+		    		  </label></br>
+					<input type="radio" name="change" value="move" input autocomplete="off"> 	
+						<label id="3choice">
+							moved
+		    		  	</label></br>
+				 <div id="submitbuttondiv">
+				<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
+				</div> 
+			</div> 
 			 
-				 	   <div class="col-xs-2" id="labelbar">
-				 	       <label for="ex1">Node:</label>
-				 	       <input class="form-control" id="label" type="text" input autocomplete="off">
-				 	     </div>
+		</div>
+				 	  
 				 	
-				  	<div class="questionbar" id="choices2">
-				 		<div id="changes">
-				 			
-				 			<input type="radio"  name="change" value="add" input autocomplete="off"/>
-				 				<label id="1choice">
-				 					added
-				     		  	</label></br>
-				 		  	<input type="radio" name="change" value="delete" input autocomplete="off">
-				 			  <label id="2choice">
-				 			  	deleted
-				     		  </label></br>
-				 			<input type="radio" name="change" value="move" input autocomplete="off"> 	
-				 				<label id="3choice">
-				 					moved
-				     		  	</label></br>
-				 		<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
-				 		</div>
-				 		
-				 	
-				 	</div> 
-			</div>
-	
-	
+				  
+	</div>
 </body>

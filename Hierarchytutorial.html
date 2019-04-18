@@ -2,10 +2,37 @@
 <html>
 <head>
 	<title>This is the tutorial</title>
+	<link rel="stylesheet" href="tutstyles.css">
 </head>
 <body>
 
-	<p>Welcome to the tutorial of hierarchical data! Please come back later!</p>
+	<p>Welcome to the tutorial of hierarchical data!</p>
+	<div class="upperdescription">
+		<h2> Hierarchical data:</h2>
+		<p class="description"> 
+
+		Hirarchical data is defined as a set of entities that are related to each other by ranking principle. A hierarchy has a root entity that all other entities are descendents of this root. A root has at least one child entity and other child entities can have at least one or zero child.
+		</p>
+		<p class="description">An entity which comes below another is a child node to the entity above. Similarly, an entity which comes above another is a parent node to the node below. For example: in an employee hierarchy a CEO can be referred to as the root of all the employees which have at least one child entity as a manager (e.g., project manager,..) </p>
+		<p class="description"> Hierarchical data can be shown using <em> trees, treemaps and sunburst diagrams</em>.	
+		</p>
+		<h3>Tree:</h3>	
+		<div class="photopart">
+			
+			 <img src="tutorial\tree3.jpg" alt="Cinque Terre" width="350" height="250">
+		</div>
+		<p class="description"> Above you see a visualization of tree. The root of the tree is named as "root A" and it has two children named "B" and "C" recpectively where each of these child nodes also have children. ("D", "E" and "F" are children of "B" and "G", "H" are chidlren of "C")</em>.	
+		</p>
+		<h3>Treemap:</h3>
+		<p class="description">
+		Treemap visualizes entities in the form of nested rectangles. Each branch (parent node and its children) is given a rectangle, which is then tiled with smaller rectangles representing sub-branches (children). The area of the rectangles are defined as the data that represent each entity. In our design, hierarchical data is only represented with  nodes and their relationship with parents or children. Hence, the area of the rectangles are calculated based on the number of children of each branch. See below example: 
+		</p>
+		<div class="photopart">
+			
+			 <img src="tutorial\treemap.jpg" alt="Cinque Terre" width="450" height="350">
+		</div>
+	</div>
+
 
 </body>
 </html>

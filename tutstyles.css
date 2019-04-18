@@ -1,0 +1,14 @@
+body {
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 10pt;
+    color: #767676;
+}
+.upperdescription{
+	width: 730px;
+	vertical-align: top;
+	align-items: center;
+}
+.photopart{
+	width: 730px;
+	vertical-align: top;
+}

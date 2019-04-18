@@ -45,13 +45,17 @@
 				};
 				firebase.initializeApp(config);
 				
-				function writeUserInput(userId, session,ans,t) {
+				function writeUserInput(userId, session,ans,t,n,txt,startclicks,resetclicks) {
 				  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
 				    session: session,
 				    time: t,
-				    answer: ans
+				    result: ans,
+				    realnode:n,
+				    userAnswer:txt,
+				    clickedonstart:startclicks,
+				    clickedonreset:resetclicks
 				  }).then(function () {
-    					currentindx++;
+						currentindx++;
 				 		var states=personSarray[currentindx].split(",");
 				 		compState=states[0];
 				 		console.log(compState)
@@ -62,7 +66,7 @@
 			 			localStorage.setItem('correctanswers',corrects)
 			 			queryString = "?para1=" + currentindx;
 			 			window.location.href = compState+".html" + queryString;
-  					});
+						});
 				}
 					var queryString = decodeURIComponent(window.location.search);
 				   	var currentStringindex=queryString.split("=")
@@ -72,8 +76,9 @@
 				   	var compState,visState,changeState,dataState;
 				   
 				 	window.onload = function() {
-				 		var f=new Date();
-				 		startime=f.getTime();
+				 		//var f=new Date();
+				 		//startime=f.getTime();
+				 		t0 = performance.now();
 				 		myArray = sessionStorage.getItem('myArray');
 				 		console.log(myArray)
 				 		personSarray=myArray.split("DOT,")
@@ -84,20 +89,31 @@
 				 		changeState=states[2];
 				 		dataState=states[3];
 				 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
-				 		//updateVis("#viscontainer","#viscontainer","Animation","sunburst","move","small")
+				 		//updateVis("#viscontainer","#viscontainer","Animation","treemap","move","small")
 
 
 				 	}
-				 	function submitAnswer(){
-				 		
-				 		var empt =document.getElementById('label').value;
-					 	if (empt =="" || $('input[name=change]:checked').length <= 0)
+				function submitAnswer(){
+				 		var radioValue = $("input[name='change']:checked").val();
+			 		 	var textvalue = document.getElementById('label').value;
+			 		 	var letters = /^[0-9a-zA-Z]+$/;
+
+					 	if (textvalue =="" || $('input[name=change]:checked').length <= 0||!textvalue.match(letters))
 					 	{
-					 		if (empt ==""){
+					 		if (textvalue ==""){
 					 		  $('#label').css('border-color', 'red'); 
 					 		  alert("Please enter node label");
 					 		}
 					 		else { 
+					 		   	$('#label').css('border-color', '');
+					 		}
+					 		if(!textvalue.match(letters))
+							{
+								$('#label').css('border-color', 'red'); 
+					 		  	alert('Please input alphanumeric characters only');
+					 		  	document.getElementById("label").value="";
+							}
+							else { 
 					 		   	$('#label').css('border-color', '');
 					 		}
 					 		if ($('input[name=change]:checked').length <= 0){
@@ -106,19 +122,22 @@
 					 		
 					 		
 					 	}else {
-					 		var radioValue = $("input[name='change']:checked").val();
-			 		 		var textvalue = document.getElementById('label').value;
+					 		
 			 		 		var node;
+
 					 		if (changeState=="add")
+					 		{
+
 					 			node=newnode.data.name;
+					 		}
 					 		else
 					 			node=sourceNode.data.name
 					 
 					 		var correctanswer=checkUserInput(radioValue,textvalue,node)
 					 		corrects = localStorage.getItem('correctanswers');
-					 		
-					 		 var d = new Date();
-  							endtime = d.getTime();
+					 		t1 = performance.now();
+					 		// var d = new Date();
+  							//endtime = d.getTime();
 					 		if (correctanswer)
 					 			corrects++;
 					 		if (currentindx+1 >= personSarray.length){
@@ -128,8 +147,13 @@
 					 		}
 					 		var currentuser=localStorage.getItem('userid');
 					 		
-					 		spentime=endtime-startime;
-					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime)
+					 		//spentime=endtime-startime;
+					 		spentime=t1-t0;
+					 		
+
+					 		alert(spentime)
+
+					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,clickedonstart,clickedonstart)
 					 		
 					 		
 					 	}
@@ -139,11 +163,14 @@
 				 	{
 				 		console.log(r)
 				 		console.log(t)
-				 		console.log(sourceNode)
-					 	if (r==changeState && t ==name)
+					 	if (r==changeState && t.toLowerCase() ==name.toLowerCase())
+					 	{
+					 		alert("correct!")
 					 		return true;
+					 	}	
 					 	else
 					 		return false;
+					 	
 				 		
 				 	}
 			</script> 
@@ -159,15 +186,16 @@
 			</div>
 		
 			<div class="questionbarAnim"> 
-				<form>
-				   <div class="col-xs-2">
+				<div id="textpart">
+					<div class="col-xs-2">
 				       <label for="ex1">Node:</label>
 				       <input class="form-control" id="label" type="text" input autocomplete="off">
-				     </div>
-				 </form>
-			 	<div class="questionbar" id="choices">
-					<div id="changes">
-						
+				       <li class="rq">*Enter numbers and alphabets only.</li>
+					</div>
+				</div>
+				
+			 	<div class="choices">
+
 						<input type="radio"  name="change" value="add" input autocomplete="off"/>
 							<label id="1choice">
 								added
@@ -180,8 +208,6 @@
 							<label id="3choice">
 								moved
 			    		  	</label></br>
-					
-					</div>
 					 <div id="submitbuttondiv">
 					<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
 					</div> 

@@ -1,3 +1,5 @@
+ var clickedonstart=0;
+var clickedonreset=0;
  function drawTreeMap (data,selector1,selector2,compstate,changestate){
 
 			if (compstate=="Animation"){
@@ -70,6 +72,8 @@
 		 		var newindx=getRndInteger(0,newlabels.length-1)
 		 		//writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
 				startanimation.onclick = function(){
+					document.getElementById("resetbutton").disabled = false;
+					clickedonstart++;
 					if (changestate=="move"){
 
 						movetochildrenTM(destNode,sourceNode)
@@ -144,21 +148,32 @@
 
 				var resetanimation = document.getElementById('resetbutton');
 				resetanimation.onclick = function(){
+					clickedonreset++;
 					var lid=[];
 					duration=0;
 					if (changestate=="add"){
 						//newnode.parent.value-=newnode.value;
 						
-						removeNode(newnode,svg)
+						svg.selectAll('g.node')
+					 	  .filter(function(d, i) {
+					 	    if (d.id==newnode.id){
+					 	   	
+					 	      return true;
+					 	    }else{
+					 	      return false;
+					 	    }
+					 	 }).remove();
 						removedata(newnode,svg)
-						removelink(newnode,svg)
-						updateValues(root)
+						updateValues(rootC)
+						//updatetreemap(rootC,chartLayer,duration,treemap,lid)
 
 					}
-					updatetreemap(root,chartLayer,duration,treemap,lid)
+						updatetreemap(root,chartLayer,duration,treemap,lid)
+					
+					
 					svg.selectAll("*").style("opacity",1)
 					document.getElementById("startbutton").disabled = false;
-
+					document.getElementById("resetbutton").disabled = true;
 			}
 		}
 
@@ -268,6 +283,14 @@
 		}
 		if (compstate=="Diff"){
 
+		   document.getElementById("viscontainerafter").style.left="5%";
+		   document.getElementById("beforediff").style.left="10%";
+		   document.getElementById("afterdiff").style.left="10%";
+		   document.getElementById("beforediff").style.top="8%";
+		   document.getElementById("afterdiff").style.top="8%";
+		   document.getElementById("viscontainerafter").style.top="8%";
+		   document.getElementById("currentvis").style.left="15%";
+		   
 	       var duration=0;
 	       var width,height
 		   var chartWidth, chartHeight

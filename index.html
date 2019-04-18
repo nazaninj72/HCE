@@ -59,7 +59,6 @@ function shuffle (N){
 	while (i--) {
 
 	    j = Math.floor(Math.random() * (i+1));
-
 	    // swap randomly chosen element with current element
 	    temp = array[i];
 	    array[i] = array[j];
@@ -107,6 +106,8 @@ function callTask(){
 	var correctsum=0;
 	 sessionStorage.setItem('myArray', personList);
 	 localStorage.setItem("correctanswers", correctsum);
+	 var Uinputs=[];
+	 localStorage.setItem("allUserInputs",Uinputs)
 
 }
 

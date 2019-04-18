@@ -7,6 +7,13 @@
     padding: 0px;
     position: relative;
 }
+.container2 {
+    width: 100%;
+    height: 95%;
+    margin: 0px;
+    padding: 0px;
+    position: relative;
+}
 #warningbar{
   background-color: white;
   width:100%;
@@ -46,95 +53,127 @@
 }
 .headers{
   width: 100%;
-  height: 20px;
+  height: 3%;
   align-items: center;
   justify-content: center;
   position: relative;
-}
-#beforesidebyside{
-  position: relative;
-  float: left;
-  top: 100%;
-  left: 25%;
- 
-}
-#aftersidebyside{
-position: relative;
-float: right;
-top: 100%;
-right: 25%;
 
 }
+#beforesidebyside{
+  width: 100px;
+ height: 30px;
+ border-width: 1px;
+ border-style: solid;
+ float: left;
+ border-color: #080808;
+ align-items: center;
+ justify-content: center;
+ position: relative;
+  left: 23%;
+  top: 90%;
+ 
+}
+#beforesidebyside h4{
+   margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+  }
+#aftersidebyside{
+   width: 100px;
+ height: 30px;
+ border-width: 1px;
+ border-style: solid;
+ border-color: #080808;
+ align-items: center;
+ justify-content: center;
+position: relative;
+float: right;
+right: 23%;
+top: 90%;
+}
+#aftersidebyside h4{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
 #currentvis{
-  width: 12%;
-  height: 20px;
+  width: 10%;
+  height: 30px;
   border-width: 1px;
   border-style: solid;
   border-color: #080808;
   align-items: center;
   justify-content: center;
   position: relative;
-  left: 20%;
+  float: left;
+  left: 10%;
 }
 
-#questionbar {
-  width: 95%;
-  height: 20%;
-  margin: 0px;
-  padding: 0px;
+#currentvis h4{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+#beforesmalldiff h4{
+   margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+  }
+#aftersmalldiff h4{
+ margin: 0;
+position: absolute;
+top: 50%;
+left: 50%;
+margin-right: -50%;
+transform: translate(-50%, -50%)
+}
+#beforesmalldiff{
+ width: 5%;
+ height: 30px;
+ border-width: 1px;
+ border-style: solid;
+ float: left;
+ border-color: #080808;
+ align-items: center;
+ justify-content: center;
+ position: relative;
+ left: 40%;
+
+}
+#aftersmalldiff{
+  width:5%;
+  height: 30px;
   border-width:1px;  
   border-style:solid;
-  border-color:#080808; 
+  float: left;
+  border-color:#080808;
   align-items: center;
   justify-content: center;
   position: relative;
-}
-#questionbar2 {
-  width: 99%;
-  height: 16%;
-  margin: 0px;
-  padding: 0px;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  top: 60%;
-  left: 2%;
+  left: 60%;
 }
 .questionbar2 {
-    width: 95%;
+ width: 95%;
   height: 17%;
   margin: 0px;
-  padding: 0px;
-  border-width:1px;  
-  border-style:solid;
-  border-color:#080808; 
+  padding: 0px; 
   align-items: center;
   justify-content: center;
   position: relative;
-  top: 76%;
-}
-#questionbar {
-  width: 95%;
-  height: 20%;
-  margin: 0px;
-  padding: 0px;
-  border-width:1px;  
-  border-style:solid;
-  border-color:#080808; 
-    align-items: center;
-    justify-content: center;
-    position: relative;
-}
-
-#questionparagraph{
-  width: 100%;
-  height: 50%;
-  margin-bottom: 200px;
-  padding: 0px;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-
+  bottom: 14%;
+  left: 2%;
 }
 #buttonsbar{
   width: 95%;
@@ -158,124 +197,99 @@ right: 25%;
   left: 2%;
 
 }
+.questionbar{
+  width: 95%;
+  height: 17%;
+  margin: 0px;
+  padding: 0px; 
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  top: 5%;
+  left: 2%;
+}
 .animatebutton{
 
   text-align: center;
   position: relative;
 }
+.diffcontainer{
+  width: 100%;
+  height: 75%;
+  position: relative;
+}
 #viscontainerafter{
-  width: 55%;
+  width: 40%;
   height:75%;
-  float: left;
   margin: 0px; 
   padding: 0px;
  /*  border-width:3px;
   border-color:#080808;
   border-style:solid;*/
-  position: absolute;
-
-}
-#diffshow{
-  width: 43%;
-  height: 75%;
-  float: right;
-  margin: 0px;
-  padding: 0px;
-  position: absolute;
-  left: 55%;
-}
-#beforesmalldiff{
- width: 4%;
- height: 20px;
- border-width: 1px;
- border-style: solid;
- float: left;
- border-color: #080808;
- align-items: center;
- justify-content: center;
- position: relative;
- left: 65%;
- bottom: 3%;
-
-}
-#aftersmalldiff{
-  width:3%;
-  height: 20px;
-  border-width:1px;  
-  border-style:solid;
-  float: right;
-  border-color:#080808;
-  align-items: center;
-  justify-content: center;
   position: relative;
-  right: 10%;
-  bottom: 3%;
-}
-#beforediff{
-  width: 49%;
-  height: 95%;
   float: left;
-  /*border-width:3px;  
-  border-style:solid;
-  border-color:#080808;*/
+  left: 0;
+}
+#DiffDescription{
+  width: 95%;
+  height: 30px;
+  position: relative;
+}
 
-  position: absolute;
-  left: 5%;
-  top: 8%;
+#beforediff{
+  width: 25%;
+  height: 75%;
+ position: relative;
+ float: left;
 
 }
 #afterdiff{
-  width: 49%;
-  height: 95%;
-  float: right;
-   /* border-width:3px;  
-  border-style:solid;
-  border-color:#080808;*/
-  position: absolute;
-  left: 55%;
-  top: 8%;
-
+  width: 25%;
+  height: 75%;
+  position: relative;
+  float: left;
 }
-#choices{
-  width: 70%;
+.col-xs-2 {
+     width: 150px;
+}
+#textpart{
+   width: 150px;
   height:30%;
-  position: absolute;
-    left:0;
-    z-index:1;
-    top: 18%;
-    left: 18%;
-
-}
-#choices2{
-  width: 100px;
-  height:20%;
   position: relative;
     z-index:1;
-    top: 70%;
-    left: 18%;
 
 }
-#choices3{
-  width: 100px;
-  height:20%;
+.choices{
+width: 100px;
+ height:20%;
   position: relative;
-    left:0;
-    z-index:1;
-    top: 5%;
-    left: 18%;
-
+  float: right;
+  bottom: 20%;
+  right: 87%;
 }
-#labelbar{
+.choices2{
+width: 100px;
+ height:20%;
   position: relative;
-  top: 75%;
-  right: 4%;
+  float: right;
+  right: 87%;
+  top: 7%;
 }
-#labelbar2{
+.choices3{
+width: 100px;
+ height:20%;
   position: relative;
-  top: 10%;
- 
+  float: right;
+  right: 87%;
+  bottom: 20%;
 }
-
+li {list-style-type: none;
+font-size: 16pt;
+}
+.rq {
+color: #FF0000;
+font-size: 10pt;
+}
 #submitbuttondiv{
   width: 30%;
   height: 10%;
@@ -316,7 +330,7 @@ li a:hover:not(.active) {
   stroke-width: 1px;
 }
 
-.node text { font: 9px sans-serif; }
+.node text { font: 16px sans-serif; }
 
 
 .link {
@@ -338,7 +352,7 @@ rect {
 text {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   fill: black;
-  font-size: 9px;
+  font-size: 12px;
 }
 
 body {
