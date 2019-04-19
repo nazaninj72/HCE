@@ -20,8 +20,8 @@
 	<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
 </head>
 <body>
-<div id="Sstartdots"></div>
-<div id="Startdots2"></div>
+<!-- <div id="Sstartdots"></div>
+<div id="Startdots2"></div> -->
 	<div class ="container">
 		<br>
 		<div id="DiffDescription"> <h4>Right panel shows the current visualization. Left panel shows the before and after changes in the visualization.</h4> </div><br><br>
@@ -87,7 +87,7 @@
  			 			document.getElementById('Startdots2').style.display='none';
  			 		}
  			 		updateVis("#viscontainer","#viscontainer",compState,visState,changeState,dataState)
-			 		//updateVis("#viscontainerafter","#viscontainerafter","Diff","sunburst","delete","large")
+			 		//updateVis("#viscontainerafter","#viscontainerafter","Diff","sunburst","move","large")
 			 	}
 				function submitAnswer(){
 				 		var radioValue = $("input[name='change']:checked").val();
