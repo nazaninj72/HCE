@@ -113,8 +113,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			}
 			if (changestate=="add"){
 				var selected=null;
-				console.log(destNode)
-				updatetree(root,root,svg,duration,treemap)
+				//console.log(destNode)
+			
 				svg.selectAll("g.node").filter(function(d){
 
 				  if (d.id==destNode.id)
