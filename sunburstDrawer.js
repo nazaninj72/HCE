@@ -259,8 +259,8 @@ var rootC=null;
   if (compstate=="Diff"){
     var lid=[];
     lid[0]=-1;
-    document.getElementById('startdots').style.display='none';
-    document.getElementById('startdots2').style.display='none';
+   // document.getElementById('startdots').style.display='none';
+   // document.getElementById('startdots2').style.display='none';
         var containerWidth = +d3.select("#viscontainerafter").style('width').slice(0, -2)
         var containerHeight = +d3.select("#viscontainerafter").style('height').slice(0, -2)
         var margin = {top: 40, right: 90, bottom: 50, left: 90},
@@ -282,7 +282,6 @@ var rootC=null;
       var root = d3.hierarchy(data)
         .sum(function (d) { return d.size});
       partition(root);
-      console.log(partition(root))
       node = root
       update(root,0,svg,partition,lid)
       var rootC=null;
@@ -296,10 +295,10 @@ var rootC=null;
       console.log(excludedNodes)
       var selectednodes=[]
       selectednodes=randomization(excludedNodes,numNodes)
-     /* svg.selectAll("g").filter(function(d){
+      /*svg.selectAll("g").filter(function(d){
         if (d.data.name=="B")
           sourceNode=d;
-        if (d.data.name=="GR")
+        if (d.data.name=="WH")
           destNode=d;
       })*/
       destNode=selectednodes[1];
@@ -335,17 +334,16 @@ var rootC=null;
                 radius1 = Math.min(diffWidth1/1.35, diffheight1/1.35);
              else
               radius1 = Math.min(diffWidth1/2.1, diffheight1/2.1);
-        
+       var diV = document.getElementById('startdots');
+        var diV2 = document.getElementById('startdots2');
       var partition1 = d3.partition()
           .size([2 * Math.PI, radius1]);
       beforeSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
       updateValues(beforeSubtree)
-     // partition(beforeSubtree)
       updateSunDepth(beforeSubtree)
       update(beforeSubtree,0,svgDiffBefore,partition1,lid)
       if (changestate=="move"){
-        var diV = document.getElementById('Sstartdots');
-        var diV2 = document.getElementById('Startdots2');
+       
         if (sourceNode.parent.parent== null)
         {
           diV.style.display='none';
@@ -357,11 +355,9 @@ var rootC=null;
           diV2.style.display='none';
          
         }
-       radius2 = Math.min(diffWidth1, diffheight1);
-        
-        var partition2 = d3.partition()
-          .size([2 * Math.PI, radius2]);
+       
         update(beforeSubtree,0,svgDiffBefore,partition1,lid)
+        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore)
         dashedSunUpdate(beforeSubtree,sourceNode,svgDiffBefore,partition1,changestate)
         svgDiffBefore.selectAll('g').filter(function(d){ 
           if (d.id==rootC.id)
@@ -380,8 +376,10 @@ var rootC=null;
         updateValues(rootC)
         svg.selectAll("*").remove()
         update(rootC,0,svg,partition,lid)
+        resizeSunburst(rootC,width,height,svg)
         afterSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
         update(afterSubtree,0,svgDiffAfter,partition1,lid)
+        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter)
         dashedSunUpdate(afterSubtree,sourceNode,svgDiffAfter,partition1,changestate)
        /* svgDiffAfter.selectAll('g').filter(function(d){ 
           if (d.id==sourceNode.parent.id)
@@ -398,31 +396,78 @@ var rootC=null;
             diV2.style.top = (Y-60)+'px';
           }
         })*/
-        transferarcs(sourceNode,svgDiffAfter,XC,YC)
-        svg.selectAll('g').filter(function(d){
-          console.log("d")
-          console.log(d)
-          console.log("d.y1")
-          console.log(d.y1)
+         svgDiffAfter.selectAll('g').filter(function(d){ 
+          if (d.id==rootC.id)
+          {
+            console.log(d)
+          XC=arc.centroid(d)[0];
+          YC=arc.centroid(d)[1];
           
+        }})
+        transferarcs(sourceNode,svgDiffAfter,XC,YC)
+        var maxy=0;
+        var miny=1000;
+        svgDiffBefore.selectAll('g').filter(function(d){
+         
+          if(d3.select(this).style("opacity") != 0){
+
+            if (maxy<d.y1)
+            {
+              maxy=d.y1;
+            }
+            if (miny>d.y0){
+              miny=d.y0;
+            }
+          }
+
         })
+         var maxy2=0;
+        var miny2=1000;
+        svgDiffAfter.selectAll('g').filter(function(d){
+         
+          if(d3.select(this).style("opacity") != 0){
+
+            if (maxy2<d.y1)
+            {
+              maxy2=d.y1;
+            }
+            if (miny2>d.y0){
+              miny2=d.y0;
+            }
+          }
+
+        })
+          
+        svgDiffAfter.selectAll('g').filter(function(d){
+                
+                 if (d.id==sourceNode.id)
+                 {
+                   diV.style.position = "relative";
+                   diV.style.left =(diffWidth/2 )+'px';
+                   diV.style.top = (diffheight/2-(maxy-miny) -40)+'px';
+
+
+                   diV2.style.position = "relative";
+                   diV2.style.left = diffWidth/2+'px';
+                   diV2.style.top =(diffheight/2-(maxy2-miny2)-40)+'px';
+                 }
+         })
+     
       }
+
       if(changestate=="add"){
-        radius2 = Math.min(diffWidth1, diffheight1);
+       
         
-        var partition2 = d3.partition()
-          .size([2 * Math.PI, radius2]);
-         var diV = document.getElementById('Sstartdots');
-         var diV2 = document.getElementById('Startdots2');
          if (sourceNode.parent== null)
          {
            diV.style.display='none';
            diV2.style.display='none';
          }
         beforeSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
-       //updateSunDepth(beforeSubtree)
+        updateSunDepth(beforeSubtree)
         svgDiffBefore.selectAll("*").remove()
         update(beforeSubtree,0,svgDiffBefore,partition1,lid)
+        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore)
         dashedSunUpdate(beforeSubtree,sourceNode,svgDiffBefore,partition1,changestate)
         svgDiffBefore.selectAll('g').filter(function(d){ 
           if (d.id==rootC.id)
@@ -460,9 +505,12 @@ var rootC=null;
         updateValues(rootC)
         svg.selectAll("*").remove()
         update(rootC,0,svg,partition,lid)
+        resizeSunburst(rootC,width,height,svg)
+
         afterSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
-        //updateSunDepth(afterSubtree)
+        updateSunDepth(afterSubtree)
         update(afterSubtree,0,svgDiffAfter,partition1,lid)
+        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter)
         dashedSunUpdate(afterSubtree,newnode,svgDiffAfter,partition1,changestate)
         var nid=newnode.id;
         svgDiffAfter.selectAll('g').filter(function(d){ 
@@ -490,25 +538,63 @@ var rootC=null;
 
           }
         })*/
+
+         svgDiffAfter.selectAll('g').filter(function(d){ 
+          if (d.id==rootC.id)
+          {
+            console.log(d)
+          XC=arc.centroid(d)[0];
+          YC=arc.centroid(d)[1];
+          
+        }})
          transferarcs(newnode,svgDiffAfter,XC,YC)
+         var maxy=0;
+         var miny=1000;
+         svgDiffBefore.selectAll('g').filter(function(d){
+          
+           if(d3.select(this).style("opacity") != 0){
+
+             if (maxy<d.y1)
+             {
+               maxy=d.y1;
+             }
+             if (miny>d.y0){
+               miny=d.y0;
+             }
+           }
+
+         })
+           
+         svgDiffAfter.selectAll('g').filter(function(d){
+                 
+                  if (d.id==sourceNode.id)
+                  {
+                    diV.style.position = "relative";
+                    diV.style.left =(diffWidth/2 )+'px';
+                    diV.style.top = (diffheight/2-Math.abs(d.y1-d.y0) -40)+'px';
+
+
+                    diV2.style.position = "relative";
+                    diV2.style.left = diffWidth/2+'px';
+                    diV2.style.top =(diffheight/2-(maxy-miny)-40)+'px';
+                  }
+          })
       }
       if (changestate=="delete"){
+        diV2 = document.getElementById('startdots2');
          beforeSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
-          var diV = document.getElementById('Sstartdots');
-          var diV2 = document.getElementById('Startdots2');
+        
           if (sourceNode.parent.parent== null)
           {
             diV.style.display='none';
             diV2.style.display='none';
           }
-        radius2 = Math.min(diffWidth1, diffheight1);
         
-        var partition2 = d3.partition()
-          .size([2 * Math.PI, radius2]);
         svgDiffBefore.selectAll("*").remove()
         updateSunDepth(beforeSubtree)
         updateValues(beforeSubtree)
         update(beforeSubtree,0,svgDiffBefore,partition1,lid)
+        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore)
         dashedSunUpdate(beforeSubtree,sourceNode,svgDiffBefore,partition1,changestate)
        /* svgDiffBefore.selectAll('g').filter(function(d){
          
@@ -533,31 +619,74 @@ var rootC=null;
           
         }})
         transferarcs(sourceNode,svgDiffBefore,XC,YC)
+        var maxy=0;
+        var miny=1000;
+        svgDiffBefore.selectAll('g').filter(function(d){
+         
+          if(d3.select(this).style("opacity") != 0){
+
+            if (maxy<d.y1)
+            {
+              maxy=d.y1;
+            }
+            if (miny>d.y0){
+              miny=d.y0;
+            }
+          }
+
+        })
+               
+       
+
+
         removedata(sourceNode,svg)
         updateSunDepth(rootC)
         updateValues(rootC)
         svg.selectAll("*").remove();
         update(rootC,0,svg,partition,lid)
+        resizeSunburst(rootC,width,height,svg)
+      
         afterSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
         updateSunDepth(afterSubtree)
         updateValues(afterSubtree)
         update(afterSubtree,0,svgDiffAfter,partition1,lid)
+        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter)
         dashedSunUpdate(afterSubtree,sourceNode,svgDiffAfter,partition1,changestate)
-        /*svgDiffAfter.selectAll('g').filter(function(d){
-         
-          if (d.id==sourceNode.parent.id)
+        
+        svgDiffAfter.selectAll('g').filter(function(d){ 
+          if (d.id==rootC.id)
           {
-            diV2 = document.getElementById('Startdots2');
-            var rect=d3.select(this)._groups[0][0].getBoundingClientRect()
-            console.log(d3.select(this)._groups[0][0].getBoundingClientRect())
-            diV2.style.position = "absolute";
-            diV2.style.left =(rect.x+arc.centroid(d)[0])+'px';
-            diV2.style.top = (rect.y+arc.centroid(d)[1]-60)+'px';
-            
-
-          }
-        })*/
+            console.log(d)
+          XC=arc.centroid(d)[0];
+          YC=arc.centroid(d)[1];
+          
+        }})
         transferarcs(sourceNode.parent,svgDiffAfter,XC,YC)
+  
+      
+      
+        
+        x0indeg=radians_to_degrees(sourceNode.parent.x0)  
+        x1indeg=radians_to_degrees(sourceNode.parent.x1)
+        //if (((x0indeg>=0 && x0indeg<=180) && (x1indeg>=0 && x1indeg<=180))||((x0indeg>180 && x0indeg<360 ) && (x1indeg>180 && x1indeg<360)) )
+        //{
+         
+       // }
+       svgDiffAfter.selectAll('g').filter(function(d){
+               
+                if (d.id==sourceNode.parent.id)
+                {
+                  diV2.style.position = "relative";
+                  diV2.style.left =(diffWidth/2 )+'px';
+                  diV2.style.top = (diffheight/2-Math.abs(d.y1-d.y0) -70)+'px';
+
+
+                  diV.style.position = "relative";
+                  diV.style.left = diffWidth/2+'px';
+                  diV.style.top =(diffheight/2-(maxy-miny)-20)+'px';
+                }
+        })
+
       }
 
   }
@@ -603,7 +732,7 @@ var rootC=null;
      a.centroid = arc.centroid(b);
      //b.opacity = (b.x1 - b.x0) > 0.01 ? 0 : 0;
      //console.log(b.data.name + " x1:" + b.x1 + " x0:" + b.x0);
-     return "translate(" + arc.centroid(b) + ")rotate(" + b.textAngle + ")";
+     return "translate(" + arc.centroid(b)  + ")";
    }
    return tween;
  }
@@ -787,32 +916,67 @@ function moveback(d,f,indx){
 }
 
 function transferarcs(sourceNode,svg,XC,YC){
-          var transids=[];
-        var transnodes=[];
-        var k=0;
-        transnodes=addToAdjacencyList(sourceNode,transnodes)
-         transnodes.forEach(function(f){
-        transids[k++]=f.id;
-           })
-         if (sourceNode.parent){
-          svg.selectAll('g').filter(function(d){ 
-          
-            if (d.id==sourceNode.parent.id)
-            {
-              X1= arc.centroid(d)[0];
-              Y1=arc.centroid(d)[1];
-                return true;
-              }else
-                return false;
-              }).attr("transform","translate(" + (XC -X1 ) + "," + (YC-Y1) + ")")
-         }
-        
+      var transids=[];
+      var transnodes=[];
+      var k=0;
+      transnodes=addToAdjacencyList(sourceNode,transnodes)
+       transnodes.forEach(function(f){
+      transids[k++]=f.id;
+         })
+       if (sourceNode.parent){
         svg.selectAll('g').filter(function(d){ 
-          if (transids.includes(d.id))
+        
+          if (d.id==sourceNode.parent.id)
           {
-            return true;
-          }else
-            return false;
-        }).attr("transform","translate(" + (XC -X1 ) + "," + (YC-Y1) + ")")
+            X1 = arc.centroid(d)[0];
+            Y1 = arc.centroid(d)[1];
+              return true;
+            }else
+              return false;
+            }).attr("transform","translate(" + (XC -X1 ) + "," + (YC-Y1) + ")")
+       }
+      
+      svg.selectAll('g').filter(function(d){ 
+        if (transids.includes(d.id))
+        {
+          return true;
+        }else
+          return false;
+      }).attr("transform","translate(" + (XC -X1 ) + "," + (YC-Y1) + ")")
 
-        }
+}
+function resizeSunburst(root,w,h,svg){
+  console.log("w")
+  console.log(w)
+  console.log("h")
+  console.log(h)  
+  var allnodes=root.descendants();
+  var maxy=0;
+  var k=0;
+  var lid=[];
+  allnodes.forEach(function(d){
+    if (maxy<d.y1){
+      maxy=d.y1;
+    }
+
+  })
+  console.log("maxy")
+  console.log(maxy)
+  if ((2*maxy)> w ||(2*maxy) > h){
+    
+    svg.selectAll("*").remove()
+    radius2 =  Math.min(w/2.5, h/2.5);
+  
+    partition2 = d3.partition()
+      .size([2 * Math.PI, radius2]);
+      update(root,0,svg,partition2,lid)
+     // dashedSunUpdate(root,sourceNode,svg,partition2,changestate)
+     $("text").css("font-size", "10px");
+
+  }
+}
+function radians_to_degrees(radians)
+{
+  var pi = Math.PI;
+  return radians * (180/pi);
+}
