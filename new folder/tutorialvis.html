@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<style>
+
+.node circle {
+  fill: blue;
+  stroke: yellow;
+  stroke-width: 10px;
+  border-radius: 50px;
+}
+
+.node text {
+  font: 16px sans-serif;
+  font-weight: bold;
+}
+
+.link {
+  fill: none;
+  stroke: purple;
+  stroke-width: 6px;
+}
+
+</style>
+
+<body>
+	<script type="text/javascript">
+	 var sampledata= {"name": "root A", "children": [{
+         "name": "B",
+         "children": [{"name": "D", "size": 100
+        }, {"name": "E", "size": 100},{"name":"F","size":100}]
+      }, {
+         "name": "C",
+         "children": [{"name": "G", "size": 100}, {"name": "H", "size": 100}]
+      }]
+  	};
+
+
+  	var i = 0;
+  	var numNodes;
+  	var adjacentNodes=[];
+  	var containerWidth = +d3.select("body").style('width').slice(0, -2)
+  	var containerHeight = +d3.select("body").style('height').slice(0, -2)
+  	var panSpeed = 200;
+  	var panBoundary = 20;  
+  	// set the dimensions and margins of the diagram
+  	var margin = {top: 40, right: 90, bottom: 50, left: 90},
+  	    width = containerWidth - margin.left - margin.right,
+  	    height = containerHeight - margin.top - margin.bottom,
+  	    center = [height / 2, width / 2],
+  	    focus = center;
+
+  	var svg = d3.select("body").append("svg")
+  	      .attr("width", width + margin.left + margin.right)
+  	      .attr("height", height + margin.top + margin.bottom)
+  	           
+  	     // attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+  	     .append('g').attr("transform","translate(" + containerWidth / 4 + "," + height/8 + ")")
+  	.append('g');
+
+  	// declares a tree layout and assigns the size
+  	var treemap = d3.tree()
+  	    .size([2*height, width]);
+
+  	//  assigns the data to a hierarchy using parent-child relationships
+
+  	root = d3.hierarchy(sampledata, function(d) {
+  	  return d.children;
+  	});
+  	root.y0 = 100;
+  	root.x0 = height / 2;
+  	//var sourceNode;
+  	//var destNode;
+  	updatetree(root,root,svg,0,treemap)
+  	function updatetree(source,root,svg,duration,treemap){
+  		 var treeData = treemap(root);
+      var nodes = treeData.descendants(),
+      	links = treeData.descendants().slice(1);
+
+      // Normalize for fixed-depth.
+      nodes.forEach(function(d){
+      	d.y = d.depth * 50
+      });
+
+
+
+      // ### LINKS
+
+      // Update the links...
+      var link = svg.selectAll('line.link').
+      	data(links, function(d) {
+        	return d.id;
+        });
+
+      // Enter any new links at the parent's previous position.
+      var linkEnter = link.enter().
+      	append('line').
+        attr("class", "link").
+        attr("stroke-width", 2).
+        attr('x1', function(d) {
+        	return source.x0;
+        }).
+        attr('y1', function(d) {
+        	return source.y0;
+        }).
+        attr('x2', function(d) {
+        	return source.x0;
+        }).
+        attr('y2', function(d) {
+        	return source.y0;
+        });
+        
+      var linkUpdate = linkEnter.merge(link);
+      
+      linkUpdate.transition().
+      	duration(duration).
+        attr('x1', function(d) {
+        	return d.parent.x;
+        }).
+        attr('y1', function(d) {
+        	return d.parent.y;
+        }).
+        attr('x2', function(d) {
+        	return d.x;
+        }).
+        attr('y2', function(d) {
+        	return d.y;
+        });
+
+      // Transition back to the parent element position
+      linkUpdate.transition().
+      	duration(duration).
+        attr('x1', function(d) {
+        	return d.parent.x;
+        }).
+        attr('y1', function(d) {
+        	return d.parent.y;
+        }).
+        attr('x2', function(d) {
+        	return d.x;
+        }).
+        attr('y2', function(d) {
+        	return d.y;
+        });
+
+      // Remove any exiting links
+     /* var linkExit = link.exit().
+      	transition().
+        duration(duration).
+        attr('x1', function(d) {
+        	return source.x;
+        }).
+        attr('y1', function(d) {
+        	return source.y;
+        }).
+        attr('x2', function(d) {
+        	return source.x;
+        }).
+        attr('y2', function(d) {
+        	return source.y;
+        }).
+        remove();*/
+
+    	// ### CIRCLES
+
+      // Update the nodes...
+      var node = svg.selectAll('g.node')
+      	.data(nodes, function(d) {
+        	return d.id || (d.id = ++i);
+        });
+
+      // Enter any new modes at the parent's previous position.
+      var nodeEnter = node.enter().
+        append('g').
+        attr('class', 'node').
+        attr("transform", function(d) {
+          return "translate(" + source.x0 + "," + source.y0 + ")";
+        })
+
+      // Add Circle for the nodes
+
+
+
+      nodeEnter.append('circle').
+      	attr('class', 'node').
+        attr('r', 15).
+        style("fill", function(d) {
+        	return "#f6e8c3";
+        });
+
+        nodeEnter.append("text")
+          .attr("dy", ".50em")
+          .style("text-anchor", "middle")
+          .text(function(d) { return d.data.name; });
+      // Update
+      var nodeUpdate = nodeEnter.merge(node);
+
+      // Transition to the proper position for the node
+      nodeUpdate.transition().
+      	duration(duration).
+        attr("transform", function(d) {
+        	return "translate(" + d.x + "," + d.y + ")";
+      	});
+
+      // Update the node attributes and style
+     	 nodeUpdate.select('circle.node').
+      attr('class', 'node').
+          attr('r', 15).
+          style("fill", function(d) {
+            return "#f6e8c3";
+          });
+
+      // Remove any exiting nodes
+     /* var nodeExit = node.exit().
+      	transition().
+        duration(duration).
+        attr("transform", function(d) {
+        	return "translate(" + source.x + "," + source.y + ")";
+        }).
+        remove();*/
+
+      // On exit reduce the node circles size to 0
+      //nodeExit.select('circle').attr('r', 0);
+      
+      // Store the old positions for transition.
+      nodes.forEach(function(d){
+        d.x0 = d.x;
+        d.y0 = d.y;
+      });
+  }
+  
+
+
+
+	</script>
+	 
+
+</body>
+</html>
