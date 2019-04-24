@@ -47,25 +47,9 @@ function writeUserData() {
     callTask();
   });*/
 }
-function shuffle (N){
-		var array=[];
-	for (var i=0; i<N;i++){
-	    array[i]=i;
-	}
-	var i = array.length,
-	    j = 0,
-	    temp;
-
-	while (i--) {
-
-	    j = Math.floor(Math.random() * (i+1));
-	    // swap randomly chosen element with current element
-	    temp = array[i];
-	    array[i] = array[j];
-	    array[j] = temp;
-
-	}
-	return array;
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
+  return array;
 }
 var userids=[];
 var uindx=0;
@@ -87,7 +71,7 @@ function callTask(){
 	var editedend=personList[personList.length-1].split("DOT");
 	personList[personList.length-1]=editedend[0];
 	console.log(personList)
-	//personList=["Diff,sunburst,move,smallDOT","Animation,tree,add,smallDOT","Diff,tree,move,smallDOT","Diff,treemap,delete,smallDOT","SidebySide,tree,delete,smallDOT","Animation,sunburst,move,smallDOT","Diff,sunburst,delete,smallDOT","Animation,treemap,add,smallDOT","SidebySide,sunburst,move,smallDOT","Animation,treemap,delete,smallDOT","Diff,sunburst,move,smallDOT","Diff,treemap,add,smallDOT","SidebySide,sunburst,add,smallDOT","Animation,tree,move,small"]	
+	warmupset=["Animation,tree,add,sampleDOT","SidebySide,tree,move,sampleDOT","Diff,tree,delete,sampleDOT","Animation,treemap,move,sampleDOT","SidebySide,treemap,add,sampleDOT","Diff,treemap,delete,sampleDOT","Animation,sunburst,delete,sampleDOT","SidebySide,sunburst,add,sampleDOT","Diff,sunburst,move,sampleDOT"]	
 	//personxlist=calcList(dict);	
 	//var variables=personxlist[currentindex].split(",");
 	//localStorage.myArrData=JSON.stringify(personX.list);
@@ -98,16 +82,21 @@ function callTask(){
 	//window.location.href = comparisonType+".html" + queryString;
 	//window.open(comparisonType+".html", "_self");
 	// sessionStorage.setItem('myArray', personxlist);
-	var variables=personList[currentindex].split(",");
+	randomwarmup=shuffle(warmupset)
+	console.log(randomwarmup)
+	var editedend=randomwarmup[randomwarmup.length-1].split("DOT");
+	randomwarmup[randomwarmup.length-1]=editedend[0];
+	var variables=randomwarmup[currentindex].split(",");
 	//localStorage.myArrData=JSON.stringify(personX.list);
 	var comparisonType = variables[0];
-	var queryString = "?para1=" + currentindex;
+	var queryString = "?para1=" +currentindex+"=?para2="+"WU";
 	window.location.href = comparisonType+".html" + queryString ;
 	var correctsum=0;
+	localStorage.setItem("warmuptasks",randomwarmup)
 	 sessionStorage.setItem('myArray', personList);
 	 localStorage.setItem("correctanswers", correctsum);
-	 var Uinputs=[];
-	 localStorage.setItem("allUserInputs",Uinputs)
+	// var Uinputs=[];
+	// localStorage.setItem("allUserInputs",Uinputs)
 
 }
 
@@ -146,6 +135,12 @@ function showNextQ(){//call question
 	 
 
 }
+function getRndInteger(min, max) {
+  var diff = max - min,
+       rnd = Math.random();
+   return rnd !== 1? Math.floor((diff + 1) * rnd) + min : min + diff;
+}
+
  function calcList() {
     var finalList=[];
     var array=[];
@@ -210,13 +205,15 @@ var visState=0;
 var changeState=0;
 var dataState=0;
 var dict = []; // create an empty array
+var ind=0;
  for(var i=0; i<3;i++){
        	 for (var ii=0; ii<3;ii++){
 	         for (var iii=0;iii<3;iii++){
 	         	for (var iv=0;iv<3;iv++){
+	         		ind=getRndInteger(1,3)
 	        		dict.push(
 	        		  {
-	        		      experimentID:""+comparisonSets[i]+","+visSets[ii]+","+changeSets[iii]+","+dataSets[iv]+"DOT",
+	        		      experimentID:""+comparisonSets[i]+","+visSets[ii]+","+changeSets[iii]+","+dataSets[iv]+""+ind+"DOT",
 	        		      remaining: 10
 	        		 
 	        		  })
@@ -273,7 +270,7 @@ return personxlist;
 			<p>
 				<h2 style="text-align:center;" >Answer Questions</h2>
 				<span style="font-size:130%;">
-					The goal of this study is to measure the effect of different comparison techniques on different hierarchical data visualizations based on given parameters such as size of the hierarchy and type of change. In this experiment you will be asked to answer questions based on the change that you observe in screen.   </br></br>
+					The goal of this study is to measure the effect of different comparison techniques on different hierarchical data visualizations based on given parameters such as size of the hierarchy and type of change. In this experiment you will be asked to detect type of the change and its corresponding node. First you will receive 9 warmup tasks and then you will receive 27 real tasks.  </br></br>
 				</span>
 			
 			</p>

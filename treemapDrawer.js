@@ -31,7 +31,7 @@ var clickedonreset=0;
 
 		        var treemap = d3.treemap()
 		               .size([chartWidth, chartHeight])
-		               .paddingTop(28)
+		               .paddingTop(35)
 	                   .paddingRight(4)
 	                   .paddingLeft(4)
 	                   .paddingBottom(4)
@@ -58,7 +58,8 @@ var clickedonreset=0;
 				 console.log(excludedNodes)
 				 numNodes=excludedNodes.length;
 				 var selectednodes=[]
-				 selectednodes=randomization(excludedNodes,numNodes)
+				  maxdepth=updateDepth(rootC,treemap)
+		 		 selectednodes=randomization(excludedNodes,numNodes,maxdepth)
 				 destNode=selectednodes[1];
 				 sourceNode=selectednodes[0];
 				 console.log(destNode)
@@ -105,8 +106,8 @@ var clickedonreset=0;
 				if (changestate=="add"){
 					var selected=null;
 					
-					updatetreemap(root,chartLayer,duration,treemap,lid)
-					svg.selectAll("g.node").filter(function(d){
+					//updatetreemap(root,chartLayer,duration,treemap,lid)
+					/*svg.selectAll("g.node").filter(function(d){
 
 					  if (d.id==destNode.id)
 					  {
@@ -116,13 +117,12 @@ var clickedonreset=0;
 					  }
 					  else
 					    return false;
-					})
+					})*/
 					
-					newnode=newtreemapNode(selected,newlabels[newindx],rootC,treemap)
-					console.log(newnode)
+					newnode=newtreemapNode(sourceNode,newlabels[newindx],rootC,treemap)
 					duration=0;
-					updateValues(root)
-					updatetreemap(root,chartLayer,duration,treemap,lid)
+					updateValues(rootC)
+					updatetreemap(rootC,chartLayer,duration,treemap,lid)
 					svg.selectAll("*").style("opacity",1)
 					svg.selectAll("g.node").filter(function(d){
 
@@ -151,7 +151,7 @@ var clickedonreset=0;
 					clickedonreset++;
 					var lid=[];
 					duration=0;
-					if (changestate=="add"){
+				if (changestate=="add"){
 						//newnode.parent.value-=newnode.value;
 						
 						svg.selectAll('g.node')
@@ -164,7 +164,7 @@ var clickedonreset=0;
 					 	    }
 					 	 }).remove();
 						removedata(newnode,svg)
-						updateValues(rootC)
+						//updateValues(rootC)
 						//updatetreemap(rootC,chartLayer,duration,treemap,lid)
 
 					}
@@ -193,6 +193,7 @@ var clickedonreset=0;
 	       width = +d3.select(selector1).style('width').slice(0, -2)
 	       height = +d3.select(selector1).style('height').slice(0, -2)-25;
 	       //console.log(d3.select("#beforesidebyside").style("height").slice(0, -2))
+	       $(".questionbar").css("top", "10%");
 	   
 	       margin = {top:5, left:5, bottom:5, right:5 }
 	       
@@ -214,9 +215,8 @@ var clickedonreset=0;
 
 	        var treemap = d3.treemap()
 	               .size([chartWidth, chartHeight])
-	               .paddingTop(28)
+	               .paddingTop(35)
 	               .paddingRight(4)
-
 	               .paddingLeft(4)
 	               .paddingBottom(4)
                   .paddingInner(3) 
@@ -237,7 +237,9 @@ var clickedonreset=0;
 			 excludedNodes = tempData2.descendants();
 			 numNodes=excludedNodes.length;
 			 var selectednodes=[]
-			 selectednodes=randomization(excludedNodes,numNodes)
+			  maxdepth=updateDepth(rootC,treemap)
+
+			 selectednodes=randomization(excludedNodes,numNodes,maxdepth)
 			  var newlabels=["W","X","Y","C","O","H","P","U"];
 			  var newindx=getRndInteger(0,newlabels.length-1)
 			  destNode=selectednodes[1];
@@ -283,13 +285,13 @@ var clickedonreset=0;
 		}
 		if (compstate=="Diff"){
 
-		   document.getElementById("viscontainerafter").style.left="5%";
-		   document.getElementById("beforediff").style.left="10%";
-		   document.getElementById("afterdiff").style.left="10%";
+		   document.getElementById("viscontainerafter").style.left="2%";
+		   document.getElementById("beforediff").style.left="8%";
+		   document.getElementById("afterdiff").style.left="8%";
 		   document.getElementById("beforediff").style.top="8%";
 		   document.getElementById("afterdiff").style.top="8%";
 		   document.getElementById("viscontainerafter").style.top="8%";
-		   document.getElementById("currentvis").style.left="15%";
+		   document.getElementById("currentvis").style.left="13%";
 		   
 	       var duration=0;
 	       var width,height
@@ -355,7 +357,7 @@ var clickedonreset=0;
 
 	              var treemap = d3.treemap()
 	                     .size([chartWidth, chartHeight])
-     	               .paddingTop(28)
+     	               .paddingTop(35)
      	               .paddingRight(4)
      	               .paddingLeft(4)
      	               .paddingBottom(4)
@@ -379,7 +381,9 @@ var clickedonreset=0;
 			 excludedNodes = tempData2.descendants();
 			 numNodes=excludedNodes.length;
 			 var selectednodes=[]
-			 selectednodes=randomization(excludedNodes,numNodes)
+			  maxdepth=updateDepth(rootC,treemap)
+
+		 	  selectednodes=randomization(excludedNodes,numNodes,maxdepth)
 			  var newlabels=["W","X","Y","C","O","H","P","U"];
 			  var newindx=getRndInteger(0,newlabels.length-1)
 			  destNode=selectednodes[1];
@@ -406,7 +410,7 @@ var clickedonreset=0;
 			  
 	           var treemap1 = d3.treemap()
 	                  .size([beforewidth, beforeheight])
-		               .paddingTop(28)
+		               .paddingTop(35)
 		               .paddingRight(4)
 		               .paddingLeft(4)
 		               .paddingBottom(4)
@@ -471,7 +475,7 @@ var clickedonreset=0;
 			  })
 	           var treemap2 = d3.treemap()
 	                  .size([afterwidth, afterheight])
-	 	               .paddingTop(28)
+	 	               .paddingTop(35)
 	 	               .paddingRight(4)
 	 	               .paddingLeft(4)
 	 	               .paddingBottom(4)
@@ -553,7 +557,7 @@ var clickedonreset=0;
 			  	})
 	           var treemap2 = d3.treemap()
                   .size([afterwidth, afterheight])
- 	               .paddingTop(28)
+ 	               .paddingTop(35)
  	               .paddingRight(4)
  	               .paddingLeft(4)
  	               .paddingBottom(4)
@@ -629,7 +633,7 @@ var clickedonreset=0;
 			  })
 				 treemap1 = d3.treemap()
 	                  .size([afterwidth, afterheight])
-	 	               .paddingTop(28)
+	 	               .paddingTop(35)
 	 	               .paddingRight(4)
 	 	               .paddingLeft(4)
 	 	               .paddingBottom(4)
@@ -650,7 +654,7 @@ var clickedonreset=0;
 	           })
 	           var treemap2 = d3.treemap()
 	                  .size([afterwidth, afterheight])
-	 	               .paddingTop(28)
+	 	               .paddingTop(35)
 	 	               .paddingRight(4)
 	 	               .paddingLeft(4)
 	 	               .paddingBottom(4)
@@ -743,7 +747,7 @@ function updatetreemap(root,chartLayer,duration,treemap,lid){
 	    .attr("y", function(d) { return d.y0  })
 	    .attr("width", function(d) { return d.x1 - d.x0 })
 	    .attr("height", function(d) { return d.y1 - d.y0})
-	    .style("fill","#deebf7")
+	    .style("fill","#f0f0f0")
 	    
 	chartLayer
 	    .selectAll(".node text")    

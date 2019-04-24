@@ -4,11 +4,13 @@ var destNode;
 var newnode;
 var clickedonstart=0;
 var clickedonreset=0;
+d3.selection.prototype.moveToFront = function() {
+  return this.each(function(){
+    this.parentNode.appendChild(this);
+  });
+};
 function drawTree (data,selector1,selector2,compstate,changestate){
-	console.log(compstate)
-	console.log(changestate)
-	d3.select(selector1).selectAll("svg").remove();
-	d3.select(selector2).selectAll("svg").remove();
+
 
 	var adjacentNodes=[];
 
@@ -58,23 +60,21 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		//updatetree(rootC,rootC,svg,duration,treemap)
 		 var tempData2 = treemap(rootC);
 		 excludedNodes = tempData2.descendants();
-		 console.log(excludedNodes)
+		// console.log(excludedNodes)
 		 numNodes=excludedNodes.length;
 		 var selectednodes=[]
-		 selectednodes=randomization(excludedNodes,numNodes)
+		 maxdepth=updateDepth(rootC,treemap)
+
+		 selectednodes=randomization(excludedNodes,numNodes,maxdepth)
 
 		// var answerId=getRndInteger(1,4);
 		// console.log(answerId)
 		// var answerinput = document.getElementById(''+answerId+'choice');
 		 //var label = input.nextSibling;
-		 var newlabels=["W","X","Y","C","O","H","P","U"];
+		 var newlabels=["W1","XY","Y9","CU","OR","HP","IP","U","IR",];
 		 var newindx=getRndInteger(0,newlabels.length-1)
 		 destNode=selectednodes[1];
 		 sourceNode=selectednodes[0];
-		 console.log("destNode")	
-		 console.log(destNode)
-		 console.log("sourceNode before children")
-		 console.log(sourceNode)
 
 		 	 	
 		// answerinput.innerHTML = ""+sourceNode.data.name+"-"+ changestate;
@@ -121,17 +121,18 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				  {
 				  	console.log(d)
 				    selected=d
-				  
+				  	
 				    return true;
 				  }
 				  else
 				    return false;
 				})
 				
-				newnode=newNode(selected,newlabels[newindx],rootC,svg,treemap)
-				console.log(newnode)
+				newnode=newNode(selected,newlabels[newindx],root,svg,treemap)
+				
 				duration=1500;
 				updatetree(selected,root,svg,duration,treemap,90)
+				
 
 			}
 			document.getElementById("startbutton").disabled = true;
@@ -163,8 +164,10 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		var i = 0;
 		var numNodes;
 		 var adjacentNodes=[];
+
 		var containerWidth1 = +d3.select(selector1).style('width').slice(0, -2)
 		var containerHeight1 = +d3.select(selector1).style('height').slice(0, -2)
+
 		// set the dimensions and margins of the diagram
 		var margin = {top: 40, right: 90, bottom: 50, left: 90},
 		    width1 = containerWidth1 - margin.left - margin.right,
@@ -175,12 +178,12 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		var svg1 = d3.select(selector1).append("svg")
 		      .attr("width", width1 + margin.left + margin.right)
 		      .attr("height", height1 + margin.top + margin.bottom)
-		     .append('g').attr("transform","translate(" + width1 / 8 + "," + height1/8+ ")")
+		     .append('g').attr("transform","translate(" + width1 / 30 + "," + height1/8+ ")")
 		.append('g');
 
-		var containerWidth2 = +d3.select(selector2).style('width').slice(0, -2)
-		var containerHeight2 = +d3.select(selector2).style('height').slice(0, -2)
-
+		var containerWidth2 = +d3.select(selector1).style('width').slice(0, -2)
+		var containerHeight2 = +d3.select(selector1).style('height').slice(0, -2)
+console.log("here?")
 		// set the dimensions and margins of the diagram
 		var margin = {top: 40, right: 90, bottom: 50, left: 90},
 		    width2 = containerWidth2 - margin.left - margin.right,
@@ -191,7 +194,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		var svg2 = d3.select(selector2).append("svg")
 		      .attr("width", width2 + margin.left + margin.right)
 		      .attr("height", height2 + margin.top + margin.bottom)
-		     .append('g').attr("transform","translate(" + width2 / 8 + "," + height2/8 + ")")
+		     .append('g').attr("transform","translate(" + width2 / 30 + "," + height2/8 + ")")
 		.append('g');
 
 		// declares a tree layout and assigns the size
@@ -204,6 +207,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		});
 		root.x0 = 100;
 		root.y0 = height1 / 2;
+		console.log(root)
 		var levelWidth = [1];
 		var childCount = function(level, n) {
 
@@ -231,8 +235,10 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		 excludedNodes = tempData2.descendants();
 		 numNodes=excludedNodes.length;
 		 var selectednodes=[]
-		 selectednodes=randomization(excludedNodes,numNodes)
-		  var newlabels=["W","X","Y","C","O","H","P","U"];
+		  maxdepth=updateDepth(rootC,treemap)
+
+		 selectednodes=randomization(excludedNodes,numNodes,maxdepth)
+		  var newlabels=["W1","XY","Y9","CU","OR","HP","IP","U","IR",];
 		  var newindx=getRndInteger(0,newlabels.length-1)
 		  destNode=selectednodes[1];
 		  sourceNode=selectednodes[0];
@@ -354,7 +360,12 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			    .size([width,newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
 			var rootC;
 			rootC=clonetree(root,root.depth,root.height)
-			updatetree(rootC,rootC,svg,duration,treemap,90)
+			maxdepth=updateDepth(rootC,treemap)
+			if (maxdepth>5)
+					updatetree(rootC,rootC,svg,duration,treemap,55)
+				else
+					updatetree(rootC,rootC,svg,duration,treemap,90)
+			
 			/*svg.selectAll("g.node").filter(function(d){
 				if (d.data.name=="CD")
 					destNode=d;
@@ -367,14 +378,16 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 
 			 numNodes=excludedNodes.length;
 			 var selectednodes=[];
-			 selectednodes=randomization(excludedNodes,numNodes)
+			 maxdepth=updateDepth(rootC,treemap)
+
+		 	selectednodes=randomization(excludedNodes,numNodes,maxdepth)
 			 
 			 destNode=selectednodes[1];
 			 sourceNode=selectednodes[0];
 			 var beforeSubtree;
 			 beforeSubtree=clonetree(sourceNode.parent,sourceNode.parent.depth,sourceNode.parent.height)
 			
-			  var newlabels=["W","X","Y","C","O","H","P","U"];
+			  var newlabels=["W1","XY","Y9","CU","OR","HP","IP","U","IR",];
 			  var newindx=getRndInteger(0,newlabels.length-1) 	 	
 			 // answerinput.innerHTML = ""+sourceNode.data.name+"-"+ changestate;
 			//  writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
@@ -430,7 +443,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 						
 						diV.style.position = "relative";
 						diV.style.left = (diffWidth1/8 +d.x0-3)+'px';
-						diV.style.top = (diffheight/4 -40)+'px';
+						diV.style.top = (diffheight/4 -60)+'px';
 
 					}
 				})
@@ -449,8 +462,8 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					 
 				 svg.selectAll("*").remove();
 				 maxdepth=updateDepth(rootC,treemap)
-				 if (maxdepth>6)
-				 	updatetree(rootC,rootC,svg,duration,treemap,65)
+				 if (maxdepth>5)
+				 	updatetree(rootC,rootC,svg,duration,treemap,55)
 				 else{
 				 	updatetree(rootC,rootC,svg,duration,treemap,90)
 				 }
@@ -465,7 +478,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				 treemap1 = d3.tree()
 				 			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
 				maxd2= updateDepth(afterSubtree,treemap1)
-				if (maxdepth>6){
+				if (maxdepth>5){
 					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,65)
 				}else{
 					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,90)
@@ -481,7 +494,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 						
 						diV2.style.position = "relative";
 						diV2.style.left = (diffWidth1/8 +d.x0-3)+'px';
-						diV2.style.top = (diffheight/4 -40)+'px';
+						diV2.style.top = (diffheight/4 -60)+'px';
 
 					}
 				})
@@ -503,14 +516,14 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					
 				maxd1=updateDepth(beforeSubtree,treemap1)
 			
-				if (maxd1>6){
+				if (maxd1>5){
 					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,65)
 				}else{
 					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,90)
 				
 				}
 				dashedUpdate(beforeSubtree,sourceNode,svgDiffBefore,treemap1,"move")
-				if (maxd1>6){
+				if (maxd1>5){
 					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,65)
 				}else{
 					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,90)
@@ -522,7 +535,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 						
 						diV.style.position = "relative";
 						diV.style.left = (diffWidth1/8 +d.x0-3)+'px';
-						diV.style.top = (diffheight/4 -40)+'px';
+						diV.style.top = (diffheight/4 -60)+'px';
 
 					}
 				})
@@ -540,7 +553,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				maxd2= updateDepth(afterSubtree,treemap1)
 				updatetree(rootC,rootC,svg,duration,treemap,90)
 				maxdepth=updateDepth(rootC,treemap)
-				if (maxdepth>6){
+				if (maxdepth>5){
 					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,65)
 				}else{
 					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,90)
@@ -548,7 +561,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				}
 				
 				dashedUpdate(afterSubtree,sourceNode,svgDiffAfter,treemap1,"move")
-				if (maxdepth>6){
+				if (maxdepth>5){
 					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,65)
 				}else{
 					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,90)
@@ -560,7 +573,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 						
 						diV2.style.position = "relative";
 						diV2.style.left = (diffWidth1/8 +d.x0-3)+'px';
-						diV2.style.top = (diffheight/4 -40)+'px';
+						diV2.style.top = (diffheight/4 -60)+'px';
 
 					}
 				})
@@ -591,7 +604,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 						
 						diV.style.position = "relative";
 						diV.style.left = (diffWidth1/8 +d.x0-3)+'px';
-						diV.style.top = (diffheight/4 -40)+'px';
+						diV.style.top = (diffheight/4 -60)+'px';
 
 					}
 				})
@@ -616,7 +629,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 						
 						diV2.style.position = "relative";
 						diV2.style.left = (diffWidth1/8 +d.x0-3)+'px';
-						diV2.style.top = (diffheight/4 -40)+'px';
+						diV2.style.top = (diffheight/4 -60)+'px';
 
 					}
 				})
@@ -640,7 +653,7 @@ function updatetree(source,root,svg,duration,treemap,yadjs){
 
     // Normalize for fixed-depth.
     nodes.forEach(function(d){
-    	d.y = d.depth * yadjs
+    	d.y = d.depth * 120
     });
 
 
@@ -723,6 +736,10 @@ function updatetree(source,root,svg,duration,treemap,yadjs){
       remove();*/
 
   	// ### CIRCLES
+  	 nodes.forEach(function(d){
+      d.x0 = d.x;
+      d.y0 = d.y;
+    });
 
     // Update the nodes...
     var node = svg.selectAll('g.node')
@@ -744,9 +761,12 @@ function updatetree(source,root,svg,duration,treemap,yadjs){
 
     nodeEnter.append('circle').
     	attr('class', 'node').
-      attr('r', 15).
+      attr('r', 25).
       style("fill", function(d) {
-      	return "#f6e8c3";
+      	if (d.data.name=="W")
+      		return "#088B11";
+      	else
+      		return "#f0f0f0";
       });
 
       nodeEnter.append("text")
@@ -766,9 +786,9 @@ function updatetree(source,root,svg,duration,treemap,yadjs){
     // Update the node attributes and style
    	 nodeUpdate.select('circle.node').
     attr('class', 'node').
-        attr('r', 15).
+        attr('r', 25).
         style("fill", function(d) {
-          return "#f6e8c3";
+          return "#f0f0f0";
         });
         /*
     nodeUpdate.select('circle.node').
@@ -800,10 +820,8 @@ function updatetree(source,root,svg,duration,treemap,yadjs){
     //nodeExit.select('circle').attr('r', 0);
     
     // Store the old positions for transition.
-    nodes.forEach(function(d){
-      d.x0 = d.x;
-      d.y0 = d.y;
-    });
+    svg.selectAll('g.node').moveToFront();
+   
 }
 function clonenode(node, isleaf, depth, height){
   var newNode = {
@@ -867,7 +885,7 @@ function getRndInteger(min, max) {
 
 function addtochildren(d,f){
 
- // console.log(draggedNode.parent)
+  
   var index = f.parent.children.indexOf(f);
    // console.log(index)
    if (index > -1) {
@@ -897,21 +915,24 @@ function addtochildren(d,f){
 
  
 } 
-function randomization(excludedNodes,numNodes){
+function randomization(excludedNodes,numNodes,maxdepth){
 	var adjacentNodes=[];
 	var selectednodes=[];
+	var arr=[];
 	//var sourceNode=null;
-	 SourceId=getRndInteger(2,numNodes);
-	 console.log(SourceId)
+	 Sourcedepth=getRndInteger(1,maxdepth);
+	 console.log(Sourcedepth)
 	// console.log(excludedNodes)
 	   excludedNodes.forEach(function(d){
-	     if (d.id==SourceId){
+	     if (d.depth==Sourcedepth){
+	       arr.push(d)
+	       //sourceNode=d;
 	       
-	       sourceNode=d;
-	       return true;
 	     }
 	   })
-	  
+	   //console.log(arr)
+	  sourceind=getRndInteger(0,arr.length-1)
+	  sourceNode=arr[sourceind]
 	   selectednodes.push(sourceNode)
 	   if (typeof sourceNode.children!='undefined')
 	   {

@@ -47,7 +47,9 @@ var rootC=null;
    excludedNodes = tempData2.descendants();
    numNodes=excludedNodes.length;
    var selectednodes=[]
-   selectednodes=randomization(excludedNodes,numNodes)
+    maxdepth=updateSunDepth(rootC)
+
+     selectednodes=randomization(excludedNodes,numNodes,maxdepth)
    destNode=selectednodes[1];
    sourceNode=selectednodes[0];
    var k=0;
@@ -99,8 +101,6 @@ var rootC=null;
       
       updateValues(rootC)
       svg.selectAll("*").remove();
-      
-
       update(rootC,0,svg,partition,lid)
       svg.selectAll("g").filter(function(d){
               if (d.id==newnode.id)
@@ -170,11 +170,10 @@ var rootC=null;
           .attr("width", width1 + margin.left + margin.right)
           .attr("height", height1 + margin.top + margin.bottom)
          .append('g').attr("transform","translate(" + width1 / 2 + "," + height1/2+ ")")
-         .call(d3.zoom().on("zoom", function () {
-          svg1.attr("transform", d3.event.transform)
-            }))
+         
     .append('g');
-
+    document.getElementById("beforesidebyside").style.left=""+(width1/2-50)+"px";
+    document.getElementById("aftersidebyside").style.right=""+(width1/2+125)+"px";
     var containerWidth2 = +d3.select(selector2).style('width').slice(0, -2)
     var containerHeight2 = +d3.select(selector2).style('height').slice(0, -2)
 
@@ -189,9 +188,7 @@ var rootC=null;
           .attr("width", width2 + margin.left + margin.right)
           .attr("height", height2 + margin.top + margin.bottom)
          .append('g').attr("transform","translate(" + width2 / 2 + "," + height2/2 + ")")
-         .call(d3.zoom().on("zoom", function () {
-          svg2.attr("transform", d3.event.transform)
-            }))
+        
     .append('g');
     
       var root = d3.hierarchy(data)
@@ -221,7 +218,9 @@ var rootC=null;
       excludedNodes = tempData2.descendants();
       numNodes=excludedNodes.length;
       var selectednodes=[]
-      selectednodes=randomization(excludedNodes,numNodes)
+       maxdepth=updateSunDepth(rootC)
+
+     selectednodes=randomization(excludedNodes,numNodes,maxdepth)
       destNode=selectednodes[1];
       sourceNode=selectednodes[0];
       console.log("sourceNode")
@@ -232,11 +231,13 @@ var rootC=null;
       var newindx=getRndInteger(0,newlabels.length-1)
      // writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
       update(root,0,svg1,partition,lid)
+      resizeSunburst(root,width1,height1,svg2,2.9)
       if (changestate=="move"){
         movetochildrenTM(destNode,sourceNode)
         updateSunDepth(rootC)
         updateValues(rootC)
         update(rootC,0,svg2,partition,lid)
+        resizeSunburst(rootC,width1,height1,svg2,2.9)
 
       }
       if (changestate=="add"){
@@ -245,6 +246,7 @@ var rootC=null;
         duration=1500;
         updateValues(rootC)
         update(rootC,0,svg2,partition,lid)
+        resizeSunburst(rootC,width1,height1,svg2,2.9)
       }
       if (changestate=="delete"){
         update(rootC,0,svg2,partition,lid)
@@ -253,6 +255,7 @@ var rootC=null;
         updateValues(rootC)
         svg2.selectAll("*").remove();
         update(rootC,0,svg2,partition,lid)
+        resizeSunburst(rootC,width1,height1,svg2,2.9)
       }
 
   }
@@ -294,7 +297,9 @@ var rootC=null;
       numNodes=excludedNodes.length;
       console.log(excludedNodes)
       var selectednodes=[]
-      selectednodes=randomization(excludedNodes,numNodes)
+       maxdepth=updateSunDepth(rootC)
+
+     selectednodes=randomization(excludedNodes,numNodes,maxdepth)
       /*svg.selectAll("g").filter(function(d){
         if (d.data.name=="B")
           sourceNode=d;
@@ -342,6 +347,7 @@ var rootC=null;
       updateValues(beforeSubtree)
       updateSunDepth(beforeSubtree)
       update(beforeSubtree,0,svgDiffBefore,partition1,lid)
+      resizeSunburst(beforeSubtree,diffWidth1,diffheight1,svgDiffBefore,2.7)
       if (changestate=="move"){
        
         if (sourceNode.parent.parent== null)
@@ -357,7 +363,7 @@ var rootC=null;
         }
        
         update(beforeSubtree,0,svgDiffBefore,partition1,lid)
-        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore)
+        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore,2.7)
         dashedSunUpdate(beforeSubtree,sourceNode,svgDiffBefore,partition1,changestate)
         svgDiffBefore.selectAll('g').filter(function(d){ 
           if (d.id==rootC.id)
@@ -376,10 +382,10 @@ var rootC=null;
         updateValues(rootC)
         svg.selectAll("*").remove()
         update(rootC,0,svg,partition,lid)
-        resizeSunburst(rootC,width,height,svg)
+        resizeSunburst(rootC,width,height,svg,2.7)
         afterSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
         update(afterSubtree,0,svgDiffAfter,partition1,lid)
-        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter)
+        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter,2.7)
         dashedSunUpdate(afterSubtree,sourceNode,svgDiffAfter,partition1,changestate)
        /* svgDiffAfter.selectAll('g').filter(function(d){ 
           if (d.id==sourceNode.parent.id)
@@ -438,20 +444,14 @@ var rootC=null;
 
         })
           
-        svgDiffAfter.selectAll('g').filter(function(d){
-                
-                 if (d.id==sourceNode.id)
-                 {
-                   diV.style.position = "relative";
-                   diV.style.left =(diffWidth/2 )+'px';
-                   diV.style.top = (diffheight/2-(maxy-miny) -40)+'px';
+        diV.style.position = "relative";
+          diV.style.left =(diffWidth/2 )+'px';
+          diV.style.top = (100)+'px';
 
 
-                   diV2.style.position = "relative";
-                   diV2.style.left = diffWidth/2+'px';
-                   diV2.style.top =(diffheight/2-(maxy2-miny2)-40)+'px';
-                 }
-         })
+          diV2.style.position = "relative";
+          diV2.style.left = diffWidth/2+'px';
+          diV2.style.top =(100)+'px';
      
       }
 
@@ -467,7 +467,7 @@ var rootC=null;
         updateSunDepth(beforeSubtree)
         svgDiffBefore.selectAll("*").remove()
         update(beforeSubtree,0,svgDiffBefore,partition1,lid)
-        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore)
+        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore,2.7)
         dashedSunUpdate(beforeSubtree,sourceNode,svgDiffBefore,partition1,changestate)
         svgDiffBefore.selectAll('g').filter(function(d){ 
           if (d.id==rootC.id)
@@ -505,12 +505,12 @@ var rootC=null;
         updateValues(rootC)
         svg.selectAll("*").remove()
         update(rootC,0,svg,partition,lid)
-        resizeSunburst(rootC,width,height,svg)
+        resizeSunburst(rootC,width,height,svg,2.7)
 
         afterSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
         updateSunDepth(afterSubtree)
         update(afterSubtree,0,svgDiffAfter,partition1,lid)
-        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter)
+        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter,2.7)
         dashedSunUpdate(afterSubtree,newnode,svgDiffAfter,partition1,changestate)
         var nid=newnode.id;
         svgDiffAfter.selectAll('g').filter(function(d){ 
@@ -564,21 +564,24 @@ var rootC=null;
            }
 
          })
-           
+           //var gheight = d3.select('g').style('height').slice(0, -2)
+      var maxh=0;
+
          svgDiffAfter.selectAll('g').filter(function(d){
                  
-                  if (d.id==sourceNode.id)
+                  if (d3.select(this).style("opacity") != 0)
                   {
-                    diV.style.position = "relative";
-                    diV.style.left =(diffWidth/2 )+'px';
-                    diV.style.top = (diffheight/2-Math.abs(d.y1-d.y0) -40)+'px';
-
-
-                    diV2.style.position = "relative";
-                    diV2.style.left = diffWidth/2+'px';
-                    diV2.style.top =(diffheight/2-(maxy-miny)-40)+'px';
+                   console.log(d3.select(this).style("height"))
                   }
           })
+          diV.style.position = "relative";
+          diV.style.left =(diffWidth/2 )+'px';
+          diV.style.top = (100)+'px';
+
+
+          diV2.style.position = "relative";
+          diV2.style.left = diffWidth/2+'px';
+          diV2.style.top =(100)+'px';
       }
       if (changestate=="delete"){
         diV2 = document.getElementById('startdots2');
@@ -594,7 +597,7 @@ var rootC=null;
         updateSunDepth(beforeSubtree)
         updateValues(beforeSubtree)
         update(beforeSubtree,0,svgDiffBefore,partition1,lid)
-        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore)
+        resizeSunburst(beforeSubtree,diffWidth,diffheight,svgDiffBefore,2.7)
         dashedSunUpdate(beforeSubtree,sourceNode,svgDiffBefore,partition1,changestate)
        /* svgDiffBefore.selectAll('g').filter(function(d){
          
@@ -644,13 +647,13 @@ var rootC=null;
         updateValues(rootC)
         svg.selectAll("*").remove();
         update(rootC,0,svg,partition,lid)
-        resizeSunburst(rootC,width,height,svg)
+        resizeSunburst(rootC,width,height,svg,2.7)
       
         afterSubtree=clonetreemap(rootC,rootC.depth,rootC.height)
         updateSunDepth(afterSubtree)
         updateValues(afterSubtree)
         update(afterSubtree,0,svgDiffAfter,partition1,lid)
-        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter)
+        resizeSunburst(afterSubtree,diffWidth,diffheight,svgDiffAfter,2.7)
         dashedSunUpdate(afterSubtree,sourceNode,svgDiffAfter,partition1,changestate)
         
         svgDiffAfter.selectAll('g').filter(function(d){ 
@@ -666,13 +669,8 @@ var rootC=null;
       
       
         
-        x0indeg=radians_to_degrees(sourceNode.parent.x0)  
-        x1indeg=radians_to_degrees(sourceNode.parent.x1)
-        //if (((x0indeg>=0 && x0indeg<=180) && (x1indeg>=0 && x1indeg<=180))||((x0indeg>180 && x0indeg<360 ) && (x1indeg>180 && x1indeg<360)) )
-        //{
-         
-       // }
-       svgDiffAfter.selectAll('g').filter(function(d){
+
+      /* svgDiffAfter.selectAll('g').filter(function(d){
                
                 if (d.id==sourceNode.parent.id)
                 {
@@ -685,7 +683,15 @@ var rootC=null;
                   diV.style.left = diffWidth/2+'px';
                   diV.style.top =(diffheight/2-(maxy-miny)-20)+'px';
                 }
-        })
+        })*/
+        diV.style.position = "relative";
+          diV.style.left =(diffWidth/2 )+'px';
+          diV.style.top = (100)+'px';
+
+
+          diV2.style.position = "relative";
+          diV2.style.left = diffWidth/2+'px';
+          diV2.style.top =(100)+'px';
 
       }
 
@@ -698,7 +704,13 @@ var rootC=null;
   console.log(lid)
  var gSlices = svg.selectAll("g").data(partition(root).descendants(),function(d) { return d.id|| (d.id = ++i); }).enter().append("g");   
    gSlices.exit().remove();
-   gSlices.append("path").style("fill", "#deebf7").style('stroke', 'black')
+   gSlices.append("path")
+   .style("fill", "#f0f0f0").style('stroke', 'black')
+
+
+
+
+
         .append("title").text(function (d) { return d.data.name; });  // Return white for root.
    gSlices.append("text").attr("dy", ".50em").text(function (d) { return d.data.name ; }).attr("id", function (d) { return "w" + d.data.name; });
     svg.selectAll("path").data(partition(root).descendants());
@@ -807,6 +819,13 @@ function updateSunDepth(root){
 
     }
     });
+    var maxdepth=0;
+    nodes.forEach(function(d){
+    if (maxdepth<d.depth){
+      maxdepth=d.depth;
+    }
+  });
+  return maxdepth;
 }
 function dashedSunUpdate(root,sourceNode,svg,partition,changestate){
       var solidarcs=[];
@@ -945,7 +964,7 @@ function transferarcs(sourceNode,svg,XC,YC){
       }).attr("transform","translate(" + (XC -X1 ) + "," + (YC-Y1) + ")")
 
 }
-function resizeSunburst(root,w,h,svg){
+function resizeSunburst(root,w,h,svg,rs){
   console.log("w")
   console.log(w)
   console.log("h")
@@ -954,6 +973,7 @@ function resizeSunburst(root,w,h,svg){
   var maxy=0;
   var k=0;
   var lid=[];
+
   allnodes.forEach(function(d){
     if (maxy<d.y1){
       maxy=d.y1;
@@ -962,18 +982,29 @@ function resizeSunburst(root,w,h,svg){
   })
   console.log("maxy")
   console.log(maxy)
-  if ((2*maxy)> w ||(2*maxy) > h){
+  while ((2*maxy)>= w+50 ||(2*maxy) >= h+50){
     
     svg.selectAll("*").remove()
-    radius2 =  Math.min(w/2.5, h/2.5);
+    radius2 =  Math.min(w/rs, h/rs);
   
     partition2 = d3.partition()
       .size([2 * Math.PI, radius2]);
+      console.log(partition2(root))
       update(root,0,svg,partition2,lid)
      // dashedSunUpdate(root,sourceNode,svg,partition2,changestate)
-     $("text").css("font-size", "10px");
+     $("text").css("font-size", "16px");
+     maxy=0;
+     svg.selectAll('g').filter(function(d){
+      if (maxy<d.y1){
+        maxy=d.y1;
+      }
+     })
+     console.log("maxy")
+      console.log(maxy)
+     rs=rs+0.2;
 
   }
+
 }
 function radians_to_degrees(radians)
 {

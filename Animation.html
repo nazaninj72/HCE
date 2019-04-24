@@ -28,7 +28,9 @@
 
 		<div class="container">
 			<div id= "warningbar">
-				<h4>Please do not refresh the page!</h4>
+				<h4></h4>
+				<br>
+				<br>
 			</div>
 		<div id="viscontainer">
 			
@@ -69,27 +71,44 @@
 						});
 				}
 					var queryString = decodeURIComponent(window.location.search);
+
 				   	var currentStringindex=queryString.split("=")
+				   	console.log(currentStringindex)
 				   	var currentindx=parseInt(currentStringindex[1])
 				   	var personSarray=[];
 				   	var myArray=[];
+				   	var mywarmup;
+				   	var myWArray=[];
 				   	var compState,visState,changeState,dataState;
 				   
 				 	window.onload = function() {
 				 		//var f=new Date();
 				 		//startime=f.getTime();
-				 		t0 = performance.now();
-				 		myArray = sessionStorage.getItem('myArray');
-				 		console.log(myArray)
-				 		personSarray=myArray.split("DOT,")
-				 		console.log(personSarray)
-				 		var states=personSarray[currentindx].split(",");
-				 		compState=states[0];
-				 		visState=states[1];
-				 		changeState=states[2];
-				 		dataState=states[3];
-				 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
-				 		//updateVis("#viscontainer","#viscontainer","Animation","tree","delete","large")
+				 		if (currentStringindex[3]=="WU"){
+				 			mywarmup = localStorage.getItem('warmuptasks');
+				 			myWArray=mywarmup.split("DOT,")
+				 			var states=myWArray[currentindx].split(",");
+					 		compState=states[0];
+					 		visState=states[1];
+					 		changeState=states[2];
+					 		dataState=states[3];
+					 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
+
+				 		}else{
+				 			t0 = performance.now();
+					 		myArray = sessionStorage.getItem('myArray');
+					 		//console.log(myArray)
+					 		personSarray=myArray.split("DOT,")
+					 		//console.log(personSarray)
+					 		var states=personSarray[currentindx].split(",");
+					 		compState=states[0];
+					 		visState=states[1];
+					 		changeState=states[2];
+					 		dataState=states[3];
+					 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
+				 		}
+				 		
+				 		//updateVis("#viscontainer","#viscontainer","Animation","treemap","delete","large1")
 
 
 				 	}
@@ -121,7 +140,58 @@
 					 		}
 					 		
 					 		
-					 	}else {
+					 	}else if (currentStringindex[3]=="WU"){//warmups
+					 		var node;
+
+					 		if (changeState=="add")
+					 		{
+
+					 			node=newnode.data.name;
+					 		}
+					 		else
+					 			node=sourceNode.data.name
+					 		var correctanswer=checkUserInput(radioValue,textvalue,node)
+					 		if (correctanswer){
+					 			alert("Your answer is correct!")
+
+		 				 		if (currentindx+1 >= myWArray.length){
+		 				 			alert("Now you can start the real task ")
+		 				 			myArray = sessionStorage.getItem('myArray');
+		 				 			console.log(myArray)
+		 				 			personSarray=myArray.split("DOT,")
+		 				 			console.log(personSarray)
+		 				 			var states=personSarray[0].split(",");
+		 				 			compState=states[0];
+		 				 			visState=states[1];
+		 				 			changeState=states[2];
+		 				 			dataState=states[3];
+		 				 			queryString = "?para1=" + 0;
+		 				 			window.location.href = compState+".html" + queryString;
+		 			 			//Total Number of correct answers:"+corrects
+		 				 		}else{
+		 				 			currentindx++;
+		 				 			var states=myWArray[currentindx].split(",");
+		 				 			compState=states[0];
+		 				 			console.log(compState)
+		 				 			visState=states[1];
+		 				 			changeState=states[2];
+		 				 			dataState=states[3];
+		 			 				sessionStorage.setItem('warmuptasks', mywarmup);
+		 				 			queryString = "?para1=" + currentindx+"=?para2="+"WU";
+		 			 				window.location.href = compState+".html" + queryString;
+		 				 		}
+
+					 		}else{
+					 			alert("Your answer is incorrect!")
+					 		}
+					 		
+					 		
+				 			
+				 			
+				 			
+					
+					 	}
+					 	else {
 					 		
 			 		 		var node;
 
@@ -141,7 +211,8 @@
 					 		if (correctanswer)
 					 			corrects++;
 					 		if (currentindx+1 >= personSarray.length){
-					 			alert("Thank you for participating. Your session is over! Total Number of correct answers:"+corrects)
+					 			alert("Thank you for participating. Your session is over! ")
+				 			//Total Number of correct answers:"+corrects
 					 		}else{
 					 			console.log("ok!")
 					 		}
@@ -179,8 +250,8 @@
 				<!-- <input type="button" class ="animatebutton"  value="start" >
 	         	<input type="button" class ="animatebutton"  value="reset"> -->
 	         	<div class ="animatebutton">
-	         	<button type="button" class="btn btn-basic btn-sm" id="startbutton">Start</button>
-	         	<button type="button" class="btn btn-basic btn-sm" id="resetbutton">Reset</button>
+	         	<button type="button" class="btn btn-basic btn-lg" id="startbutton">Start</button>
+	         	<button type="button" class="btn btn-basic btn-lg" id="resetbutton">Reset</button>
 	         	</div>
 			</div>
 		
@@ -198,15 +269,15 @@
 						<input type="radio"  name="change" value="add" input autocomplete="off"/>
 							<label id="1choice">
 								added
-			    		  	</label></br>
+			    		  	</label></br></br>
 					  	<input type="radio" name="change" value="delete" input autocomplete="off">
 						  <label id="2choice">
 						  	deleted
-			    		  </label></br>
+			    		  </label></br></br>
 						<input type="radio" name="change" value="move" input autocomplete="off"> 	
 							<label id="3choice">
 								moved
-			    		  	</label></br>
+			    		  	</label></br></br>
 					 <div id="submitbuttondiv">
 					<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
 					</div> 

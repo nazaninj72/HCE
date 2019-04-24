@@ -69,9 +69,7 @@
  align-items: center;
  justify-content: center;
  position: relative;
-  left: 23%;
-  top: 90%;
- 
+ left: 45%;
 }
 #beforesidebyside h4{
    margin: 0;
@@ -91,8 +89,8 @@
  justify-content: center;
 position: relative;
 float: right;
-right: 23%;
-top: 90%;
+right: 40%;
+
 }
 #aftersidebyside h4{
   margin: 0;
@@ -112,7 +110,7 @@ top: 90%;
   justify-content: center;
   position: relative;
   float: left;
-  left: 10%;
+  left: 15%;
 }
 
 #currentvis h4{
@@ -172,7 +170,7 @@ transform: translate(-50%, -50%)
   align-items: center;
   justify-content: center;
   position: relative;
-  bottom: 14%;
+  bottom: 12%;
   left: 2%;
 }
 #buttonsbar{
@@ -184,6 +182,7 @@ transform: translate(-50%, -50%)
   justify-content: center;
   position: relative;
   top: 68%;
+  right: 2%;
 }
 .questionbarAnim{
   width: 95%;
@@ -241,7 +240,7 @@ transform: translate(-50%, -50%)
   height: 75%;
  position: relative;
  float: left;
-
+ 
 }
 #afterdiff{
   width: 25%;
@@ -325,12 +324,12 @@ li a:hover:not(.active) {
 }
 
 .node circle {
-  fill: #f6e8c3;
+  fill: #f0f0f0;
   stroke: black;
   stroke-width: 1px;
 }
 
-.node text { font: 16px sans-serif; }
+.node text { font: 18px sans-serif; }
 
 
 .link {
@@ -352,7 +351,7 @@ rect {
 text {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
   fill: black;
-  font-size: 12px;
+  font-size: 18px;
 }
 
 body {
