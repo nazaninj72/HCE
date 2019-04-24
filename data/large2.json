@@ -1,0 +1,139 @@
+{
+
+ "name": "ZX",
+ "children": [
+  {
+   "name": "YT",
+   "children": [
+    {
+     "name": "PI",
+     "children": [
+      {"name": "CS", 
+	   "children": [
+	   {"name": "OP", "size": 100},
+	   {"name": "DU", "size": 100}
+	   ]
+	  },
+      {"name": "SP", "size": 100}
+     ]
+    },
+    {"name": "ER", 
+	"children": [
+	{"name": "D",
+   "children": [
+    {
+     "name": "CL","size": 100
+    },
+    {
+     "name": "GR",
+     "children": [
+      {"name": "LD", "size": 100},
+      {"name": "ST", "size": 100}
+     ]
+    }
+   ]}
+	]}
+   ]
+  },
+  {
+   "name": "QA",
+   "children": [
+    {"name": "HT", 
+	"children": [
+	{"name": "BQ", "size": 100},
+	{"name": "QS", "size": 100}
+	]
+	},
+    {"name": "WI",
+	"children": [
+	{"name": "TR", "size": 100},
+	{"name": "YA", "size": 100}
+	]
+	
+	}
+   ]
+  },
+  {
+   "name": "LO",
+   "children": [
+    {"name": "Q",
+    "children":[
+      {
+       "name": "DY",
+       "children": [
+        {"name": "TD", "size": 100},
+        {
+         "name": "GA","size": 100
+        },
+        {"name": "BO", "size": 100},
+        {"name": "CE", "size": 100}
+       ]
+      },
+	  {"name": "WH", 
+	  "children": [
+	  {"name": "OR", "size": 100}
+	  ]}
+    ] 
+    },
+    {"name": "GD", "size": 100},
+	{"name": "AN", "size": 100}
+   ]
+  }
+  ,
+  {
+   "name": "GD",
+   "children": [
+      {
+       "name": "CA",
+       "children": [
+        {"name": "LA", "size": 100},
+        {"name": "ND", "size": 100}
+        
+       ]
+      },
+    {
+     "name": "WA",
+     "children": [
+      {"name": "RI", "size": 100},
+	  {"name": "CD", "size":100}
+     ]
+    }
+    ,
+    {
+     "name": "PO",
+     "children": [
+      {
+       "name": "E",
+       "children": [
+        {"name": "CO", "size": 100},
+        {"name": "SI", "size": 100}
+       ]
+      },
+      {
+       "name": "WA",
+       "children": [
+        {"name": "NY", "size": 100},
+		{
+       "name": "RI",
+       "children": [
+        {"name": "TM", "size": 100},
+		{"name": "MI", "size": 100}
+       ]
+      }
+       ]
+      }
+      
+     ]
+    }
+   ]
+  },
+  {
+   "name": "TX",
+   "children": [
+	{"name": "FR", "size": 100},
+
+  {"name": "SO", "size": 100}
+   ]
+ }
+ ]
+}

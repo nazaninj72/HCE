@@ -1,0 +1,9 @@
+{"name": "root A", "children": [{
+         "name": "B",
+         "children": [{"name": "D", "size": 100
+        }, {"name": "E", "size": 100},{"name":"F","size":100}]
+      }, {
+         "name": "C",
+         "children": [{"name": "G", "size": 100}, {"name": "H", "size": 100}]
+      }]
+    }

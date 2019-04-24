@@ -6,12 +6,11 @@
          "children":[{"name":"I", "size": 100},{"name":"Z","size":100}]}]
       }, {
          "name": "D",
-         "children": [{"name": "L", "size": 100}, {"name": "M", "size": 100}, {
-             "name": "G", "size": 100}]
+         "children": [{"name": "L", "size": 100}, {"name": "M", "size": 100}]
       }, {
          "name": "N",
          "children": [{"name": "S", 
          "children":[{"name":"T", "size": 100},{"name":"V","size":100}]
-      }, {"name": "Q", "size": 100},{"name": "R","size": 100}]
+      }]
       }]
   }

@@ -20,22 +20,37 @@
    ]
   },
   {
-   "name": "F",
-   "children": [
-    {"name": "DS", "size": 100},
-    {"name": "TS", "size": 100},
-	{"name": "KI", "size": 100}
-   ]
-  },
-  {
    "name": "P",
    "children": [
     {"name": "Q",
     "children":[
+	{
+     "name": "PO",
+     "children": [
+      {
+       "name": "E",
+       "children": [
+        {"name": "CO", "size": 100},
+        {"name": "SI", "size": 100}
+       ]
+      },
+      {
+       "name": "L",
+       "children": [
+        {"name": "La", "size": 100}
+       ]
+      },
+      {
+       "name": "M1",
+       "children": [
+        {"name": "TM", "size": 100}
+       ]
+      }
+     ]
+    },
       {
        "name": "I2",
        "children": [
-        {"name": "AN", "size": 100},
         {"name": "M1", "size": 100},
         {
          "name": "M",
@@ -65,31 +80,7 @@
      ]
     },
     {
-     "name": "CD", "size":100},
-    {
-     "name": "PO",
-     "children": [
-      {
-       "name": "E",
-       "children": [
-        {"name": "CO", "size": 100},
-        {"name": "SI", "size": 100}
-       ]
-      },
-      {
-       "name": "L",
-       "children": [
-        {"name": "La", "size": 100}
-       ]
-      },
-      {
-       "name": "M1",
-       "children": [
-        {"name": "TM", "size": 100}
-       ]
-      }
-     ]
-    }
+     "name": "CD", "size":100}
    ]
   }
  ]

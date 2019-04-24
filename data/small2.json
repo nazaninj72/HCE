@@ -1,0 +1,18 @@
+{"name": "A", "children": [
+		{"name": "F",
+         "children":[{"name":"I", 
+		 "children":[
+		 {
+         "name": "D",
+         "children": [{"name": "L", "size": 100}, {"name": "M", "size": 100}, {
+             "name": "G", "size": 100}]
+      }]
+		 
+		 },{"name":"Z","size":100}]
+		 
+      }, {
+         "name": "N",
+         "children": [{"name": "S", "size": 100}
+      , {"name": "Q", "size": 100},{"name": "R","size": 100}]
+      }]
+  }

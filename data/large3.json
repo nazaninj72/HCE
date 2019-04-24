@@ -1,0 +1,115 @@
+{
+ "name": "B1",
+ "children": [
+  {
+   "name": "T2",
+   "children": [
+    {
+     "name": "P3",
+     "children": [
+      {"name": "I4", 
+	   "children": [
+	   {"name": "O5", "size": 100},
+	   {"name": "D5", "size": 100}
+	   ]
+	  },
+      {"name": "S3", "size": 100}
+     ]
+    },
+	  {
+   "name": "Q3",
+   "children": [
+    {"name": "H4", 
+	"children": [
+	{"name": "K5", "size": 100},
+	{"name": "X5", "size": 100}
+	]
+	},
+    {"name": "W4",
+	"children": [
+	{"name": "T5", "size": 100},
+	{"name": "Y5", "size": 100}
+	]
+	
+	}
+   ]
+  }
+   ]
+  },
+  {
+   "name": "L2",
+   "children": [
+    {"name": "U3",
+    "children":[
+      {
+       "name": "Z4",
+       "children": [
+        {"name": "J5", "size": 100},
+        {
+         "name": "V5","size": 100
+        },
+        {"name": "F5", 
+		"children":
+		[
+		 {"name": "B6", "size": 100},
+		{"name": "R6", "size": 100}
+		]
+		}
+       ]
+      }
+    ] 
+    },{"name": "A3", "size": 100}
+   ]
+  }
+  ,
+  {
+   "name": "R3",
+   "children": [
+    {
+     "name": "K4",
+     "children": [
+      {"name": "AB5", "size": 100},
+	  {"name": "CD6", "size":100}
+     ]
+    }
+    ,
+    {
+     "name": "IU3",
+     "children": [
+      {
+       "name": "EI4",
+       "children": [
+        {"name": "CO5", "size": 100},
+        {"name": "M5", "size": 100}
+       ]
+      },
+      {
+       "name": "HI4",
+       "children": [
+        {"name": "N5", "size": 100},
+		{
+       "name": "RI5",
+       "children": [
+	    {
+       "name": "Y6", "size":100},
+        {"name": "L6", "size": 100},
+		{"name": "I6", "size": 100}
+       ]
+      },
+	   {
+		"name": "V5",
+		"children": [
+		{"name": "F6", "size": 100},
+
+		{"name": "S6", "size": 100}
+		]
+ }
+       ]
+      }
+      
+     ]
+    }
+   ]
+  }
+ ]
+}
