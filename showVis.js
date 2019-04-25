@@ -42,7 +42,7 @@ function updateVis(selector1,selector2,compState,visState,changeState,dataState)
 
  
 
- readTextFile(dataState+".json", function(text){
+ readTextFile("data/"+dataState+".json", function(text){
    var mediumdata = JSON.parse(text);
   //  var mediumdata = require('medium1.json');
     //console.log(medium1);

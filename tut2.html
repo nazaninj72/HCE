@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tutorial part 3</title>
+	<link rel="stylesheet" href="tutstyles.css">
+</head>
+<body>
+
+	<script type="text/javascript">
+		function startWarmup(){
+			window.location.href = "form.html"
+		}
+	</script>
+	<table style="width: 100%;">
+		<tbody>
+			<tr>
+				<td class="body_single">
+					<h2> Comparison techniques used in this study: </h2>
+					<p class="description"> 
+
+					In order to visualize the previously explained changes, we will provide three types of comparison techniques named as "Side by side", "Animation" and "Reduced side by side". In this tutorial each of these comparison methods will be brifely explained. It is important to note that you will be shown only one change and therefore you will be asked to detect only one type of change in each question.
+					</p>
+					<h3>Animation:</h3>	
+					<p class="description"> 
+
+					One way of showing the changes is representing the changes using animated transitions. In order to observe these changes we provided "start" and "reset" buttons. When you click on "start" button you will observe animated transition of a change in the given visualization and using "reset" button you can return to the original state of the visualization. You can click on "start" and "reset" button as many times as you want. Take a look at the example below:  
+					</p>
+					<div class="photopart">
+						
+						 <img src="tutorial\animation.gif" alt="Cinque Terre" width="1100" height="400">
+					</div>
+					<p class="description"> 
+
+					In the above example you can see that by clicking on start you observe  
+					that branch "C" is deleted and then the treemap adjusts remaining nodes in the screen to optimize remaining spaces. And by clicking on "reset" branch "C" is visible there.
+					</p>
+					<h3>Side by Side</h3>	
+					<p class="description"> 
+
+					This is another way of visualizing changes by simply showing the state of visualization before the change and after that. See example below: 
+					
+					</p>
+					<div class="photopart">
+						 <img src="tutorial\sidebyside.jpg" alt="Cinque Terre" width="1100" height="490">
+					</div>
+
+					<h3>Reduced side by side</h3>	
+					<p class="description"> 
+						In this comparison method you will see three parts of visualization in one screen side by side. The left panel which is named as "current visualization" shows the current state of visualization after the change is applied to visualization. The two other parts in the left hand side of "current visualization" shows only part of the visualizaiton which is affected by the change and filters out other nodes. The part where it is named as "before" is part of visualization which will undergo change and the part named "after" shows the changed entity and its immediate parent. See example below: 
+					
+					
+					</p>
+					<div class="photopart">
+						
+						 <img src="tutorial\diff.jpg" alt="Cinque Terre" width="1100" height="420">
+					</div>
+					<p class="description">
+						As can be seen node "P" is added to node "G" in this example and in the right panels we only show the immediate parent of "P" which is "G".
+					</p>
+					<p class="description">
+						This is the end of tutorials! You can proceed to the warmup tasks by clicking on the button below:
+					</p>
+					<input type="button" class ="btn btn-primary btn-sm" id="submit" value="Next" onclick="startWarmup();">
+				</td>
+				
+			</tr>
+		</tbody>
+	</table>		
+
+</body>
+</html>

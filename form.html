@@ -1,0 +1,343 @@
+<html>
+<head>
+	<title></title>
+	<script src="js/vendor/d3.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="js/vendor/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="js/vendor/jquery-ui.min.js"></script>
+	<link rel="stylesheet" href="css/vendor/jquery-ui.min.css">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<script src="https://cdn.firebase.com/js/client/2.4.2/firebase.js"></script>
+<script type="text/javascript" src='stateCheck.js'></script>
+<script type="text/javascript" src='visDrawer.js'></script>
+<script type="text/javascript" src='showVis.js'></script>	
+<script src="https://www.gstatic.com/firebasejs/5.8.6/firebase.js"></script>
+<script type="text/javascript">
+	
+var config = {
+  apiKey: "AIzaSyCDvpYTQwRRPDmC-w3Quq5nSMmwruYQSt0",
+  authDomain: "hierarchical-269d0.firebaseapp.com",
+  databaseURL: "https://hierarchical-269d0.firebaseio.com",
+  projectId: "hierarchical-269d0",
+  storageBucket: "hierarchical-269d0.appspot.com",
+  messagingSenderId: "754209883401"
+};
+firebase.initializeApp(config);
+var stream0 = "";
+var stream1 = "";
+var stream2 = "";
+var stream3="";
+var stream4="";
+var userId;
+function writeUserData() {
+  firebase.database().ref('users/' + userId).set({
+    username: userId,
+    bio: stream0
+  }).then(function () {
+    callTask();
+    localStorage.setItem('userid',userId);
+  });
+  /*var mydb = new Firebase("https://hierarchical-269d0.firebaseio.com/");
+  
+  var obj = {
+  	username: userId,
+    bio: stream0
+  }
+  mydb.push(obj).then(function () {
+    callTask();
+  });*/
+}
+function shuffle(array) {
+  array.sort(() => Math.random() - 0.5);
+  return array;
+}
+var userids=[];
+var uindx=0;
+var currentindex=0;
+
+function ShowHideDiv() {
+
+       // var otherGender = document.getElementById("othergender");
+        var dvtext = document.getElementById("dvtext");
+        document.getElementById("gendertype").value="";
+        if ($('input:radio[name="sex"]:checked').val()=='other')
+        	dvtext.style.display = "block";
+        else
+        	dvtext.style.display = "none";
+    }
+function callTask(){
+	var personList=[];
+	personList=calcList();
+	var editedend=personList[personList.length-1].split("DOT");
+	personList[personList.length-1]=editedend[0];
+	console.log(personList)
+	warmupset=["Animation,tree,add,sampleDOT","SidebySide,tree,move,sampleDOT","Diff,tree,delete,sampleDOT","Animation,treemap,move,sampleDOT","SidebySide,treemap,add,sampleDOT","Diff,treemap,delete,sampleDOT","Animation,sunburst,delete,sampleDOT","SidebySide,sunburst,add,sampleDOT","Diff,sunburst,move,sampleDOT"]	
+	//personxlist=calcList(dict);	
+	//var variables=personxlist[currentindex].split(",");
+	//localStorage.myArrData=JSON.stringify(personX.list);
+	//var comparisonType = variables[0];
+	//console.log(comparisonType)
+	//console.log(personxlist)
+	//var queryString = "?para1=" + currentindex;
+	//window.location.href = comparisonType+".html" + queryString;
+	//window.open(comparisonType+".html", "_self");
+	// sessionStorage.setItem('myArray', personxlist);
+	randomwarmup=shuffle(warmupset)
+	console.log(randomwarmup)
+	var editedend=randomwarmup[randomwarmup.length-1].split("DOT");
+	randomwarmup[randomwarmup.length-1]=editedend[0];
+	var variables=randomwarmup[currentindex].split(",");
+	//localStorage.myArrData=JSON.stringify(personX.list);
+	var comparisonType = variables[0];
+	var queryString = "?para1=" +currentindex+"=?para2="+"WU";
+	window.location.href = comparisonType+".html" + queryString ;
+	var correctsum=0;
+	localStorage.setItem("warmuptasks",randomwarmup)
+	 sessionStorage.setItem('myArray', personList);
+	 localStorage.setItem("correctanswers", correctsum);
+	// var Uinputs=[];
+	// localStorage.setItem("allUserInputs",Uinputs)
+
+}
+
+function showNextQ(){//call question
+	//var prevQ = parseInt($('.indexKeeper').attr('id')); // get id of the submitting question
+	//choose comparison type
+	timestamp=new Date().getTime();
+	userId=timestamp;
+		if(currentindex == 0) // going to load 1st Q, store personal details from prev page
+	{
+
+		var count=0;
+		stream0 += $('input:radio[name="age"]:checked').val();
+		stream0 += "," + $('input:radio[name="sex"]:checked').val();
+		if ($('input:radio[name="sex"]:checked').val()=='other')
+			stream0 += "," + $('input:text#gendertype').val();
+		stream0 += "," + $('input:radio[name="hours"]:checked').val()+",";
+		stream0 += "," + $('input:radio[name="hierarchy"]:checked').val()+",";
+
+		$('input:checkbox').each(function () {
+			if(this.checked)
+			{
+				if(count ==0) stream0 += $(this).val();
+				else stream0 += "_" +$(this).val();
+
+				count++;
+
+			}
+		});
+		/*if ($('input:radio[name="hierarchy"]:checked').val()=='no'){
+			window.open("Hierarchytutorial.html", "_self");
+		}*/
+	}
+	writeUserData();
+	
+	 
+
+}
+function getRndInteger(min, max) {
+  var diff = max - min,
+       rnd = Math.random();
+   return rnd !== 1? Math.floor((diff + 1) * rnd) + min : min + diff;
+}
+
+ function calcList() {
+    var finalList=[];
+    var array=[];
+    for (var i=0; i<dict.length;i++){
+        array[i]=i;
+    }
+    var i = array.length,
+        j = 0,
+        temp;
+    while (i--) {
+        j = Math.floor(Math.random() * (i+1));
+        // swap randomly chosen element with current element
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    var listnum=0;
+    var indx=0;
+    var ind=0;
+    do {
+    	
+       if (dict[array[indx]].remaining>0){
+            finalList[ind]=dict[array[indx]].experimentID;
+            dict[array[indx]].remaining--;
+            if (indx==26)
+                indx=0;
+            else
+                indx++;
+            listnum++;
+            ind++;
+        }else{
+            if (indx==26)
+                indx=0;
+            else
+                indx++;
+        } 
+    }while(listnum<27)
+    return finalList;
+  }
+  var comparisonSets = [
+			"Animation" ,
+			"SidebySide",
+			"Diff" 
+		];
+var visSets = [
+			"tree",
+			"treemap",
+			"sunburst" 
+		];
+var changeSets = [
+		"move" ,
+		"add",
+		"delete" 
+	];
+var dataSets = [
+		"small",
+		"medium",
+		"large"
+	];		
+var compState=0;
+var visState=0;
+var changeState=0;
+var dataState=0;
+var dict = []; // create an empty array
+var ind=0;
+ for(var i=0; i<3;i++){
+       	 for (var ii=0; ii<3;ii++){
+	         for (var iii=0;iii<3;iii++){
+	         	for (var iv=0;iv<3;iv++){
+	         		ind=getRndInteger(1,3)
+	        		dict.push(
+	        		  {
+	        		      experimentID:""+comparisonSets[i]+","+visSets[ii]+","+changeSets[iii]+","+dataSets[iv]+""+ind+"DOT",
+	        		      remaining: 10
+	        		 
+	        		  })
+	        	}
+	        	
+		         
+	       }
+       	}
+   }
+/*function calcList(){
+var personxlist=[];
+var j=0,k=0;
+var randindex=shuffle(81);
+var ref = firebase.database().ref("TaskList");
+ref.on("value", function(snapshot) {
+    var childData = snapshot.val();
+    while (personxlist.length<27)
+    {
+    	var key = Object.keys(childData)[randindex[j]]; 
+	    console.log(key)
+	    if (childData[key].remaining>0)
+	    {
+	    	personxlist[k]=childData[key].experimentID
+	    	
+	    	//firebase.database().ref("TaskList/"+key).update(childData[key]);
+	    	
+
+	    	k++;
+	    	j++;
+	    }else{
+	    	if (j==26)
+	    	    j=0;
+	    	else
+	    	    j++;
+
+    	}
+    }
+    console.log(personxlist)
+    
+});
+return personxlist;
+}*/
+
+
+
+</script>
+
+<body>
+
+
+	<div id="CONTAINER" >
+		<div class="question" id="0"> <!-- This is considered as question 0 -->
+			<span class="indexKeeper" id="0"></span>
+			<p>
+				<h2 style="text-align:center;" >Answer Questions</h2>
+				<span style="font-size:130%;">
+					The goal of this study is to measure the effect of different comparison techniques on different hierarchical data visualizations based on given parameters such as size of the hierarchy and type of change. In this experiment you will be asked to detect type of the change and its corresponding node. First you will receive 9 warmup tasks and then you will receive 27 real tasks.  </br></br>
+				</span>
+			
+			</p>
+
+
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;"> Age: </td></br>
+				<td>
+					<input type="radio" name="age" value="20-25" style="margin-right: 0" checked /> 20-25 years old
+					<input type="radio" name="age" value="25-35"  style="margin-right: 0" />    25-35 years old</br>
+					<input type="radio" name="age" value="34-45" style="margin-right: 0" />    35-45 years old
+					<input type="radio" name="age" value="Above 45" style="margin-right: 0" />    Above 45 years old</br>
+				</td>
+			</tr> </br>
+
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;">Gender:</td><br>
+				<td>
+					<input type="radio" name="sex" value="male" style="margin-right: 0" onclick="ShowHideDiv()" checked /> Male
+					<input type="radio" name="sex" value="female"  style="margin-right: 0" onclick="ShowHideDiv()" /> Female </br>
+					<input type="radio" id="othergender" name="sex" value="other"  style="margin-right: 0" onclick="ShowHideDiv()" /> Other </br>
+					<div id="dvtext" style="display: none">
+					    
+					    <input type="text" id="gendertype" />
+					</div>
+				</td>
+			</tr> </br>
+
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;">Have you ever created a visualization before?</td> </br>
+				<td>
+					<input type="radio" name="hours" value="No" style="margin-right: 0" checked /> No
+					<input type="radio" name="hours" value="Yes"  style="margin-right: 0" />  Yes </br>
+				</td>
+			</tr></br>
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;">Do you know about hierarchical data?</td> </br>
+				<td>
+					<input type="radio" name="hierarchy" value="no" style="margin-right: 0" checked /> No
+					<input type="radio" name="hierarchy" value="yes"  style="margin-right: 0" />  Yes </br>
+				</td>
+			</tr></br>
+
+			<tr>
+				<td width=20 style="font-weight:bold;vertical-align:text-center;"> Have you ever used any of the following tools or libraries to create a visualization? If so, which ones?  </td> </br>
+				<td>
+					<input type="checkbox" name="tool" value="Excel"> Microsoft Excel </br>
+					<input type="checkbox" name="tool" value="Tableau"> Tableau </br>
+					<input type="checkbox" name="tool" value="Spotfire"> Spotfire </br>
+					<input type="checkbox" name="tool" value="D3"> D3</br>
+					<input type="checkbox" name="tool" value="Processing"> Processing</br>
+					<input type="checkbox" name="other" value="Other"> Other</br>
+					<form class="others">
+					</form>
+
+				</td>
+			</tr> </br>
+
+			<!-- <ul>
+			 
+			  <li><a href="AnimationDisplay.html">Proceed</a></li>
+			 
+			</ul> -->
+			<input type="submit" value="submit and proceed" onclick="showNextQ();" />
+
+
+		</div>
+	</div>
+</body>
+</html>

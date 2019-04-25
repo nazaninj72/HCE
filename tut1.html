@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Tutorial part 2</title>
+	<link rel="stylesheet" href="tutstyles.css">
+</head>
+<body>
+	<script type="text/javascript">
+		function nextTut(){
+			window.location.href = "tut2.html"
+		}
+	</script>
+	<table style="width: 100%;">
+		<tbody>
+			<tr>
+				<td class="body_single">
+					<h2> Changes in a hierarchical data:</h2>
+					<p class="description"> 
+
+					Three change operations in this study are named as "Add", "delete" and "move". In examples below you will see a sample for each of these operations in different visualizations. It is important to note that in real experiment changes are not shown in colors. The provided colors in this page are for demonstration purposes.
+					</p>
+					<h3>Add:</h3>	
+					<p class="description"> 
+
+					A node can be added to the hierarchy: <br>
+					In this example node "W" was <b> added</b> to the "Tree".
+					</p>
+					<div class="photopart">
+						
+						 <img src="tutorial\add2.jpg" alt="Cinque Terre" width="800" height="300">
+					</div>
+					<h3>Delete:</h3>	
+					<p class="description"> 
+
+					A node or a branch can be deleted from the hierarchy: <br>
+					In this example node "C"  and its children was <b> deleted</b> from "Treemap". 
+					
+					</p>
+					<div class="photopart">
+						
+						 <img src="tutorial\delete2.jpg" alt="Cinque Terre" width="1000" height="400">
+					</div>
+					<h3>Move:</h3>	
+					<p class="description"> 
+
+					A node or a branch can be moved from one parent node to another in the hierarchy: <br>
+					In the example below node "E" was <b> moved</b> in the "Sunburst diagram". As can be seen, node "E" (shown in blue) changed its parent from node "B" in left visualization to node "root A" in right visualization.
+					
+					</p>
+					<div class="photopart">
+						
+						 <img src="tutorial\move.jpg" alt="Cinque Terre" width="900" height="350">
+					</div>
+					<input type="button" class ="btn btn-primary btn-sm" id="submit" value="Next" onclick="nextTut();">
+				</td>
+				
+			</tr>
+		</tbody>
+	</table>	
+</body>
+</html>
