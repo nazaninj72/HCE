@@ -1,8 +1,10 @@
 body {
     font-family: Helvetica, Arial, sans-serif;
-    font-size: 10pt;
+    font-size: 16pt;
     color: #767676;
-    margin-left: 45px;
+    margin-left: 4%;
+    width: 75%;
+
 }
 .upperdescription{
 	width: 730px;

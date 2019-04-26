@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+.center {
+  margin: auto;
+  width: 60%;
+  border: 3px solid #73AD21;
+  padding: 10px;
+  position: relative;
+ margin-top: 15%;
+ font-size: 30px;
+ align-content: center;
+ text-align: center;
+}
+
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+</head>
+<body>
+<script type="text/javascript">
+	function Start(){
+		myArray = sessionStorage.getItem('myArray');
+	
+		personSarray=myArray.split("DOT,")
+	
+		var states=personSarray[0].split(",");
+		compState=states[0];
+		visState=states[1];
+		changeState=states[2];
+		dataState=states[3];
+		queryString = "?para1=" + 0;
+		window.location.href = compState+".html" + queryString;
+	}
+</script>
+
+
+
+<div class="center">
+  <p id="first"> <b>The warmup Session is over!</b> </p>
+  <br>
+  <p>You can now proceed to the real tasks</p>
+  <p>Please think aloud</p>
+  <br>
+  <button type="button" class="btn btn-success btn-lg" id="Proceed" onclick="Start();">Proceed</button>
+</div>
+
+</body>
+</html>

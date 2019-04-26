@@ -98,7 +98,7 @@
 					 		updateVis("#viscontainer1","#viscontainer2",compState,visState,changeState,dataState)
 				 		}
 				 		
-				 		//updateVis("#viscontainer","#viscontainer","Animation","treemap","delete","large1")
+				 		//updateVis("#viscontainer1","#viscontainer2","SidebySide","treemap","delete","medium2")
 
 
 				 	}
@@ -144,18 +144,8 @@
 					 			alert("Your answer is correct!")
 
 		 				 		if (currentindx+1 >= myWArray.length){
-		 				 			alert("Now you can start the real task ")
-		 				 			myArray = sessionStorage.getItem('myArray');
-		 				 			console.log(myArray)
-		 				 			personSarray=myArray.split("DOT,")
-		 				 			//console.log(personSarray)
-		 				 			var states=personSarray[0].split(",");
-		 				 			compState=states[0];
-		 				 			visState=states[1];
-		 				 			changeState=states[2];
-		 				 			dataState=states[3];
-		 				 			queryString = "?para1=" + 0;
-		 				 			window.location.href = compState+".html" + queryString;
+		 				 			
+		 				 			window.location.href ="startTest.html"
 		 			 			//Total Number of correct answers:"+corrects
 		 				 		}else{
 		 				 			currentindx++;
@@ -244,7 +234,7 @@
 			<div id="textpart">
 				<div class="col-xs-2">
 			       <label for="ex1">Node:</label>
-			       <input class="form-control" id="label" type="text" input autocomplete="off">
+			       <input class="form-control" id="label" type="text" input autocomplete="off"  style="text-transform:uppercase">
 				</div>
 			</div>
 			

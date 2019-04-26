@@ -59,7 +59,7 @@ var rootC=null;
    })
     var oldparent=sourceNode.parent;
     var oldindx=oldparent.children.indexOf(sourceNode);
-    var newlabels=["W","X","Y","C","O","H","P","U"];
+    var newlabels=["W1","XY","Y9","CU","OR","HP","IP","UM","IR","SH"];
     var newindx=getRndInteger(0,newlabels.length-1)
    // writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
     var startanimation = document.getElementById('startbutton');
@@ -173,7 +173,7 @@ var rootC=null;
          
     .append('g');
     document.getElementById("beforesidebyside").style.left=""+(width1/2-50)+"px";
-    document.getElementById("aftersidebyside").style.right=""+(width1/2+125)+"px";
+    document.getElementById("aftersidebyside").style.left=""+(width1/2-50)+"px";
     var containerWidth2 = +d3.select(selector2).style('width').slice(0, -2)
     var containerHeight2 = +d3.select(selector2).style('height').slice(0, -2)
 
@@ -227,7 +227,7 @@ var rootC=null;
       console.log(sourceNode)
       console.log("destNode")
       console.log(destNode)
-      var newlabels=["W","X","Y","C","O","H","P","U"];
+      var newlabels=["W1","XY","Y9","CU","OR","HP","IP","UM","IR","SH"];
       var newindx=getRndInteger(0,newlabels.length-1)
      // writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
       update(root,0,svg1,partition,lid)
@@ -312,7 +312,7 @@ var rootC=null;
       console.log(sourceNode)
       console.log("destNode")
       console.log(destNode)
-      var newlabels=["W","X","Y","C","O","H","P","U"];
+      var newlabels=["W1","XY","Y9","CU","OR","HP","IP","UM","IR","SH"];
       var newindx=getRndInteger(0,newlabels.length-1)
      // writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
       var diffWidth = +d3.select("#beforediff").style('width').slice(0, -2)

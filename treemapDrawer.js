@@ -69,7 +69,7 @@ var clickedonreset=0;
 				 list.forEach(function(f){
 				 	lid[k++]=f.id;
 				 })
-				var newlabels=["W","X","Y","C","O","H","P","U"];
+				var newlabels=["W1","XY","Y9","CU","OR","HP","IP","UM","IR","SH"];
 		 		var newindx=getRndInteger(0,newlabels.length-1)
 		 		//writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
 				startanimation.onclick = function(){
@@ -212,7 +212,8 @@ var clickedonreset=0;
 	           .attr("width", chartWidth)
 	           .attr("height", chartHeight)
 	           .attr("transform", "translate("+[margin.left, margin.top]+")")
-
+	           document.getElementById("beforesidebyside").style.left=(chartWidth/2-50)+"px";
+	           document.getElementById("aftersidebyside").style.left=(chartWidth/2-50)+"px";
 	        var treemap = d3.treemap()
 	               .size([chartWidth, chartHeight])
 	               .paddingTop(35)
@@ -240,7 +241,7 @@ var clickedonreset=0;
 			  maxdepth=updateDepth(rootC,treemap)
 
 			 selectednodes=randomization(excludedNodes,numNodes,maxdepth)
-			  var newlabels=["W","X","Y","C","O","H","P","U"];
+			  var newlabels=["W1","XY","Y9","CU","OR","HP","IP","UM","IR","SH"];
 			  var newindx=getRndInteger(0,newlabels.length-1)
 			  destNode=selectednodes[1];
 			  sourceNode=selectednodes[0];
@@ -384,7 +385,7 @@ var clickedonreset=0;
 			  maxdepth=updateDepth(rootC,treemap)
 
 		 	  selectednodes=randomization(excludedNodes,numNodes,maxdepth)
-			  var newlabels=["W","X","Y","C","O","H","P","U"];
+			  var newlabels=["W1","XY","Y9","CU","OR","HP","IP","UM","IR","SH"];
 			  var newindx=getRndInteger(0,newlabels.length-1)
 			  destNode=selectednodes[1];
 			  sourceNode=selectednodes[0];

@@ -223,39 +223,11 @@ var ind=0;
 	       }
        	}
    }
-/*function calcList(){
+function calcAllTasts(dict){
 var personxlist=[];
-var j=0,k=0;
-var randindex=shuffle(81);
-var ref = firebase.database().ref("TaskList");
-ref.on("value", function(snapshot) {
-    var childData = snapshot.val();
-    while (personxlist.length<27)
-    {
-    	var key = Object.keys(childData)[randindex[j]]; 
-	    console.log(key)
-	    if (childData[key].remaining>0)
-	    {
-	    	personxlist[k]=childData[key].experimentID
-	    	
-	    	//firebase.database().ref("TaskList/"+key).update(childData[key]);
-	    	
 
-	    	k++;
-	    	j++;
-	    }else{
-	    	if (j==26)
-	    	    j=0;
-	    	else
-	    	    j++;
-
-    	}
-    }
-    console.log(personxlist)
-    
-});
 return personxlist;
-}*/
+}
 
 
 

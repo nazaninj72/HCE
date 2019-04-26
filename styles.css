@@ -20,9 +20,10 @@
 }
 
 #viscontainer {
-  width: 95%;
+  width: 75%;
   height: 67%;
-  margin: 0px;
+  margin-left:10%;
+  margin-right: 10%;
   padding: 0px;
   align-items: center;
   justify-content: center;
@@ -64,12 +65,12 @@
  height: 30px;
  border-width: 1px;
  border-style: solid;
- float: left;
+
  border-color: #080808;
  align-items: center;
  justify-content: center;
  position: relative;
- left: 45%;
+
 }
 #beforesidebyside h4{
    margin: 0;
@@ -88,8 +89,7 @@
  align-items: center;
  justify-content: center;
 position: relative;
-float: right;
-right: 40%;
+
 
 }
 #aftersidebyside h4{

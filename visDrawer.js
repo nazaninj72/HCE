@@ -71,7 +71,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		// console.log(answerId)
 		// var answerinput = document.getElementById(''+answerId+'choice');
 		 //var label = input.nextSibling;
-		 var newlabels=["W1","XY","Y9","CU","OR","HP","IP","U","IR",];
+		 var newlabels=["W1","XY","Y9","CU","OR","HP","IP","UM","IR","SH"];
 		 var newindx=getRndInteger(0,newlabels.length-1)
 		 destNode=selectednodes[1];
 		 sourceNode=selectednodes[0];
@@ -183,7 +183,6 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 
 		var containerWidth2 = +d3.select(selector1).style('width').slice(0, -2)
 		var containerHeight2 = +d3.select(selector1).style('height').slice(0, -2)
-console.log("here?")
 		// set the dimensions and margins of the diagram
 		var margin = {top: 40, right: 90, bottom: 50, left: 90},
 		    width2 = containerWidth2 - margin.left - margin.right,
@@ -208,6 +207,7 @@ console.log("here?")
 		root.x0 = 100;
 		root.y0 = height1 / 2;
 		console.log(root)
+		
 		var levelWidth = [1];
 		var childCount = function(level, n) {
 
@@ -227,6 +227,8 @@ console.log("here?")
 		    .size([width1,1.4*newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
 		
 		updatetree(root,root,svg1,duration,treemap,90)
+		document.getElementById("beforesidebyside").style.left=""+(root.x)+"px";
+    	
 		console.log(root)
 		svg1.selectAll("*").style("opacity", 0);
 		var rootC;
@@ -261,6 +263,7 @@ console.log("here?")
 			 	updatetree(rootC,rootC,svg2,duration,treemap1,65)
 			 else
 			 	updatetree(rootC,rootC,svg2,duration,treemap1,90)
+			document.getElementById("aftersidebyside").style.left=""+rootC.x+"px";
 
 		}
 		if (changestate=="delete"){
@@ -277,6 +280,7 @@ console.log("here?")
 			    .size([width2,1.4*newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
 			
 			updatetree(rootC,rootC,svg2,duration,treemap1,90)
+			document.getElementById("aftersidebyside").style.left=""+rootC.x+"px";
 
 		}
 		if (changestate=="add"){
@@ -296,6 +300,7 @@ console.log("here?")
 			 		updatetree(rootC,rootC,svg2,duration,treemap1,65)
 				else
 			 		updatetree(rootC,rootC,svg2,duration,treemap1,90)
+			 	document.getElementById("aftersidebyside").style.left=""+(rootC.x)+"px";
 
 		}
 
