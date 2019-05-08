@@ -50,9 +50,10 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		});
 		root.y0 = 100;
 		root.x0 = height / 2;
+		edgeLength=95;
 		//var sourceNode;
 		//var destNode;
-		updatetree(root,root,svg,duration,treemap,90)
+		updatetree(root,root,svg,duration,treemap,edgeLength)
 		numNodes=0;
 		var startanimation = document.getElementById('startbutton');
 		var rootC;
@@ -75,7 +76,29 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 		 var newindx=getRndInteger(0,newlabels.length-1)
 		 destNode=selectednodes[1];
 		 sourceNode=selectednodes[0];
+		 if (changestate=="move"){
+		 	testMove(destNode,sourceNode,rootC,svg)
+		 }
 
+		 function testMove(destNode,sourceNode,rootC,svg){
+		 	addtochildren(destNode,sourceNode)
+		 	maxdepth=updateDepth(rootC,treemap)
+		 	if (maxdepth>5){
+		 		svg.selectAll("*").remove();
+		 		edgeLength=65;
+		 		updatetree(root,root,svg,0,treemap,edgeLength)
+		 	}
+		 	
+		 }
+		 
+				
+				
+				
+				
+				
+				
+				 //updatetree(root,root,svg1,duration,treemap)
+				 
 		 	 	
 		// answerinput.innerHTML = ""+sourceNode.data.name+"-"+ changestate;
 		 
@@ -85,15 +108,10 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			if (changestate=="move"){
 
 				addtochildren(destNode,sourceNode)
-				console.log("destNode")
-				console.log(destNode)
-				console.log("sourceNode after children")
-				console.log(sourceNode)
-				console.log(rootC)
 				updateDepth(rootC,treemap)
 				duration=1500;
 				 //updatetree(root,root,svg1,duration,treemap)
-				 updatetree(rootC,rootC,svg,duration,treemap,90)
+				 updatetree(rootC,rootC,svg,duration,treemap,edgeLength)
 			}
 			if (changestate=="delete"){
 				duration=1500;
@@ -101,7 +119,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				removeNode(sourceNode,svg,duration,function(){
 					
 					removedata(sourceNode);
-					updatetree(rootC,rootC,svg,duration,treemap,90)
+					updatetree(rootC,rootC,svg,duration,treemap,edgeLength)
 				})
 				//
 				console.log(rootC)
@@ -119,7 +137,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 
 				  if (d.id==destNode.id)
 				  {
-				  	console.log(d)
+				  	
 				    selected=d
 				  	
 				    return true;
@@ -131,7 +149,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				newnode=newNode(selected,newlabels[newindx],root,svg,treemap)
 				
 				duration=1500;
-				updatetree(selected,root,svg,duration,treemap,90)
+				updatetree(selected,root,svg,duration,treemap,edgeLength)
 				
 
 			}
@@ -152,7 +170,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				svg.selectAll("*").style("opacity",1);
 			}
 
-			updatetree(root,root,svg,duration,treemap,90)
+			updatetree(root,root,svg,duration,treemap,edgeLength)
 			document.getElementById("startbutton").disabled = false;
 		}
 
@@ -262,7 +280,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			 if (maxd>7)
 			 	updatetree(rootC,rootC,svg2,duration,treemap1,65)
 			 else
-			 	updatetree(rootC,rootC,svg2,duration,treemap1,90)
+			 	updatetree(rootC,rootC,svg2,duration,treemap1,95)
 			document.getElementById("aftersidebyside").style.left=""+rootC.x+"px";
 
 		}
@@ -279,7 +297,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			var treemap1 = d3.tree()
 			    .size([width2,1.4*newHeight ]).separation(function separation(a, b) { return a.parent == b.parent ? 5 : 5; });
 			
-			updatetree(rootC,rootC,svg2,duration,treemap1,90)
+			updatetree(rootC,rootC,svg2,duration,treemap1,95)
 			document.getElementById("aftersidebyside").style.left=""+rootC.x+"px";
 
 		}
@@ -299,7 +317,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				if (maxd>7)
 			 		updatetree(rootC,rootC,svg2,duration,treemap1,65)
 				else
-			 		updatetree(rootC,rootC,svg2,duration,treemap1,90)
+			 		updatetree(rootC,rootC,svg2,duration,treemap1,95)
 			 	document.getElementById("aftersidebyside").style.left=""+(rootC.x)+"px";
 
 		}
@@ -367,9 +385,9 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 			rootC=clonetree(root,root.depth,root.height)
 			maxdepth=updateDepth(rootC,treemap)
 			if (maxdepth>5)
-					updatetree(rootC,rootC,svg,duration,treemap,55)
+					updatetree(rootC,rootC,svg,duration,treemap,65)
 				else
-					updatetree(rootC,rootC,svg,duration,treemap,90)
+					updatetree(rootC,rootC,svg,duration,treemap,95)
 			
 			/*svg.selectAll("g.node").filter(function(d){
 				if (d.data.name=="CD")
@@ -468,9 +486,9 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				 svg.selectAll("*").remove();
 				 maxdepth=updateDepth(rootC,treemap)
 				 if (maxdepth>5)
-				 	updatetree(rootC,rootC,svg,duration,treemap,55)
+				 	updatetree(rootC,rootC,svg,duration,treemap,65)
 				 else{
-				 	updatetree(rootC,rootC,svg,duration,treemap,90)
+				 	updatetree(rootC,rootC,svg,duration,treemap,95)
 				 }
 				 afterSubtree=clonetree(destNode,destNode.depth,destNode.height)
 				 
@@ -524,14 +542,14 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				if (maxd1>5){
 					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,65)
 				}else{
-					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,90)
+					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,95)
 				
 				}
 				dashedUpdate(beforeSubtree,sourceNode,svgDiffBefore,treemap1,"move")
 				if (maxd1>5){
 					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,65)
 				}else{
-					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,90)
+					updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,95)
 				
 				}
 				svgDiffBefore.selectAll('g.node').filter(function(d){
@@ -556,12 +574,12 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				 treemap1 = d3.tree()
 				 			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
 				maxd2= updateDepth(afterSubtree,treemap1)
-				updatetree(rootC,rootC,svg,duration,treemap,90)
+				updatetree(rootC,rootC,svg,duration,treemap,95)
 				maxdepth=updateDepth(rootC,treemap)
 				if (maxdepth>5){
 					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,65)
 				}else{
-					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,90)
+					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,95)
 				
 				}
 				
@@ -569,7 +587,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				if (maxdepth>5){
 					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,65)
 				}else{
-					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,90)
+					updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,95)
 				
 				}
 				svgDiffAfter.selectAll('g.node').filter(function(d){
@@ -602,7 +620,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				 			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
 				beforeSubtree=trimSubtrees(beforeSubtree,sourceNode)
 				updateDepth(beforeSubtree,treemap1)
-				updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,90)
+				updatetree(beforeSubtree,beforeSubtree,svgDiffBefore,duration,treemap1,95)
 				svgDiffBefore.selectAll('g.node').filter(function(d){
 					if (d.id==sourceNode.id)
 					{
@@ -627,7 +645,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 				 			.size([1.2*diffWidth1,1.4*newHeight]).separation(function separation(a, b) { return a.parent == b.parent ? 6 : 6; });
 				beforeSubtree=trimSubtrees(afterSubtree,newnode)
 				updateDepth(afterSubtree,treemap1)
-				updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,90)
+				updatetree(afterSubtree,afterSubtree,svgDiffAfter,duration,treemap1,95)
 				svgDiffAfter.selectAll('g.node').filter(function(d){
 					if (d.id==sourceNode.id)
 					{
@@ -639,7 +657,7 @@ function drawTree (data,selector1,selector2,compstate,changestate){
 					}
 				})
 				dashedUpdate(afterSubtree,newnode,svgDiffAfter,treemap1,"move")
-				updatetree(rootC,rootC,svg,duration,treemap,90)
+				updatetree(rootC,rootC,svg,duration,treemap,95)
 
 			}
 
@@ -658,7 +676,7 @@ function updatetree(source,root,svg,duration,treemap,yadjs){
 
     // Normalize for fixed-depth.
     nodes.forEach(function(d){
-    	d.y = d.depth * 120
+    	d.y = d.depth * yadjs
     });
 
 
@@ -1211,7 +1229,7 @@ function newNode(selected,nodename,rootC,svg,treemap){
   //Push it to parent.children array  
   selected.children.push(newNode);
   selected.data.children.push(newNode.data);
- // updatetree(selected,rootC,svg,750,treemap)
+ // updatetree(selected,rootC,svg,650,treemap)
   return newNode;
  
 } 

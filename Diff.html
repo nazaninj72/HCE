@@ -40,27 +40,27 @@
 				};
 				firebase.initializeApp(config);
 				
-				function writeUserInput(userId, session,ans,t,n,txt) {
-				  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
-				    session: session,
-				    time: t,
-				    result: ans,
-				    realnode:n,
-				    userAnswer:txt
-				  }).then(function () {
-						currentindx++;
-				 		var states=personSarray[currentindx].split(",");
-				 		compState=states[0];
-				 		console.log(compState)
-				 		visState=states[1];
-				 		changeState=states[2];
-				 		dataState=states[3];
-			 			sessionStorage.setItem('myArray', myArray);
-			 			localStorage.setItem('correctanswers',corrects)
-			 			queryString = "?para1=" + currentindx;
-			 			window.location.href = compState+".html" + queryString;
-						});
-				}
+				function writeUserInput(userId, session,ans,t,n,txt,realradio,radioans) {
+					  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
+					    session: session,
+					    time: t,
+					    result: ans,
+					    realanswer: "("+n+","+realradio+")",
+				    	userAnswer: "("+txt+","+radioans+")"
+					  }).then(function () {
+							currentindx++;
+					 		var states=personSarray[currentindx].split(",");
+					 		compState=states[0];
+					 		console.log(compState)
+					 		visState=states[1];
+					 		changeState=states[2];
+					 		dataState=states[3];
+				 			sessionStorage.setItem('myArray', myArray);
+				 			localStorage.setItem('correctanswers',corrects)
+				 			queryString = "?para1=" + currentindx;
+				 			window.location.href = compState+".html" + queryString;
+							});
+					}
 
 		   			var queryString = decodeURIComponent(window.location.search);
 
@@ -206,7 +206,7 @@
 
 					 		
 
-					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue)
+					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,changeState,radioValue)
 					 		
 					 		
 					 	}
@@ -250,18 +250,18 @@
 			
 		 	<div class="choices3">
 
-					<input type="radio"  name="change" value="add" input autocomplete="off"/>
-						<label id="1choice">
-							added
-		    		  	</label></br></br>
-				  	<input type="radio" name="change" value="delete" input autocomplete="off">
-					  <label id="2choice">
-					  	deleted
-		    		  </label></br></br>
-					<input type="radio" name="change" value="move" input autocomplete="off"> 	
-						<label id="3choice">
-							moved
-		    		  	</label></br></br>
+					<input id="1choice" type="radio"  name="change" value="add" input autocomplete="off"/>
+							<label for="1choice">
+								added
+			    		  	</label></br></br>
+					  	<input id="2choice" type="radio" name="change" value="delete" input autocomplete="off">
+						  <label for="2choice">
+						  	deleted
+			    		  </label></br></br>
+						<input id="3choice" type="radio" name="change" value="move" input autocomplete="off"> 	
+							<label for="3choice">
+								moved
+			    		  	</label></br></br>
 				 <div id="submitbuttondiv">
 				<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
 				</div> 

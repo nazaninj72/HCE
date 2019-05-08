@@ -47,13 +47,13 @@
 				};
 				firebase.initializeApp(config);
 				
-				function writeUserInput(userId, session,ans,t,n,txt,startclicks,resetclicks) {
+				function writeUserInput(userId,session,ans,t,n,txt,startclicks,resetclicks,realradio,radioans) {
 				  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
 				    session: session,
 				    time: t,
 				    result: ans,
-				    realnode:n,
-				    userAnswer:txt,
+				    realanswer: "("+n+","+realradio+")",
+				    userAnswer: "("+txt+","+radioans+")",
 				    clickedonstart:startclicks,
 				    clickedonreset:resetclicks
 				  }).then(function () {
@@ -108,7 +108,7 @@
 					 		updateVis("#viscontainer","viscontainer",compState,visState,changeState,dataState)
 				 		}
 				 		
-				 		//updateVis("#viscontainer","#viscontainer","Animation","treemap","delete","large1")
+				 		//updateVis("#viscontainer","#viscontainer","Animation","tree","move","large1")
 
 
 				 	}
@@ -212,11 +212,7 @@
 					 		
 					 		//spentime=endtime-startime;
 					 		spentime=t1-t0;
-					 		
-
-					 		
-
-					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,clickedonstart,clickedonstart)
+					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,clickedonstart,clickedonstart,changeState,radioValue)
 					 		
 					 		
 					 	}
@@ -258,18 +254,19 @@
 				
 			 	<div class="choices">
 
-						<input type="radio"  name="change" value="add" input autocomplete="off"/>
-							<label id="1choice">
+						<input id="1choice" type="radio"  name="change" value="add" input autocomplete="off"/>
+							<label for="1choice">
 								added
 			    		  	</label></br></br>
-					  	<input type="radio" name="change" value="delete" input autocomplete="off">
-						  <label id="2choice">
+					  	<input id="2choice" type="radio" name="change" value="delete" input autocomplete="off">
+						  <label for="2choice">
 						  	deleted
 			    		  </label></br></br>
-						<input type="radio" name="change" value="move" input autocomplete="off"> 	
-							<label id="3choice">
+						<input id="3choice" type="radio" name="change" value="move" input autocomplete="off"> 	
+							<label for="3choice">
 								moved
 			    		  	</label></br></br>
+			    		  	
 					 <div id="submitbuttondiv">
 					<input type="button" class ="btn btn-primary btn-sm" id="submit" value="submit" onclick="submitAnswer();">
 					</div> 

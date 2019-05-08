@@ -37,15 +37,7 @@ function writeUserData() {
     callTask();
     localStorage.setItem('userid',userId);
   });
-  /*var mydb = new Firebase("https://hierarchical-269d0.firebaseio.com/");
-  
-  var obj = {
-  	username: userId,
-    bio: stream0
-  }
-  mydb.push(obj).then(function () {
-    callTask();
-  });*/
+
 }
 function shuffle(array) {
   array.sort(() => Math.random() - 0.5);
@@ -180,7 +172,7 @@ function getRndInteger(min, max) {
     }while(listnum<27)
     return finalList;
   }
-  var comparisonSets = [
+var comparisonSets = [
 			"Animation" ,
 			"SidebySide",
 			"Diff" 
@@ -196,7 +188,7 @@ var changeSets = [
 		"delete" 
 	];
 var dataSets = [
-		"small2",
+		"small3",
 		"medium2",
 		"large2"
 	];		
