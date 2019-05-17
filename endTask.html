@@ -21,27 +21,27 @@
 <body>
 <script type="text/javascript">
 	function Start(){
-		myArray = sessionStorage.getItem('myArray');
-		console.log(myArray)
-		personSarray=myArray.split("DOT,")
+	//	myArray = sessionStorage.getItem('myArray');
 	
-		var states=personSarray[0].split(",");
+		//personSarray=myArray.split("DOT,")
+	
+		/*var states=personSarray[0].split(",");
 		compState=states[0];
 		visState=states[1];
 		changeState=states[2];
 		dataState=states[3];
-		queryString = "?para1=" + 0;
-		window.location.href = compState+".html" + queryString;
+		queryString = "?para1=" + 0;*/
+		window.location.href = "questionnaire.html";
 	}
 </script>
 
 
 
 <div class="center">
-  <p id="first"> <b>The warmup Session is over!</b> </p>
+  <p id="first"> <b>Your Session is over!</b> </p>
   <br>
-  <p>You can now proceed to the real tasks</p>
-  <p>Please remember to state your thoughts clearly in an audible voice (think-aloud)</p>
+  <p>Thank you for your participation</p>
+  <p>In the last part you will be asked to fill a questionnaire. Please click on proceed to fill the survey.</p>
   <br>
   <button type="button" class="btn btn-success btn-lg" id="Proceed" onclick="Start();">Proceed</button>
 </div>

@@ -29,7 +29,81 @@ var stream2 = "";
 var stream3="";
 var stream4="";
 var userId;
-function writeUserData() {
+var tasklists=[ {
+  "tasklist" : [ "SidebySide,tree,delete,medium2", "Diff,tree,delete,medium2", "SidebySide,treemap,add,large2", "Diff,sunburst,move,small3", "Diff,treemap,add,small3", "Diff,treemap,delete,small3", "SidebySide,tree,delete,small3", "Animation,sunburst,add,small3", "Diff,tree,move,medium2", "SidebySide,tree,move,small3", "Diff,sunburst,add,medium2", "Animation,tree,add,large2", "Animation,tree,add,medium2", "Diff,treemap,add,medium2", "Animation,tree,move,small3", "Diff,sunburst,delete,large2", "Animation,sunburst,delete,medium2", "Animation,treemap,move,small3", "SidebySide,tree,add,medium2", "Diff,sunburst,add,large2", "SidebySide,sunburst,delete,large2", "SidebySide,treemap,move,large2", "SidebySide,treemap,move,medium2", "Animation,tree,delete,small3", "Animation,sunburst,delete,small3", "Diff,treemap,move,small3", "Animation,treemap,add,medium2" ]
+}, {
+  "tasklist" : [ "Animation,treemap,delete,medium2", "SidebySide,treemap,add,medium2", "Animation,sunburst,move,medium2", "SidebySide,sunburst,delete,large2", "Diff,sunburst,add,medium2", "Animation,sunburst,delete,large2", "Diff,tree,delete,large2", "Diff,sunburst,add,small3", "Animation,treemap,delete,small3", "SidebySide,treemap,add,large2", "Animation,tree,delete,medium2", "Diff,treemap,delete,small3", "Diff,treemap,add,large2", "Animation,treemap,add,small3", "Diff,tree,move,large2", "SidebySide,tree,add,medium2", "Diff,treemap,move,small3", "Animation,treemap,move,large2", "Diff,treemap,move,large2", "Diff,tree,add,medium2", "Diff,treemap,add,small3", "Diff,sunburst,move,small3", "SidebySide,tree,delete,large2", "Animation,tree,add,medium2", "SidebySide,sunburst,move,medium2", "SidebySide,tree,add,small3", "SidebySide,tree,move,medium2" ]
+}, {
+  "tasklist" : [ "Animation,treemap,move,large2", "SidebySide,sunburst,move,small3", "Diff,treemap,delete,large2", "Animation,sunburst,delete,small3", "Animation,sunburst,add,medium2", "Diff,tree,add,medium2", "SidebySide,treemap,add,small3", "Animation,tree,add,small3", "Animation,sunburst,delete,medium2", "Animation,tree,add,large2", "SidebySide,treemap,move,small3", "SidebySide,sunburst,add,medium2", "SidebySide,tree,delete,large2", "SidebySide,treemap,move,medium2", "SidebySide,tree,add,small3", "SidebySide,tree,delete,small3", "SidebySide,treemap,delete,large2", "SidebySide,sunburst,move,medium2", "SidebySide,sunburst,delete,medium2", "Diff,sunburst,move,medium2", "Diff,sunburst,add,small3", "Diff,sunburst,delete,medium2", "Animation,treemap,move,small3", "Animation,treemap,add,small3", "Diff,treemap,add,medium2", "Diff,tree,delete,large2", "Diff,tree,move,large2" ]
+}, {
+  "tasklist" : [ "Animation,treemap,delete,medium2", "SidebySide,treemap,add,large2", "Diff,sunburst,delete,medium2", "Diff,tree,delete,small3", "Animation,tree,move,medium2", "Animation,treemap,delete,large2", "Diff,treemap,delete,medium2", "Diff,treemap,add,medium2", "Animation,sunburst,delete,small3", "Animation,sunburst,move,small3", "Diff,treemap,add,small3", "SidebySide,treemap,delete,large2", "SidebySide,tree,add,large2", "Diff,sunburst,delete,large2", "Animation,tree,delete,large2", "Animation,treemap,delete,small3", "Diff,sunburst,add,medium2", "Diff,sunburst,add,large2", "Animation,treemap,move,large2", "Diff,treemap,move,large2", "SidebySide,sunburst,move,small3", "SidebySide,sunburst,delete,large2", "SidebySide,tree,move,medium2", "Animation,treemap,move,small3", "SidebySide,tree,move,large2", "Diff,tree,add,small3", "SidebySide,tree,move,small3" ]
+}, {
+  "tasklist" : [ "Diff,sunburst,move,small3", "Diff,tree,add,medium2", "Diff,sunburst,add,small3", "SidebySide,treemap,delete,large2", "SidebySide,treemap,add,large2", "Diff,treemap,add,medium2", "SidebySide,tree,add,small3", "Animation,tree,delete,small3", "Animation,sunburst,add,small3", "Diff,tree,add,large2", "Animation,treemap,delete,large2", "Diff,tree,add,small3", "Animation,treemap,move,medium2", "Animation,tree,move,large2", "Diff,sunburst,delete,medium2", "Diff,treemap,add,large2", "Animation,sunburst,move,medium2", "Animation,sunburst,delete,large2", "Diff,tree,move,large2", "Diff,treemap,move,large2", "Animation,sunburst,delete,small3", "Animation,tree,move,small3", "SidebySide,treemap,add,medium2", "SidebySide,tree,delete,small3", "Animation,sunburst,move,small3", "SidebySide,sunburst,add,small3", "Animation,tree,move,medium2" ]
+}, {
+  "tasklist" : [ "Animation,tree,add,large2", "Diff,treemap,add,medium2", "Animation,tree,move,medium2", "Animation,sunburst,move,large2", "Animation,treemap,add,small3", "SidebySide,sunburst,delete,large2", "SidebySide,tree,move,medium2", "Animation,sunburst,add,medium2", "Diff,treemap,delete,small3", "SidebySide,treemap,move,large2", "SidebySide,treemap,add,small3", "Diff,treemap,add,large2", "Animation,sunburst,delete,large2", "SidebySide,tree,delete,large2", "Diff,sunburst,add,medium2", "Animation,treemap,delete,small3", "Diff,treemap,move,medium2", "Diff,sunburst,delete,medium2", "Diff,tree,delete,large2", "SidebySide,tree,delete,small3", "SidebySide,tree,move,large2", "SidebySide,treemap,move,small3", "Animation,sunburst,move,medium2", "Animation,tree,move,small3", "Diff,tree,move,medium2", "Diff,tree,move,large2", "SidebySide,treemap,delete,large2" ]
+}, {
+  "tasklist" : [ "Diff,tree,move,large2", "Animation,tree,move,medium2", "Animation,tree,delete,medium2", "SidebySide,treemap,move,large2", "Diff,sunburst,move,large2", "Animation,tree,add,large2", "SidebySide,sunburst,move,small3", "SidebySide,treemap,move,medium2", "Animation,treemap,move,medium2", "SidebySide,treemap,add,small3", "Diff,tree,delete,small3", "Diff,treemap,delete,medium2", "Animation,sunburst,delete,large2", "Animation,sunburst,delete,medium2", "Animation,treemap,delete,large2", "SidebySide,tree,move,small3", "Animation,sunburst,move,small3", "Animation,sunburst,add,large2", "Diff,sunburst,add,large2", "Diff,sunburst,delete,small3", "Diff,treemap,add,small3", "SidebySide,tree,move,medium2", "Animation,sunburst,add,small3", "SidebySide,sunburst,add,small3", "SidebySide,tree,move,large2", "Animation,sunburst,delete,small3", "SidebySide,treemap,delete,medium2" ]
+}, {
+  "tasklist" : [ "Diff,tree,add,medium2", "SidebySide,tree,move,medium2", "Animation,treemap,delete,large2", "Animation,sunburst,move,small3", "Diff,treemap,delete,medium2", "Animation,tree,delete,small3", "SidebySide,tree,delete,small3", "SidebySide,treemap,move,small3", "Animation,treemap,move,medium2", "SidebySide,sunburst,add,large2", "SidebySide,sunburst,add,small3", "SidebySide,tree,delete,large2", "Animation,tree,delete,large2", "Diff,sunburst,delete,small3", "Animation,treemap,move,small3", "Diff,sunburst,move,small3", "Diff,sunburst,add,medium2", "Diff,treemap,move,large2", "Animation,tree,move,medium2", "Diff,tree,add,large2", "Diff,sunburst,add,small3", "SidebySide,tree,move,large2", "Animation,sunburst,add,medium2", "Animation,tree,add,large2", "SidebySide,treemap,move,large2", "SidebySide,sunburst,move,large2", "Animation,sunburst,add,large2" ]
+}, {
+  "tasklist" : [ "SidebySide,treemap,move,small3", "SidebySide,tree,move,large2", "SidebySide,treemap,add,large2", "SidebySide,sunburst,move,large2", "Animation,tree,delete,small3", "SidebySide,sunburst,add,medium2", "Diff,tree,delete,medium2", "Diff,treemap,move,small3", "Diff,sunburst,add,medium2", "Diff,treemap,delete,large2", "SidebySide,tree,add,small3", "Animation,tree,add,large2", "SidebySide,tree,add,medium2", "SidebySide,sunburst,add,large2", "SidebySide,tree,delete,large2", "SidebySide,tree,add,large2", "Animation,sunburst,add,medium2", "Animation,treemap,add,large2", "SidebySide,treemap,delete,large2", "Diff,treemap,add,medium2", "Diff,tree,delete,large2", "Animation,treemap,delete,medium2", "Diff,sunburst,move,small3", "Diff,treemap,move,medium2", "Diff,sunburst,delete,small3", "Diff,tree,delete,small3", "Diff,tree,move,medium2" ]
+}, {
+  "tasklist" : [ "Animation,treemap,delete,medium2", "SidebySide,sunburst,move,small3", "Animation,sunburst,delete,medium2", "Animation,sunburst,move,small3", "Diff,sunburst,add,small3", "Diff,tree,delete,medium2", "Animation,tree,move,medium2", "Diff,sunburst,move,large2", "Diff,treemap,move,small3", "Animation,tree,move,large2", "Animation,treemap,add,large2", "Diff,sunburst,move,small3", "Animation,sunburst,add,small3", "Animation,tree,add,medium2", "Diff,treemap,move,medium2", "Diff,treemap,add,medium2", "SidebySide,treemap,add,small3", "Animation,treemap,delete,large2", "SidebySide,sunburst,add,medium2", "Diff,sunburst,delete,small3", "SidebySide,sunburst,add,small3", "SidebySide,treemap,delete,medium2", "Animation,treemap,add,medium2", "Diff,treemap,move,large2", "SidebySide,treemap,add,large2", "Animation,tree,move,small3", "SidebySide,tree,delete,medium2" ]
+}, {
+  "tasklist" : [ "Animation,sunburst,add,small3", "SidebySide,sunburst,delete,small3", "Diff,treemap,delete,large2", "Diff,tree,move,large2", "Animation,tree,move,large2", "Diff,sunburst,add,medium2", "Diff,sunburst,add,small3", "Diff,tree,delete,medium2", "Animation,sunburst,delete,small3", "Animation,treemap,delete,large2", "Diff,tree,add,small3", "Animation,treemap,delete,medium2", "Diff,tree,move,medium2", "Animation,treemap,add,large2", "Diff,treemap,move,large2", "SidebySide,tree,move,large2", "SidebySide,tree,delete,large2", "Diff,sunburst,move,small3", "Diff,sunburst,move,medium2", "SidebySide,treemap,delete,large2", "Animation,treemap,add,small3", "Animation,treemap,delete,small3", "Diff,treemap,add,medium2", "Animation,tree,add,medium2", "Animation,treemap,move,large2", "SidebySide,treemap,add,medium2", "Animation,tree,move,medium2" ]
+}, {
+  "tasklist" : [ "Animation,treemap,move,medium2", "Animation,treemap,move,small3", "Animation,tree,add,large2", "Animation,tree,move,large2", "Diff,tree,delete,large2", "Diff,sunburst,delete,medium2", "Diff,treemap,move,large2", "SidebySide,tree,delete,small3", "SidebySide,sunburst,add,small3", "SidebySide,sunburst,move,large2", "Animation,treemap,add,small3", "Diff,sunburst,add,small3", "Diff,tree,delete,small3", "Animation,treemap,delete,large2", "Diff,tree,add,small3", "Animation,tree,add,small3", "SidebySide,treemap,delete,small3", "Diff,sunburst,move,large2", "Animation,tree,delete,large2", "Animation,sunburst,delete,large2", "Diff,sunburst,add,large2", "Diff,treemap,delete,small3", "SidebySide,treemap,add,small3", "SidebySide,tree,move,medium2", "Diff,tree,move,large2", "Animation,tree,delete,medium2", "SidebySide,treemap,add,medium2" ]
+}, {
+  "tasklist" : [ "Animation,tree,delete,medium2", "SidebySide,treemap,move,large2", "Animation,sunburst,delete,small3", "Animation,tree,move,medium2", "Diff,sunburst,delete,medium2", "Diff,tree,add,large2", "Diff,treemap,add,medium2", "Animation,treemap,add,small3", "Animation,treemap,delete,small3", "SidebySide,tree,delete,medium2", "SidebySide,sunburst,add,small3", "Diff,tree,move,medium2", "Diff,tree,add,medium2", "SidebySide,treemap,delete,large2", "Diff,treemap,move,large2", "Animation,sunburst,move,large2", "SidebySide,sunburst,delete,large2", "SidebySide,tree,move,small3", "Animation,treemap,delete,large2", "Animation,treemap,move,large2", "SidebySide,tree,add,large2", "Diff,sunburst,delete,small3", "SidebySide,treemap,delete,small3", "SidebySide,tree,delete,small3", "Diff,sunburst,add,small3", "Diff,tree,move,small3", "SidebySide,sunburst,move,small3" ]
+}, {
+  "tasklist" : [ "SidebySide,tree,add,medium2", "Diff,sunburst,add,large2", "Animation,treemap,move,medium2", "Animation,tree,delete,medium2", "SidebySide,sunburst,delete,medium2", "Diff,treemap,add,large2", "Animation,tree,add,large2", "Animation,tree,add,small3", "SidebySide,sunburst,move,medium2", "Diff,tree,delete,medium2", "Diff,tree,move,large2", "Animation,sunburst,move,large2", "Diff,sunburst,add,medium2", "SidebySide,treemap,move,large2", "Animation,tree,add,medium2", "SidebySide,sunburst,delete,small3", "Diff,treemap,delete,medium2", "Animation,sunburst,delete,small3", "Diff,tree,add,medium2", "SidebySide,tree,delete,medium2", "Animation,sunburst,add,large2", "Diff,sunburst,delete,large2", "Animation,treemap,delete,large2", "SidebySide,tree,move,large2", "Animation,tree,move,large2", "Animation,treemap,add,small3", "Diff,treemap,delete,small3" ]
+}, {
+  "tasklist" : [ "Diff,sunburst,move,large2", "Animation,tree,move,small3", "SidebySide,tree,move,medium2", "Diff,tree,move,medium2", "Diff,tree,add,medium2", "SidebySide,sunburst,add,small3", "Animation,treemap,delete,large2", "SidebySide,sunburst,delete,medium2", "SidebySide,tree,delete,medium2", "Animation,treemap,add,small3", "Animation,tree,add,large2", "SidebySide,sunburst,move,large2", "SidebySide,tree,move,large2", "Diff,treemap,move,large2", "Animation,sunburst,delete,large2", "Animation,sunburst,add,medium2", "Animation,sunburst,add,large2", "Diff,sunburst,add,small3", "SidebySide,treemap,add,medium2", "Animation,tree,delete,large2", "Diff,tree,add,large2", "Animation,tree,move,large2", "Animation,tree,add,small3", "Diff,treemap,move,small3", "SidebySide,treemap,add,small3", "Animation,treemap,delete,medium2", "Diff,treemap,delete,medium2" ]
+}, {
+  "tasklist" : [ "SidebySide,treemap,move,medium2", "Diff,treemap,delete,large2", "SidebySide,tree,move,medium2", "SidebySide,treemap,delete,large2", "Diff,treemap,move,small3", "SidebySide,treemap,delete,small3", "SidebySide,tree,move,large2", "SidebySide,treemap,delete,medium2", "Animation,tree,delete,small3", "Animation,sunburst,delete,small3", "Animation,tree,move,medium2", "Animation,treemap,add,large2", "Diff,sunburst,move,small3", "Diff,sunburst,move,medium2", "Animation,tree,add,large2", "Animation,sunburst,add,small3", "Animation,treemap,delete,small3", "Diff,sunburst,add,small3", "Diff,tree,add,medium2", "Animation,treemap,move,small3", "Diff,tree,add,small3", "SidebySide,sunburst,move,medium2", "Diff,tree,delete,small3", "Diff,treemap,delete,medium2", "Diff,tree,move,medium2", "Animation,tree,move,large2", "Animation,sunburst,add,large2" ]
+}, {
+  "tasklist" : [ "Animation,sunburst,delete,large2", "Diff,treemap,delete,large2", "SidebySide,sunburst,add,large2", "Diff,sunburst,delete,medium2", "Diff,tree,delete,medium2", "Animation,treemap,add,medium2", "SidebySide,sunburst,delete,medium2", "Diff,treemap,add,medium2", "Diff,sunburst,add,medium2", "SidebySide,treemap,move,small3", "Diff,sunburst,move,large2", "SidebySide,treemap,move,medium2", "Diff,sunburst,move,medium2", "Animation,sunburst,delete,small3", "SidebySide,sunburst,move,medium2", "SidebySide,sunburst,add,small3", "SidebySide,sunburst,delete,large2", "Diff,treemap,move,medium2", "SidebySide,tree,delete,large2", "SidebySide,tree,move,small3", "Diff,treemap,move,large2", "Diff,tree,move,medium2", "SidebySide,tree,move,large2", "Diff,tree,move,large2", "Animation,tree,add,small3", "SidebySide,treemap,delete,small3", "Animation,tree,add,small3" ]
+}, {
+  "tasklist" : [ "SidebySide,tree,move,small3", "SidebySide,tree,add,small3", "Diff,treemap,delete,large2", "SidebySide,sunburst,move,medium2", "SidebySide,sunburst,delete,small3", "Diff,tree,delete,medium2", "Animation,sunburst,move,large2", "Animation,sunburst,add,small3", "SidebySide,treemap,add,small3", "SidebySide,treemap,move,large2", "SidebySide,tree,delete,large2", "Diff,tree,delete,large2", "Animation,treemap,add,medium2", "SidebySide,treemap,move,medium2", "SidebySide,treemap,delete,small3", "Diff,tree,move,small3", "Animation,tree,move,medium2", "Animation,treemap,add,small3", "Animation,sunburst,delete,medium2", "Diff,treemap,move,small3", "Diff,sunburst,delete,medium2", "SidebySide,sunburst,add,small3", "Animation,sunburst,move,medium2", "SidebySide,tree,delete,small3", "Animation,treemap,add,large2", "Animation,tree,delete,large2", "Diff,sunburst,move,large2" ]
+}, {
+  "tasklist" : [ "Diff,treemap,add,small3", "SidebySide,tree,add,medium2", "Animation,treemap,move,large2", "Animation,sunburst,add,large2", "Animation,treemap,add,small3", "Animation,sunburst,move,medium2", "SidebySide,sunburst,move,small3", "SidebySide,treemap,move,large2", "Diff,tree,delete,large2", "Diff,tree,add,medium2", "Animation,treemap,move,small3", "Diff,sunburst,delete,small3", "Animation,sunburst,add,small3", "SidebySide,treemap,delete,small3", "Diff,treemap,move,small3", "Diff,sunburst,move,small3", "Diff,tree,delete,small3", "Diff,tree,move,large2", "Diff,sunburst,delete,medium2", "Diff,tree,move,small3", "Animation,tree,move,large2", "SidebySide,treemap,add,medium2", "SidebySide,treemap,add,large2", "SidebySide,sunburst,move,medium2", "Diff,treemap,delete,medium2", "Animation,sunburst,add,medium2", "Animation,tree,delete,large2" ]
+}, {
+  "tasklist" : [ "Diff,sunburst,add,large2", "SidebySide,sunburst,add,large2", "Diff,tree,move,medium2", "Animation,sunburst,add,medium2", "SidebySide,treemap,move,large2", "Animation,sunburst,delete,medium2", "Animation,tree,delete,large2", "Animation,tree,delete,medium2", "Animation,sunburst,delete,large2", "SidebySide,sunburst,move,small3", "Diff,tree,add,small3", "Animation,treemap,add,medium2", "SidebySide,sunburst,delete,large2", "Animation,sunburst,add,large2", "Diff,treemap,delete,large2", "Diff,sunburst,move,medium2", "SidebySide,tree,add,large2", "SidebySide,treemap,add,medium2", "Animation,tree,move,large2", "SidebySide,sunburst,move,large2", "Diff,tree,delete,small3", "Animation,treemap,delete,medium2", "SidebySide,tree,move,small3", "SidebySide,treemap,delete,small3", "Diff,treemap,delete,small3", "Animation,sunburst,move,medium2", "SidebySide,treemap,move,small3" ]
+}, {
+  "tasklist" : [ "Diff,tree,delete,large2", "SidebySide,sunburst,move,medium2", "Diff,sunburst,delete,small3", "Diff,tree,add,small3", "Animation,sunburst,move,medium2", "Animation,tree,add,medium2", "Animation,tree,delete,large2", "SidebySide,treemap,add,small3", "Diff,tree,move,small3", "Diff,treemap,move,medium2", "Diff,sunburst,delete,large2", "SidebySide,treemap,delete,large2", "Animation,tree,delete,medium2", "SidebySide,tree,add,small3", "Diff,sunburst,move,medium2", "Diff,sunburst,add,large2", "Animation,sunburst,add,medium2", "SidebySide,tree,add,large2", "SidebySide,sunburst,add,small3", "Animation,sunburst,move,small3", "Animation,sunburst,delete,medium2", "Diff,treemap,delete,medium2", "Animation,treemap,move,large2", "Animation,treemap,add,medium2", "Diff,sunburst,move,small3", "SidebySide,tree,delete,small3", "Diff,tree,delete,medium2" ]
+}, {
+  "tasklist" : [ "Animation,treemap,add,large2", "Diff,tree,add,medium2", "Diff,tree,delete,small3", "Diff,treemap,move,small3", "Animation,treemap,move,medium2", "Diff,treemap,delete,medium2", "Diff,tree,add,large2", "Diff,treemap,add,large2", "Diff,treemap,delete,large2", "SidebySide,tree,move,small3", "Animation,sunburst,delete,large2", "Animation,sunburst,delete,medium2", "SidebySide,treemap,add,medium2", "SidebySide,sunburst,delete,small3", "Animation,treemap,add,medium2", "SidebySide,tree,add,small3", "Diff,sunburst,move,medium2", "SidebySide,tree,delete,small3", "Animation,tree,delete,small3", "SidebySide,tree,delete,large2", "Diff,sunburst,add,medium2", "Animation,treemap,move,large2", "Animation,treemap,delete,small3", "SidebySide,tree,move,medium2", "SidebySide,treemap,delete,medium2", "Animation,sunburst,move,large2", "Animation,tree,add,small3" ]
+}, {
+  "tasklist" : [ "Animation,sunburst,move,small3", "Diff,sunburst,add,large2", "Diff,tree,move,small3", "Diff,tree,add,small3", "SidebySide,sunburst,add,medium2", "SidebySide,tree,move,medium2", "Diff,tree,delete,medium2", "Diff,sunburst,move,large2", "Animation,tree,move,small3", "Animation,treemap,move,small3", "SidebySide,sunburst,delete,small3", "SidebySide,treemap,move,medium2", "SidebySide,sunburst,move,small3", "Diff,treemap,add,large2", "Animation,sunburst,delete,large2", "Animation,sunburst,add,large2", "SidebySide,tree,add,small3", "Animation,treemap,delete,small3", "SidebySide,treemap,delete,medium2", "Diff,sunburst,delete,medium2", "Animation,tree,delete,medium2", "Diff,treemap,delete,medium2", "Diff,treemap,move,medium2", "SidebySide,treemap,add,small3", "Diff,sunburst,delete,large2", "Animation,tree,move,large2", "SidebySide,sunburst,delete,medium2" ]
+}, {
+  "tasklist" : [ "SidebySide,treemap,delete,large2", "SidebySide,tree,delete,large2", "Animation,treemap,delete,small3", "Animation,sunburst,add,small3", "Diff,treemap,add,large2", "SidebySide,sunburst,add,large2", "Animation,tree,add,small3", "Animation,tree,delete,medium2", "SidebySide,sunburst,add,medium2", "SidebySide,sunburst,delete,large2", "Animation,sunburst,add,medium2", "Diff,sunburst,move,large2", "Animation,tree,delete,small3", "Animation,sunburst,add,large2", "SidebySide,tree,move,small3", "Diff,sunburst,move,medium2", "Diff,sunburst,delete,large2", "SidebySide,treemap,add,large2", "Diff,treemap,delete,large2", "Diff,treemap,move,medium2", "Diff,tree,move,medium2", "SidebySide,treemap,add,medium2", "SidebySide,tree,add,medium2", "SidebySide,sunburst,move,large2", "SidebySide,treemap,delete,small3", "Animation,sunburst,delete,medium2", "Animation,treemap,move,small3" ]
+}, {
+  "tasklist" : [ "SidebySide,treemap,move,small3", "Diff,tree,add,large2", "Animation,tree,add,medium2", "Animation,treemap,move,small3", "Animation,treemap,delete,small3", "Animation,sunburst,add,small3", "Diff,treemap,move,medium2", "SidebySide,sunburst,move,medium2", "Animation,sunburst,move,large2", "SidebySide,tree,move,small3", "SidebySide,treemap,move,medium2", "SidebySide,sunburst,delete,large2", "Diff,sunburst,delete,large2", "SidebySide,tree,add,medium2", "Diff,sunburst,add,large2", "Diff,tree,delete,small3", "SidebySide,treemap,add,medium2", "Animation,sunburst,add,medium2", "Diff,sunburst,move,large2", "SidebySide,treemap,delete,medium2", "SidebySide,tree,add,large2", "Diff,tree,move,small3", "Animation,sunburst,add,large2", "SidebySide,tree,add,small3", "Diff,treemap,delete,large2", "Diff,treemap,move,small3", "Animation,tree,add,small3" ]
+}, {
+  "tasklist" : [ "SidebySide,tree,add,small3", "SidebySide,sunburst,move,medium2", "SidebySide,treemap,add,small3", "SidebySide,sunburst,add,large2", "Diff,sunburst,add,large2", "Diff,tree,delete,small3", "SidebySide,tree,add,medium2", "SidebySide,sunburst,move,large2", "Animation,treemap,move,medium2", "Animation,treemap,add,large2", "Animation,tree,move,small3", "Diff,tree,add,large2", "SidebySide,sunburst,delete,large2", "SidebySide,sunburst,add,medium2", "SidebySide,treemap,add,large2", "SidebySide,treemap,move,large2", "Diff,sunburst,move,medium2", "Diff,sunburst,delete,small3", "Animation,sunburst,move,large2", "Diff,treemap,add,large2", "Diff,treemap,delete,small3", "Diff,tree,delete,medium2", "SidebySide,treemap,move,small3", "Animation,tree,delete,small3", "Diff,tree,move,small3", "Animation,treemap,move,large2", "Diff,treemap,move,medium2" ]
+}, {
+  "tasklist" : [ "Diff,sunburst,delete,small3", "Animation,tree,delete,large2", "Animation,sunburst,move,large2", "Diff,sunburst,delete,large2", "Animation,treemap,delete,medium2", "SidebySide,treemap,delete,medium2", "Diff,tree,add,small3", "SidebySide,sunburst,move,large2", "SidebySide,sunburst,move,small3", "Diff,treemap,add,large2", "Diff,treemap,delete,small3", "SidebySide,tree,delete,medium2", "Animation,sunburst,delete,medium2", "SidebySide,treemap,move,small3", "Animation,tree,delete,medium2", "Animation,tree,delete,small3", "Animation,tree,move,small3", "Diff,tree,move,small3", "Animation,treemap,add,large2", "SidebySide,tree,add,medium2", "SidebySide,treemap,delete,small3", "Animation,tree,add,small3", "Diff,treemap,add,small3", "Animation,treemap,move,large2", "Diff,sunburst,move,medium2", "Animation,sunburst,move,medium2", "SidebySide,sunburst,add,medium2" ]
+}, {
+  "tasklist" : [ "SidebySide,sunburst,move,large2", "Animation,tree,delete,large2", "Animation,tree,add,medium2", "Diff,treemap,delete,small3", "SidebySide,treemap,move,medium2", "SidebySide,sunburst,move,small3", "SidebySide,sunburst,add,medium2", "Animation,treemap,move,medium2", "SidebySide,sunburst,add,large2", "Animation,tree,delete,small3", "Animation,tree,move,small3", "SidebySide,treemap,move,small3", "Diff,sunburst,move,large2", "Animation,treemap,delete,medium2", "Animation,sunburst,move,small3", "Diff,treemap,move,medium2", "SidebySide,treemap,delete,small3", "SidebySide,treemap,add,large2", "SidebySide,sunburst,delete,medium2", "SidebySide,sunburst,delete,small3", "Animation,treemap,add,medium2", "Diff,treemap,add,large2", "Animation,sunburst,move,large2", "Diff,tree,move,small3", "SidebySide,tree,add,medium2", "Diff,sunburst,delete,small3", "Diff,sunburst,delete,large2" ]
+} ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function writeUserData(userId) {
   firebase.database().ref('users/' + userId).set({
     username: userId,
     bio: stream0
@@ -37,6 +111,22 @@ function writeUserData() {
     callTask();
     localStorage.setItem('userid',userId);
   });
+
+}
+function updateindex(i) {
+  //firebase.database().ref('currentask/' + i).set({
+   // task: i
+ // });
+   var newPostKey = firebase.database().ref().child('currentask').push().key;
+
+  // Write the new post's data simultaneously in the posts list and the user's post list.
+  var updates = {};
+  updates['/currentask/' + newPostKey] = i;
+ // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+  return firebase.database().ref().update(updates);
+
+
 
 }
 function shuffle(array) {
@@ -47,22 +137,13 @@ var userids=[];
 var uindx=0;
 var currentindex=0;
 
-function ShowHideDiv() {
-
-       // var otherGender = document.getElementById("othergender");
-        var dvtext = document.getElementById("dvtext");
-        document.getElementById("gendertype").value="";
-        if ($('input:radio[name="sex"]:checked').val()=='other')
-        	dvtext.style.display = "block";
-        else
-        	dvtext.style.display = "none";
-    }
 function callTask(){
 	var personList=[];
-	personList=calcList();
-	var editedend=personList[personList.length-1].split("DOT");
-	personList[personList.length-1]=editedend[0];
-	console.log(personList)
+	//personList=calcList();
+	//var editedend=personList[personList.length-1].split("DOT");
+	//personList[personList.length-1]=editedend[0];
+	
+
 	warmupset=["Animation,tree,add,sampleDOT","SidebySide,tree,move,sampleDOT","Diff,tree,delete,sampleDOT","Animation,treemap,move,sampleDOT","SidebySide,treemap,add,sampleDOT","Diff,treemap,delete,sampleDOT","Animation,sunburst,delete,sampleDOT","SidebySide,sunburst,add,sampleDOT","Diff,sunburst,move,sampleDOT"]	
 	//personxlist=calcList(dict);	
 	//var variables=personxlist[currentindex].split(",");
@@ -75,28 +156,80 @@ function callTask(){
 	//window.open(comparisonType+".html", "_self");
 	// sessionStorage.setItem('myArray', personxlist);
 	randomwarmup=shuffle(warmupset)
-	console.log(randomwarmup)
+	
 	var editedend=randomwarmup[randomwarmup.length-1].split("DOT");
 	randomwarmup[randomwarmup.length-1]=editedend[0];
 	var variables=randomwarmup[currentindex].split(",");
 	//localStorage.myArrData=JSON.stringify(personX.list);
 	var comparisonType = variables[0];
 	var queryString = "?para1=" +currentindex+"=?para2="+"WU";
-	window.location.href = comparisonType+".html" + queryString ;
+	
 	var correctsum=0;
 	localStorage.setItem("warmuptasks",randomwarmup)
-	 sessionStorage.setItem('myArray', personList);
-	 localStorage.setItem("correctanswers", correctsum);
+	 //readTextFile("usertasks/tasklist.json", function(text){
+  		//var tasklists = JSON.parse(text);
+  		//console.log(tasklists)
+  		/*
+		firebase.database().ref('/usertasks/' + index).once('value').then(function(snapshot) {
+  		personList = (snapshot.val() && snapshot.val().tasklist) || 'Anonymous';
+  // ...
+		});*/
+		var index = 0;
+		updateindex(index);
+		var ind;
+		firebase.database().ref().child("currentask").on("value", function(snapshot) {
+  			ind=snapshot.numChildren()
+  			
+  			personList=getcurrentlist(tasklists,personList,ind-1);
+  		//console.log(personList)
+  			for (var f=0;f<personList.length-1;f++){
+  				personList[f]=personList[f]+"DOT";
+  			}
+  			sessionStorage.setItem('myArray', personList);
+	 		console.log(personList)
+		})
+  		localStorage.setItem("tasklists", tasklists);
+
+  		
+  		//
+  	window.location.href = comparisonType+".html" + queryString ;	
+
+  	//});
+	 
+	 	
+	 	//localStorage.setItem("correctanswers", correctsum);
 	// var Uinputs=[];
 	// localStorage.setItem("allUserInputs",Uinputs)
-
 }
+function getcurrentlist(tasklists,personList,index){
+	//var new_json = JSON.stringify(tasklists.push({b: 2}));
+	
+  	personList=tasklists[index].tasklist;
+
+  	return personList;
+  			
+  		
+}
+
+function convertDate(d) {
+   dformat = [d.getMonth()+1,
+               d.getDate(),
+               d.getFullYear()].join('-')+' '+
+              [d.getHours(),
+               d.getMinutes(),
+               d.getSeconds()].join(':');
+
+  return dformat;
+}
+
 
 function showNextQ(){//call question
 	//var prevQ = parseInt($('.indexKeeper').attr('id')); // get id of the submitting question
 	//choose comparison type
-	timestamp=new Date().getTime();
-	userId=timestamp;
+	var todaysDate = new Date();
+	//timestamp=new Date();
+	userId=convertDate(todaysDate);
+	
 		if(currentindex == 0) // going to load 1st Q, store personal details from prev page
 	{
 
@@ -122,7 +255,7 @@ function showNextQ(){//call question
 			window.open("Hierarchytutorial.html", "_self");
 		}*/
 	}
-	writeUserData();
+	writeUserData(userId);
 	
 	 
 
@@ -133,7 +266,7 @@ function getRndInteger(min, max) {
    return rnd !== 1? Math.floor((diff + 1) * rnd) + min : min + diff;
 }
 
- function calcList() {
+/* function calcList() {
     var finalList=[];
     var array=[];
     for (var i=0; i<dict.length;i++){
@@ -214,13 +347,17 @@ var ind=0;
 		         
 	       }
        	}
-   }
-function calcAllTasts(dict){
-var personxlist=[];
+   }*/
 
-return personxlist;
-}
-
+function ShowHideDiv() {
+       // var otherGender = document.getElementById("othergender");
+        var dvtext = document.getElementById("dvtext");
+        document.getElementById("gendertype").value="";
+        if ($('input:radio[name="sex"]:checked').val()=='other')
+        	dvtext.style.display = "block";
+        else
+        	dvtext.style.display = "none";
+    }
 
 
 </script>

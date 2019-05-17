@@ -48,7 +48,7 @@
 				firebase.initializeApp(config);
 				
 				function writeUserInput(userId,session,ans,t,n,txt,startclicks,resetclicks,realradio,radioans) {
-				  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
+				  firebase.database().ref('answers/' + userId+'/'+currentindx).set({
 				    session: session,
 				    time: t,
 				    result: ans,
@@ -203,7 +203,11 @@
 					 		if (correctanswer)
 					 			corrects++;
 					 		if (currentindx+1 >= personSarray.length){
-					 			alert("Thank you for participating. Your session is over! ")
+					 			//alert("Thank you for participating. Your session is over! ")
+					 			var tasklists=localStorage.getItem("tasklists")
+					 			console.log(tasklists)
+					 			window.location.href = "endTask.html";
+
 				 			//Total Number of correct answers:"+corrects
 					 		}else{
 					 			console.log("ok!")

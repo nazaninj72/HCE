@@ -1,24 +1,23 @@
 @import url('https://fonts.googleapis.com/css?family=Raleway');
 
 .container {
-    width: 100%;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-    position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
 }
 .container2 {
-    width: 100%;
-    height: 95%;
-    margin: 0px;
-    padding: 0px;
-    position: relative;
+  width: 100%;
+  height: 95%;
+  margin: 0px;
+  padding: 0px;
+  position: relative;
 }
 #warningbar{
   background-color: white;
   width:100%;
 }
-
 #viscontainer {
   width: 75%;
   height: 67%;
@@ -49,8 +48,6 @@
   position: relative;
   right: 1%;
   top: 5%;
-
- 
 }
 .headers{
   width: 100%;
@@ -163,7 +160,7 @@ transform: translate(-50%, -50%)
   left: 60%;
 }
 .questionbar2 {
- width: 95%;
+  width: 95%;
   height: 17%;
   margin: 0px;
   padding: 0px; 
@@ -208,7 +205,6 @@ transform: translate(-50%, -50%)
   left: 2%;
 }
 .animatebutton{
-
   text-align: center;
   position: relative;
 }
@@ -238,8 +234,8 @@ transform: translate(-50%, -50%)
 #beforediff{
   width: 25%;
   height: 75%;
- position: relative;
- float: left;
+  position: relative;
+  float: left;
  
 }
 #afterdiff{
@@ -249,78 +245,78 @@ transform: translate(-50%, -50%)
   float: left;
 }
 .col-xs-2 {
-     width: 150px;
+  width: 150px;
 }
 #textpart{
-   width: 150px;
+  width: 150px;
   height:30%;
   position: relative;
-    z-index:1;
-
+  z-index:1;
 }
 .choices{
-width: 100px;
- height:20%;
+  width: 100px;
+  height:20%;
   position: relative;
   float: right;
   bottom: 20%;
   right: 87%;
 }
 .choices2{
-width: 100px;
- height:20%;
+  width: 100px;
+  height:20%;
   position: relative;
   float: right;
   right: 87%;
   top: 7%;
 }
 .choices3{
-width: 100px;
- height:20%;
+  width: 100px;
+  height:20%;
   position: relative;
   float: right;
   right: 87%;
   bottom: 20%;
 }
-li {list-style-type: none;
-font-size: 16pt;
+li {
+  list-style-type: none;
+  font-size: 16pt;
 }
 .rq {
-color: #FF0000;
-font-size: 10pt;
+  color: #FF0000;
+  font-size: 10pt;
 }
 #submitbuttondiv{
   width: 30%;
   height: 10%;
-    position: relative;
-    left:0;
-    top: 60%;
-      align-items: center;
-    justify-content: center;
+  position: relative;
+  left:0;
+  top: 60%;
+  align-items: center;
+  justify-content: center;
 }
 ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-    width: 270.8px;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+  width: 270.8px;
 }
 
 li {
-    float: left;
+  float: left;
 }
 
 li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
 li a:hover:not(.active) {
-    background-color: #111;
+  background-color: #111;
 }
 
 .node circle {
@@ -339,9 +335,9 @@ li a:hover:not(.active) {
 }
 .dashedlink{
   fill: none;
-    stroke: #006699;
-    stroke-width: 2px;
-    stroke-dasharray: 20,10,5,5,5,10;
+  stroke: #006699;
+  stroke-width: 2px;
+  stroke-dasharray: 20,10,5,5,5,10;
 }
 rect {
   fill: white;
@@ -359,22 +355,22 @@ body {
 }
 
 .slice {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .slice .main-arc {
-    stroke: #000000;
-    stroke-width: 1px;
+  stroke: #000000;
+  stroke-width: 1px;
 }
 
 .slice .hidden-arc {
-    fill: none;
+  fill: none;
 }
 
 .slice text {
-    pointer-events: none;
-    dominant-baseline: middle;
-    text-anchor: middle;
+  pointer-events: none;
+  dominant-baseline: middle;
+  text-anchor: middle;
 }
 #startdots {
   position: relative;
@@ -392,11 +388,11 @@ body {
   left: 0px;
   background-color: inherit;
   border-radius: inherit;
-  }
+}
 
 #startdots:before {
   top: 8px;
-  }
+}
 
 
 #startdots:after {
@@ -408,7 +404,6 @@ body {
   height: 3px;
   background-color: black;
   border-radius: 50%;
-
 }
 
 #startdots2:before, #startdots2:after {
@@ -419,11 +414,11 @@ body {
   left: 0px;
   background-color: inherit;
   border-radius: inherit;
-  }
+}
 
 #startdots2:before {
   top: 8px;
-  }
+}
 
 
 #startdots2:after {
@@ -445,11 +440,11 @@ body {
   left: 0px;
   background-color: inherit;
   border-radius: inherit;
-  }
+}
 
 #Sstartdots:before {
   top: 8px;
-  }
+}
 
 
 #Sstartdots:after {

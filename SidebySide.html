@@ -38,7 +38,7 @@
 				firebase.initializeApp(config);
 				
 					function writeUserInput(userId, session,ans,t,n,txt,realradio,radioans) {
-					  firebase.database().ref('answers/' + userId+'-'+currentindx).set({
+					  firebase.database().ref('answers/' + userId+'/'+currentindx).set({
 					    session: session,
 					    time: t,
 					    result: ans,
@@ -189,7 +189,9 @@
 					 		if (correctanswer)
 					 			corrects++;
 					 		if (currentindx+1 >= personSarray.length){
-					 			alert("Thank you for participating. Your session is over! ")
+					 			window.location.href = "endTask.html";
+					 			var tasklists=localStorage.getItem("tasklists")
+					 				console.log(tasklists)
 				 			//Total Number of correct answers:"+corrects
 					 		}else{
 					 			console.log("ok!")
@@ -235,6 +237,7 @@
 				<div class="col-xs-2">
 			       <label for="ex1">Node:</label>
 			       <input class="form-control" id="label" type="text" input autocomplete="off"  style="text-transform:uppercase">
+			       <li class="rq">*Enter numbers and alphabets only.</li>
 				</div>
 			</div>
 			
