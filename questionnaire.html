@@ -110,6 +110,22 @@
 		<input type="radio" name="ReducedSideSun" value="disagree" input autocomplete="off" /> Disagree<br />
 		<input type="radio" name="ReducedSideSun" value="Strongly disagree" input autocomplete="off" />Strongly disagree<br />
 	</div>
+	<div class='question' id="10">
+		10) Speed of animated transitions were  <br />
+		<input type="radio" name="ReducedSidecurrent" value="Strongly Agree" input autocomplete="off" /> Strongly agree<br />
+		<input type="radio" name="ReducedSidecurrent" value="Agree" input autocomplete="off" /> Agree<br />
+		<input type="radio" name="ReducedSidecurrent" value="Neither agree nor disagree" input autocomplete="off"/> Neiter agree nor disagree<br />
+		<input type="radio" name="ReducedSidecurrent" value="disagree" input autocomplete="off" /> Disagree<br />
+		<input type="radio" name="ReducedSidecurrent" value="Strongly disagree" input autocomplete="off" />Strongly disagree<br />
+	</div>
+	<div class='question' id="11">
+		11) In <b>Reduced Sidebyside</b> comparison viewing the "current visualization" helped me in better detecting the changes <br />
+		<input type="radio" name="ReducedSidecurrent" value="Strongly Agree" input autocomplete="off" /> Strongly agree<br />
+		<input type="radio" name="ReducedSidecurrent" value="Agree" input autocomplete="off" /> Agree<br />
+		<input type="radio" name="ReducedSidecurrent" value="Neither agree nor disagree" input autocomplete="off"/> Neiter agree nor disagree<br />
+		<input type="radio" name="ReducedSidecurrent" value="disagree" input autocomplete="off" /> Disagree<br />
+		<input type="radio" name="ReducedSidecurrent" value="Strongly disagree" input autocomplete="off" />Strongly disagree<br />
+	</div>
 	<br>
 	<div class="question comment" id="46">
       <span>If you have any other suggestion or feedback please feel free to mention below:  </span><br/><br/>
@@ -161,7 +177,9 @@ firebase.initializeApp(config);
 		stream0 += "," +"Reduced Sidebyside-tree: "+ $('input:radio[name="ReducedSidetree"]:checked').val()+",";
 		stream0 += ","+"Reduced Sidebyside-treemap: " + $('input:radio[name="ReducedSidetreemap"]:checked').val()+",";
 		stream0 += ","+"Reduced Sidebyside-sunburst: " + $('input:radio[name="ReducedSideSun"]:checked').val();
+		stream0 += ","+"Reduced Sidebyside-current: " + $('input:radio[name="ReducedSidecurrent"]:checked').val();
 		comment = $('textarea#comment').val();
+		
 		writeUserData(userId,stream0,comment);
 
 	}
