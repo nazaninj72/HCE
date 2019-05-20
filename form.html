@@ -380,22 +380,22 @@ function ShowHideDiv() {
 			<tr>
 				<td width=20 style="font-weight:bold;vertical-align:text-center;"> Age: </td></br>
 				<td>
-					<input type="radio" name="age" value="20-25" style="margin-right: 0" checked /> 20-25 years old
-					<input type="radio" name="age" value="25-35"  style="margin-right: 0" />    25-35 years old</br>
-					<input type="radio" name="age" value="34-45" style="margin-right: 0" />    35-45 years old
-					<input type="radio" name="age" value="Above 45" style="margin-right: 0" />    Above 45 years old</br>
+					<input type="radio" name="age" value="20-25" style="margin-right: 0" input autocomplete="off" checked /> 20-25 years old
+					<input type="radio" input autocomplete="off" name="age" value="25-35"  style="margin-right: 0" />    25-35 years old</br>
+					<input type="radio"  input autocomplete="off" name="age" value="34-45" style="margin-right: 0" />    35-45 years old
+					<input type="radio" input autocomplete="off" name="age" value="Above 45" style="margin-right: 0" />    Above 45 years old</br>
 				</td>
 			</tr> </br>
 
 			<tr>
 				<td width=20 style="font-weight:bold;vertical-align:text-center;">Gender:</td><br>
 				<td>
-					<input type="radio" name="sex" value="male" style="margin-right: 0" onclick="ShowHideDiv()" checked /> Male
-					<input type="radio" name="sex" value="female"  style="margin-right: 0" onclick="ShowHideDiv()" /> Female </br>
-					<input type="radio" id="othergender" name="sex" value="other"  style="margin-right: 0" onclick="ShowHideDiv()" /> Other </br>
+					<input type="radio" input autocomplete="off" name="sex" value="male" style="margin-right: 0" onclick="ShowHideDiv()" checked /> Male
+					<input type="radio" input autocomplete="off" name="sex" value="female"  style="margin-right: 0" onclick="ShowHideDiv()" /> Female </br>
+					<input type="radio" input autocomplete="off" id="othergender" name="sex" value="other"  style="margin-right: 0" onclick="ShowHideDiv()" /> Other </br>
 					<div id="dvtext" style="display: none">
 					    
-					    <input type="text" id="gendertype" />
+					    <input type="text" input autocomplete="off" id="gendertype" />
 					</div>
 				</td>
 			</tr> </br>
@@ -403,8 +403,8 @@ function ShowHideDiv() {
 			<tr>
 				<td width=20 style="font-weight:bold;vertical-align:text-center;">Have you ever created a visualization before?</td> </br>
 				<td>
-					<input type="radio" name="hours" value="No" style="margin-right: 0" checked /> No
-					<input type="radio" name="hours" value="Yes"  style="margin-right: 0" />  Yes </br>
+					<input type="radio" input autocomplete="off" name="hours" value="No" style="margin-right: 0" checked /> No
+					<input type="radio" input autocomplete="off" name="hours" value="Yes"  style="margin-right: 0" />  Yes </br>
 				</td>
 			</tr></br>
 			<!-- <tr>
@@ -418,12 +418,12 @@ function ShowHideDiv() {
 			<tr>
 				<td width=20 style="font-weight:bold;vertical-align:text-center;"> Have you ever used any of the following tools or libraries to create a visualization? If so, which ones?  </td> </br>
 				<td>
-					<input type="checkbox" name="tool" value="Excel"> Microsoft Excel </br>
-					<input type="checkbox" name="tool" value="Tableau"> Tableau </br>
-					<input type="checkbox" name="tool" value="Spotfire"> Spotfire </br>
-					<input type="checkbox" name="tool" value="D3"> D3</br>
-					<input type="checkbox" name="tool" value="Processing"> Processing</br>
-					<input type="checkbox" name="other" value="Other"> Other</br>
+					<input type="checkbox" input autocomplete="off" name="tool" value="Excel"> Microsoft Excel </br>
+					<input type="checkbox" input autocomplete="off" name="tool" value="Tableau"> Tableau </br>
+					<input type="checkbox" input autocomplete="off" name="tool" value="Spotfire"> Spotfire </br>
+					<input type="checkbox" input autocomplete="off" name="tool" value="D3"> D3</br>
+					<input type="checkbox" input autocomplete="off" name="tool" value="Processing"> Processing</br>
+					<input type="checkbox" input autocomplete="off" name="other" value="Other"> Other</br>
 					<form class="others">
 					</form>
 
