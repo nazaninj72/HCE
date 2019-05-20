@@ -185,7 +185,7 @@ function callTask(){
   			for (var f=0;f<personList.length-1;f++){
   				personList[f]=personList[f]+"DOT";
   			}
-  			localStorage.setItem('myArray', personList);
+  			sessionStorage.setItem('myArray', personList);
 	 		console.log(personList)
 		})
   		localStorage.setItem("tasklists", tasklists);
