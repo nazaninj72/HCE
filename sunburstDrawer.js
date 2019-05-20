@@ -14,9 +14,7 @@ if (compstate=="Animation"){
    var svg = d3.select(selector1).append("svg")
         .attr("width", width + margin.left + margin.right)
         .attr("height", height + margin.top + margin.bottom)
-        .call(d3.zoom().on("zoom", function () {
-         svg.attr("transform", d3.event.transform)
-           }))
+        
          .append('g')
         .attr('transform', 'translate(' + width / 2+ ',' + height / 2 + ')');
   //.append('g').attr("transform","translate(" + width / 10 + "," + height/8 + ")")

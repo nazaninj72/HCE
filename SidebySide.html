@@ -72,6 +72,10 @@
 				 	window.onload = function() {
 				 		//var f=new Date();
 				 		//startime=f.getTime();
+				 		myArray = localStorage.getItem('myArray');
+					 		console.log(myArray)
+					 		personSarray=myArray.split("DOT,")
+					 		console.log(personSarray)
 				 		if (currentStringindex[3]=="WU"){
 				 			mywarmup = localStorage.getItem('warmuptasks');
 				 			console.log(mywarmup)
@@ -87,7 +91,7 @@
 				 		}else{
 				 			t0 = performance.now();
 					 		myArray = sessionStorage.getItem('myArray');
-					 		//console.log(myArray)
+					 		console.log(myArray)
 					 		personSarray=myArray.split("DOT,")
 					 		//console.log(personSarray)
 					 		var states=personSarray[currentindx].split(",");
@@ -186,8 +190,13 @@
 					 		t1 = performance.now();
 					 		// var d = new Date();
   							//endtime = d.getTime();
-					 		if (correctanswer)
-					 			corrects++;
+					 		
+					 		var currentuser=localStorage.getItem('userid');
+					 		
+					 		//spentime=endtime-startime;
+					 		spentime=t1-t0;
+
+					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,changeState,radioValue)
 					 		if (currentindx+1 >= personSarray.length){
 					 			window.location.href = "endTask.html";
 					 			var tasklists=localStorage.getItem("tasklists")
@@ -196,12 +205,7 @@
 					 		}else{
 					 			console.log("ok!")
 					 		}
-					 		var currentuser=localStorage.getItem('userid');
 					 		
-					 		//spentime=endtime-startime;
-					 		spentime=t1-t0;
-
-					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,changeState,radioValue)
 					 		
 					 		
 					 	}

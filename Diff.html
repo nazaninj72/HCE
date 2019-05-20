@@ -77,6 +77,10 @@
 				 		//var f=new Date();
 				 		//startime=f.getTime();
 				 		//updateVis("#viscontainer","#viscontainer","Diff","sunburst","move","large1")
+				 		myArray = localStorage.getItem('myArray');
+					 		console.log(myArray)
+					 		personSarray=myArray.split("DOT,")
+					 		console.log(personSarray)
 				 		if (currentStringindex[3]=="WU"){
 				 			mywarmup = localStorage.getItem('warmuptasks');
 				 			console.log(mywarmup)
@@ -94,7 +98,7 @@
 					 		myArray = sessionStorage.getItem('myArray');
 					 		console.log(myArray)
 					 		personSarray=myArray.split("DOT,")
-					 		//console.log(personSarray)
+					 		console.log(personSarray)
 					 		var states=personSarray[currentindx].split(",");
 					 		compState=states[0];
 					 		visState=states[1];
@@ -187,29 +191,30 @@
 					 			node=sourceNode.data.name
 					 
 					 		var correctanswer=checkUserInput(radioValue,textvalue,node)
-					 		corrects = localStorage.getItem('correctanswers');
+					 		//corrects = localStorage.getItem('correctanswers');
 					 		t1 = performance.now();
 					 		// var d = new Date();
   							//endtime = d.getTime();
-					 		if (correctanswer)
-					 			corrects++;
+  							spentime=t1-t0;
+  							var currentuser=localStorage.getItem('userid');
+					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,changeState,radioValue)
 					 		if (currentindx+1 >= personSarray.length){
 					 			window.location.href = "endTask.html";
 					 			var tasklists=localStorage.getItem("tasklists")
-					 				console.log(tasklists)
+					 				//console.log(tasklists)
 				 			//Total Number of correct answers:"+corrects
 					 		}else{
 					 			console.log("ok!")
 					 		}
-					 		var currentuser=localStorage.getItem('userid');
+					 		
 					 		
 					 		//spentime=endtime-startime;
-					 		spentime=t1-t0;
+					 		
 					 		
 
 					 		
 
-					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,changeState,radioValue)
+					 		
 					 		
 					 		
 					 	}
