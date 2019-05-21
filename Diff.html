@@ -40,7 +40,7 @@
 				};
 				firebase.initializeApp(config);
 				
-				function writeUserInput(userId,session,ans,t,n,txt,startclicks,resetclicks,realradio,radioans) {
+				function writeUserInput(userId,session,ans,t,n,txt,realradio,radioans) {
 				  firebase.database().ref('answers/' + userId+'/'+currentindx).set({
 				    session: session,
 				    time: t,
