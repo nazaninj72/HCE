@@ -40,15 +40,19 @@
 				};
 				firebase.initializeApp(config);
 				
-				function writeUserInput(userId, session,ans,t,n,txt,realradio,radioans) {
-					  firebase.database().ref('answers/' + userId+'/'+currentindx).set({
-					    session: session,
-					    time: t,
-					    result: ans,
-					    realanswer: "("+n+","+realradio+")",
-				    	userAnswer: "("+txt+","+radioans+")"
-					  }).then(function () {
-							currentindx++;
+				function writeUserInput(userId,session,ans,t,n,txt,startclicks,resetclicks,realradio,radioans) {
+				  firebase.database().ref('answers/' + userId+'/'+currentindx).set({
+				    session: session,
+				    time: t,
+				    result: ans,
+				    realanswer: "("+n+","+realradio+")",
+				    userAnswer: "("+txt+","+radioans+")"
+				  
+				  }).then(function () {
+						currentindx++;
+						if (currentindx >= personSarray.length){
+							window.location.href = "endTask.html";
+						}else{
 					 		var states=personSarray[currentindx].split(",");
 					 		compState=states[0];
 					 		console.log(compState)
@@ -56,11 +60,13 @@
 					 		changeState=states[2];
 					 		dataState=states[3];
 				 			sessionStorage.setItem('myArray', myArray);
-				 			//localStorage.setItem('correctanswers',corrects)
+				 			localStorage.setItem('correctanswers',corrects)
 				 			queryString = "?para1=" + currentindx;
 				 			window.location.href = compState+".html" + queryString;
-							});
-					}
+						}
+				 		
+						});
+				}
 
 		   			var queryString = decodeURIComponent(window.location.search);
 
@@ -198,14 +204,14 @@
   							spentime=t1-t0;
   							var currentuser=localStorage.getItem('userid');
 					 		writeUserInput(currentuser,personSarray[currentindx],correctanswer,spentime,node,textvalue,changeState,radioValue)
-					 		if (currentindx+1 >= personSarray.length){
+					 		/*if (currentindx+1 >= personSarray.length){
 					 			window.location.href = "endTask.html";
-					 			var tasklists=localStorage.getItem("tasklists")
+					 			//var tasklists=localStorage.getItem("tasklists")
 					 				//console.log(tasklists)
 				 			//Total Number of correct answers:"+corrects
 					 		}else{
 					 			console.log("ok!")
-					 		}
+					 		}*/
 					 		
 					 		
 					 		//spentime=endtime-startime;
