@@ -280,7 +280,9 @@ firebase.initializeApp(config);
   		firebase.database().ref('answers/' + userId+"/"+"questionnaire").set({
     	answers: stream0,
   	  	comments: comment
-  		});
+  		}).then(function () {
+  			window.location.href = "end.html"
+  		})
 
 }
 	var stream0 = "";
@@ -323,8 +325,8 @@ firebase.initializeApp(config);
 			comment = $('textarea#comment').val();
 			
 			writeUserData(userId,stream0,comment);
-			var radioValue = $("input[name='change']:checked").val();
-			window.location.href = "end.html"
+			//var radioValue = $("input[name='change']:checked").val();
+			
 		}
 
 	}
