@@ -160,7 +160,7 @@ function callTask(){
 	var editedend=randomwarmup[randomwarmup.length-1].split("DOT");
 	randomwarmup[randomwarmup.length-1]=editedend[0];
 	localStorage.setItem("warmuptasks",randomwarmup)
-	console.log(localStorage.getItem('warmuptasks'))
+	alert(localStorage.getItem('warmuptasks'))
 	var variables=randomwarmup[currentindex].split(",");
 	//localStorage.myArrData=JSON.stringify(personX.list);
 	var comparisonType = variables[0];
@@ -258,7 +258,7 @@ function ShowHideDiv() {
        // var otherGender = document.getElementById("othergender");
         var dvtext = document.getElementById("dvtext");
         document.getElementById("gendertype").value="";
-        if ($('input:radio[name="sex"]:checked').val()=='other')
+        if ($('input:radio[name="gender"]:checked').val()=='other')
         	dvtext.style.display = "block";
         else
         	dvtext.style.display = "none";
