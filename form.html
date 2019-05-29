@@ -188,17 +188,6 @@ function callTask(){
 	 		//console.log(sessionStorage.getItem('myArray'))
 	 		window.location.href = comparisonType+".html" + queryString ;	
 		})
-
-  		
-  		//
-  	//
-
-  	//});
-	 
-	 	
-	 	//localStorage.setItem("correctanswers", correctsum);
-	// var Uinputs=[];
-	// localStorage.setItem("allUserInputs",Uinputs)
 }
 function getcurrentlist(tasklists,personList,index){
 	//var new_json = JSON.stringify(tasklists.push({b: 2}));
@@ -234,11 +223,10 @@ function showNextQ(){//call question
 
 		var count=0;
 		stream0 += $('input:radio[name="age"]:checked').val();
-		stream0 += "," + $('input:radio[name="sex"]:checked').val();
-		if ($('input:radio[name="sex"]:checked').val()=='other')
+		stream0 += "," + $('input:radio[name="s"]:checked').val();
+		if ($('input:radio[name="gender"]:checked').val()=='other')
 			stream0 += "," + $('input:text#gendertype').val();
 		stream0 += "," + $('input:radio[name="hours"]:checked').val()+",";
-		stream0 += "," + $('input:radio[name="hierarchy"]:checked').val()+",";
 
 		$('input:checkbox').each(function () {
 			if(this.checked)
@@ -264,89 +252,6 @@ function getRndInteger(min, max) {
        rnd = Math.random();
    return rnd !== 1? Math.floor((diff + 1) * rnd) + min : min + diff;
 }
-
-/* function calcList() {
-    var finalList=[];
-    var array=[];
-    for (var i=0; i<dict.length;i++){
-        array[i]=i;
-    }
-    var i = array.length,
-        j = 0,
-        temp;
-    while (i--) {
-        j = Math.floor(Math.random() * (i+1));
-        // swap randomly chosen element with current element
-        temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-    }
-    var listnum=0;
-    var indx=0;
-    var ind=0;
-    do {
-    	
-       if (dict[array[indx]].remaining>0){
-            finalList[ind]=dict[array[indx]].experimentID;
-            dict[array[indx]].remaining--;
-            if (indx==26)
-                indx=0;
-            else
-                indx++;
-            listnum++;
-            ind++;
-        }else{
-            if (indx==26)
-                indx=0;
-            else
-                indx++;
-        } 
-    }while(listnum<27)
-    return finalList;
-  }
-var comparisonSets = [
-			"Animation" ,
-			"SidebySide",
-			"Diff" 
-		];
-var visSets = [
-			"tree",
-			"treemap",
-			"sunburst" 
-		];
-var changeSets = [
-		"move" ,
-		"add",
-		"delete" 
-	];
-var dataSets = [
-		"small3",
-		"medium2",
-		"large2"
-	];		
-var compState=0;
-var visState=0;
-var changeState=0;
-var dataState=0;
-var dict = []; // create an empty array
-var ind=0;
- for(var i=0; i<3;i++){
-       	 for (var ii=0; ii<3;ii++){
-	         for (var iii=0;iii<3;iii++){
-	         	for (var iv=0;iv<3;iv++){
-	         	
-	        		dict.push(
-	        		  {
-	        		      experimentID:""+comparisonSets[i]+","+visSets[ii]+","+changeSets[iii]+","+dataSets[iv]+"DOT",
-	        		      remaining: 10
-	        		 
-	        		  })
-	        	}
-	        	
-		         
-	       }
-       	}
-   }*/
 
 function ShowHideDiv() {
        // var otherGender = document.getElementById("othergender");
@@ -389,9 +294,9 @@ function ShowHideDiv() {
 			<tr>
 				<td width=20 style="font-weight:bold;vertical-align:text-center;">Gender:</td><br>
 				<td>
-					<input type="radio" input autocomplete="off" name="sex" value="male" style="margin-right: 0" onclick="ShowHideDiv()" /> Male
-					<input type="radio" input autocomplete="off" name="sex" value="female"  style="margin-right: 0" onclick="ShowHideDiv()" /> Female </br>
-					<input type="radio" input autocomplete="off" id="othergender" name="sex" value="other"  style="margin-right: 0" onclick="ShowHideDiv()" /> Other </br>
+					<input type="radio" input autocomplete="off" name="gender" value="male" style="margin-right: 0" onclick="ShowHideDiv()" /> Male
+					<input type="radio" input autocomplete="off" name="gender" value="female"  style="margin-right: 0" onclick="ShowHideDiv()" /> Female </br>
+					<input type="radio" input autocomplete="off" id="othergender" name="gender" value="other"  style="margin-right: 0" onclick="ShowHideDiv()" /> Other </br>
 					<div id="dvtext" style="display: none">
 					    
 					    <input type="text" input autocomplete="off" id="gendertype" />
