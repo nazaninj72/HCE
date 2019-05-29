@@ -110,7 +110,7 @@ function writeUserData(userId) {
   }).then(function () {
     callTask();
     localStorage.setItem('userid',userId);
-  });
+  })
 
 }
 function updateindex(i) {
@@ -156,7 +156,8 @@ function callTask(){
 	//window.open(comparisonType+".html", "_self");
 	// sessionStorage.setItem('myArray', personxlist);
 	randomwarmup=shuffle(warmupset)
-	
+	localStorage.setItem("warmuptasks",randomwarmup)
+	console.log(localStorage.getItem('warmuptasks'))
 	var editedend=randomwarmup[randomwarmup.length-1].split("DOT");
 	randomwarmup[randomwarmup.length-1]=editedend[0];
 	var variables=randomwarmup[currentindex].split(",");
@@ -165,7 +166,7 @@ function callTask(){
 	var queryString = "?para1=" +currentindex+"=?para2="+"WU";
 	
 	var correctsum=0;
-	localStorage.setItem("warmuptasks",randomwarmup)
+	
 	 //readTextFile("usertasks/tasklist.json", function(text){
   		//var tasklists = JSON.parse(text);
   		//console.log(tasklists)
@@ -179,20 +180,18 @@ function callTask(){
 		var ind;
 		firebase.database().ref().child("currentask").on("value", function(snapshot) {
   			ind=snapshot.numChildren()
-  			
   			personList=getcurrentlist(tasklists,personList,ind-1);
-  		//console.log(personList)
   			for (var f=0;f<personList.length-1;f++){
   				personList[f]=personList[f]+"DOT";
   			}
   			sessionStorage.setItem('myArray', personList);
-	 		console.log(personList)
+	 		console.log(sessionStorage.getItem('myArray'))
 		})
   		localStorage.setItem("tasklists", tasklists);
 
   		
   		//
-  	window.location.href = comparisonType+".html" + queryString ;	
+  	//window.location.href = comparisonType+".html" + queryString ;	
 
   	//});
 	 
