@@ -156,10 +156,11 @@ function callTask(){
 	//window.open(comparisonType+".html", "_self");
 	// sessionStorage.setItem('myArray', personxlist);
 	randomwarmup=shuffle(warmupset)
-	localStorage.setItem("warmuptasks",randomwarmup)
-	console.log(localStorage.getItem('warmuptasks'))
+	
 	var editedend=randomwarmup[randomwarmup.length-1].split("DOT");
 	randomwarmup[randomwarmup.length-1]=editedend[0];
+	localStorage.setItem("warmuptasks",randomwarmup)
+	console.log(localStorage.getItem('warmuptasks'))
 	var variables=randomwarmup[currentindex].split(",");
 	//localStorage.myArrData=JSON.stringify(personX.list);
 	var comparisonType = variables[0];
@@ -223,7 +224,7 @@ function showNextQ(){//call question
 
 		var count=0;
 		stream0 += $('input:radio[name="age"]:checked').val();
-		stream0 += "," + $('input:radio[name="s"]:checked').val();
+		stream0 += "," + $('input:radio[name="gender"]:checked').val();
 		if ($('input:radio[name="gender"]:checked').val()=='other')
 			stream0 += "," + $('input:text#gendertype').val();
 		stream0 += "," + $('input:radio[name="hours"]:checked').val()+",";
