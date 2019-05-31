@@ -83,9 +83,9 @@
        "name": "RI",
        "children": [
 	    {
-       "name": "Y", "size":100},
+       "name": "YO", "size":100},
         {"name": "L", "size": 100},
-		{"name": "I", "size": 100}
+		{"name": "I2", "size": 100}
        ]
       }
        ]
