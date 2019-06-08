@@ -61,8 +61,7 @@ var rootC=null;
     var newindx=getRndInteger(0,newlabels.length-1)
    // writeInputChoices(sourceNode,changestate,rootC,newlabels,newindx)
     var startanimation = document.getElementById('startbutton');
-    var clickedonstart=0;
-    var clickedonreset=0;
+
     startanimation.onclick = function(){
     clickedonstart++;
     if (changestate=="move"){
